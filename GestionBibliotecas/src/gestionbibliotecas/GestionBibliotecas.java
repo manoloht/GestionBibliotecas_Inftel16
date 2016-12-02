@@ -24,6 +24,7 @@ public class GestionBibliotecas {
          System.out.println("ttttttt");
          System.out.println("oooooo");
                   System.out.println("Manolo");
+                  System.out.println("Manolo2");
 
     }
     
