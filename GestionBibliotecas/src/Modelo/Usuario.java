@@ -5,11 +5,19 @@
  */
 package Modelo;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Juan
  */
-public class Usuario {
+public class Usuario implements BaseDatos<Usuario>{
     private String dni;
     private String nombre;
     private String apellido;
@@ -17,7 +25,7 @@ public class Usuario {
     private String email;
     private String password;
 
-    public Usuario(){};
+    public Usuario(){}
     
      public Usuario(String dni, String nombre, String apellido, String sexo, String email, String password) {
         this.dni = dni;
@@ -76,5 +84,79 @@ public class Usuario {
         this.password = password;
     }
 
+
+    @Override
+    public boolean insertar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean actualizar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean borrar() {
+        try {            
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "delete from usuario where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.dni);
+            
+            if (pstmt.execute()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error borrar usuario. " + ex);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean comprobar() { 
+                
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from usuario where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.dni);
+            ResultSet resultado = pstmt.executeQuery();
+            if(resultado.next())
+            {
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception ex) {
+           System.out.println("Error comprobar usuario. " + ex);
+           return false;
+        }
+
+    }
+
+    @Override
+    public boolean buscar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    public static void main(String[] args) {
+        Usuario u = new Usuario();
+        u.setDni("123123x");
+        System.out.println(u.comprobar());
+        u.borrar();
+        System.out.println(u.comprobar());
+
+    }
    
  }
