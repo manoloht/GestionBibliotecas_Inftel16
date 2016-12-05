@@ -1,0 +1,15 @@
+
+*** Creación de clases
+- Usuarios
+    - Administrador
+    - Estudiante
+    - Bibliotecario
+- Penalizacion
+- Bibliotecas
+- Categorias
+- Prestamos
+- Reservados
+- Ejemplar
+- Libros
+- Autor
+- Editorial
