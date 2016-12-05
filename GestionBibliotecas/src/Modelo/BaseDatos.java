@@ -12,8 +12,9 @@ package Modelo;
  */
 
 public interface BaseDatos<T> {
-    public boolean insertar(T objeto);
-    public boolean actualizar(T objeto);
-    public boolean borrar(T objeto);
-    public boolean comprobar(T objeto);
+    public boolean insertar();
+    public boolean actualizar();
+    public boolean borrar();
+    public boolean comprobar();
+    public boolean buscar();
 }
