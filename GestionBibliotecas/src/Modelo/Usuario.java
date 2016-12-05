@@ -28,6 +28,10 @@ public class Usuario implements BaseDatos<Usuario>{
 
     public Usuario(){}
     
+    public Usuario(String dni){
+        this.dni = dni;
+    }
+    
      public Usuario(String dni, String nombre, String apellido, String sexo, String email, String password) {
         this.dni = dni;
         this.nombre = nombre;
