@@ -200,37 +200,6 @@ public class Usuario implements BaseDatos<Usuario>{
     }
 
     
-    public static void main(String[] args) {
-/*
-        Usuario u = new Usuario();
-        u.setDni("12312xx3");
-        System.out.println(u.comprobar());
-        u.borrar();
-        System.out.println(u.comprobar());
-*/
-                
-        String dni = "123123";
-        String nombre = "Pepito";
-        String apellido = "De Los Rios";
-        String sexo = "H";
-        String email = "pepito@gmail.com";
-        String password = "abcabc";
-        Usuario u2 = new Usuario(dni,nombre,apellido,sexo,email,password);
-        u2.insertar();
-        u2.setApellido("XXXXXXXXXX");
-        u2.actualizar();
-        System.out.println(u2.comprobar());
 
-   
-    }
    
  }
-
-        /*
-            private String dni;
-            private String nombre;
-            private String apellido;
-            private String sexo;
-            private String email;
-            private String password;
-        */
