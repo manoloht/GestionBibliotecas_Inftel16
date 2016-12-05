@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gestionbibliotecas;
+package Modelo;
 
 /**
  *
@@ -12,9 +12,9 @@ package gestionbibliotecas;
 public class Estudiante extends Usuario {
     private String numExp;
     
-public Estudiante(String dni, String nombre, String apellido, String sexo, String email, String password, String numExp){
-     super(dni, nombre, apellido, sexo, email, password);
-     this.numExp = numExp;
+    public Estudiante(String dni, String nombre, String apellido, String sexo, String email, String password, String numExp){
+        super(dni, nombre, apellido, sexo, email, password);
+        this.numExp = numExp;
 }
 
     public String getNumExp() {

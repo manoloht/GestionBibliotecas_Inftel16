@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gestionbibliotecas;
+package Controlador;
 
 /**
  *
- * @author Juan
+ * @author Manuel
  */
-public class Biblioteca {
+public class Controlador {
     
 }
