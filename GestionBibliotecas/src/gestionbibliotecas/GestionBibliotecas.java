@@ -6,7 +6,6 @@
 package gestionbibliotecas;
 
 import Configuracion.Conexion;
-import Configuracion.Conexion;
 /**
  *
  * @author Manuel
