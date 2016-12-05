@@ -1,6 +1,8 @@
 
 *** Creación de clases
-- Usuario - (Terminada, solo falta buscar)
+////////////////////////////
+
+* Usuario - (Terminada)
     - Administrador
     - Estudiante
     - Bibliotecario

@@ -196,10 +196,34 @@ public class Usuario implements BaseDatos<Usuario>{
 
     @Override
     public boolean buscar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from usuario where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.dni);
+            ResultSet resultado = pstmt.executeQuery();
+            if(resultado.next())
+            {
+                this.nombre = resultado.getString("nombre");
+                this.apellido = resultado.getString("apellido");
+                this.sexo = resultado.getString("sexo");
+                this.email = resultado.getString("email");
+                this.password = resultado.getString("password");
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception ex) {
+           System.out.println("Error buscar usuario. " + ex);
+           return false;
+        }
     }
 
-    
+ 
 
    
  }
