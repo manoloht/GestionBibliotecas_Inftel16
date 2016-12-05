@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Modelo;
+import Configuracion.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
