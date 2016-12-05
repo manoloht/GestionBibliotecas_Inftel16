@@ -5,7 +5,8 @@
  */
 package gestionbibliotecas;
 
-/** 
+import Modelo.Conexion;
+/**
  *
  * @author Manuel
  */
@@ -14,18 +15,10 @@ public class GestionBibliotecas {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        //yuemei
-        System.out.println("shdkshdskl");
-        // Y vino pepe
-        // Y vino Juan
-         System.out.println("shdkshdskl");
-         System.out.println("ttttttt");
-         System.out.println("oooooo");
-                  System.out.println("Manolo");
-                  System.out.println("Manolo2");
-
+    public static void main(String[] args) throws Exception {
+       
+       Conexion c = new Conexion();
+       c.getConnection();
     }
-    
+
 }

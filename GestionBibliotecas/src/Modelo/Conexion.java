@@ -20,9 +20,9 @@ public class Conexion {
     public Conexion() {
     }
 
-    /*public Connection getConnection() throws Exception{
+    public Connection getConnection() throws Exception{
         Properties pr = new Properties();
-        InputStream config = ClassLoader.getSystemResourceAsStream(Conexion.class.getPackage().getName()+"/bd.properties");    
+        InputStream config = ClassLoader.getSystemResourceAsStream(Conexion.class.getPackage().getName()+"/bd.properties");
         pr.load(config);
         config.close();
         
@@ -44,29 +44,6 @@ public class Conexion {
         Connection con = DriverManager.getConnection(cadConexion);
         return con;
         
-        }*/
-    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
-        Properties pr = new Properties();
-        InputStream config = ClassLoader.getSystemResourceAsStream(Conexion.class.getPackage().getName() + "/bd.properties");
-        pr.load(config);
-        config.close();
-
-        String driver = pr.getProperty("driver");
-        String subprotocolo = pr.getProperty("subprotocolo");
-        String usuario = pr.getProperty("usuario");
-        String password = pr.getProperty("password");
-        String url = pr.getProperty("url");
-        int puerto = Integer.parseInt(pr.getProperty("puerto"));
-        String sid = pr.getProperty("sid");
-
-        // Cargamos el driver
-        Class.forName(driver);
-
-        // Preparamos la conexion
-        String cadConexion = subprotocolo + ":" + usuario + "/" + password + "@" + url + ":" + puerto + ":" + sid;
-
-        // Obtenemos la conexion
-        Connection con = DriverManager.getConnection(cadConexion);
-    }
-
+        }
+    
 }
