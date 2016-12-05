@@ -5,7 +5,7 @@
  */
 package gestionbibliotecas;
 
-import Modelo.Conexion;
+import Configuracion.Conexion;
 /**
  *
  * @author Manuel
@@ -15,7 +15,7 @@ public class GestionBibliotecas {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
        
        Conexion c = new Conexion();
        c.getConnection();
