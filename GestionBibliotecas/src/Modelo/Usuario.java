@@ -88,12 +88,61 @@ public class Usuario implements BaseDatos<Usuario>{
 
     @Override
     public boolean insertar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        try {            
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "insert into usuario (dni,nombre,apellido,sexo,email,password) values (?,?,?,?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.dni);
+            pstmt.setString(2, this.nombre);
+            pstmt.setString(3, this.apellido);
+            pstmt.setString(4, this.sexo);
+            pstmt.setString(5, this.email);
+            pstmt.setString(6, this.password);
+            
+            
+            if (pstmt.execute()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error insertar usuario. " + ex);
+            return false;
+        }
     }
 
     @Override
     public boolean actualizar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {            
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "update usuario set nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(6, this.dni);
+            pstmt.setString(1, this.nombre);
+            pstmt.setString(2, this.apellido);
+            pstmt.setString(3, this.sexo);
+            pstmt.setString(4, this.email);
+            pstmt.setString(5, this.password);
+            
+            
+            if (pstmt.execute()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error insertar usuario. " + ex);
+            return false;
+        }
     }
 
     @Override
@@ -152,12 +201,36 @@ public class Usuario implements BaseDatos<Usuario>{
 
     
     public static void main(String[] args) {
+/*
         Usuario u = new Usuario();
-        u.setDni("123123x");
+        u.setDni("12312xx3");
         System.out.println(u.comprobar());
         u.borrar();
         System.out.println(u.comprobar());
+*/
+                
+        String dni = "123123";
+        String nombre = "Pepito";
+        String apellido = "De Los Rios";
+        String sexo = "H";
+        String email = "pepito@gmail.com";
+        String password = "abcabc";
+        Usuario u2 = new Usuario(dni,nombre,apellido,sexo,email,password);
+        u2.insertar();
+        u2.setApellido("XXXXXXXXXX");
+        u2.actualizar();
+        System.out.println(u2.comprobar());
 
+   
     }
    
  }
+
+        /*
+            private String dni;
+            private String nombre;
+            private String apellido;
+            private String sexo;
+            private String email;
+            private String password;
+        */
