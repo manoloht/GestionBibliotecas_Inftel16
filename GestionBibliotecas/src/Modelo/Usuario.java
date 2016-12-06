@@ -4,38 +4,36 @@
  * and open the template in the editor.
  */
 package Modelo;
-import Configuracion.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Timestamp;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import Configuracion.*;
+import java.sql.*;
+import java.util.*;
+
 
 /**
  *
  * @author Juan
  */
-public class Usuario implements BaseDatos<Usuario>{
+public class Usuario implements BaseDatos<Usuario> {
+
     private String dni;
     private String nombre;
-    private String apellido;
+    private String apellidos;
     private String sexo;
     private String email;
     private String password;
 
-    public Usuario(){}
-    
-    public Usuario(String dni){
+    public Usuario() {
+    }
+
+    public Usuario(String dni) {
         this.dni = dni;
     }
-    
-     public Usuario(String dni, String nombre, String apellido, String sexo, String email, String password) {
+
+    public Usuario(String dni, String nombre, String apellidos, String sexo, String email, String password) {
         this.dni = dni;
         this.nombre = nombre;
-        this.apellido = apellido;
+        this.apellidos = apellidos;
         this.sexo = sexo;
         this.email = email;
         this.password = password;
@@ -57,12 +55,12 @@ public class Usuario implements BaseDatos<Usuario>{
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public String getSexo() {
@@ -89,11 +87,37 @@ public class Usuario implements BaseDatos<Usuario>{
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" + "dni=" + dni + ", nombre=" + nombre + ", apellidos=" + apellidos + ", sexo=" + sexo + ", email=" + email + ", password=" + password + '}';
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.dni);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        return Objects.equals(this.dni, other.dni);
+    }
+    
     @Override
     public boolean insertar() {
 
-        try {            
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -102,27 +126,23 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
             pstmt.setString(2, this.nombre);
-            pstmt.setString(3, this.apellido);
+            pstmt.setString(3, this.apellidos);
             pstmt.setString(4, this.sexo);
             pstmt.setString(5, this.email);
             pstmt.setString(6, this.password);
-            
-            
-            if (pstmt.execute()) {
-                return true;
-            } else {
-                return false;
-            }
 
-        } catch (Exception ex) {
-            System.out.println("Error insertar usuario. " + ex);
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al insertar el usuario");
+            System.err.println(ex);
             return false;
         }
     }
 
     @Override
     public boolean actualizar() {
-        try {            
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -131,27 +151,23 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.clearParameters();
             pstmt.setString(6, this.dni);
             pstmt.setString(1, this.nombre);
-            pstmt.setString(2, this.apellido);
+            pstmt.setString(2, this.apellidos);
             pstmt.setString(3, this.sexo);
             pstmt.setString(4, this.email);
             pstmt.setString(5, this.password);
-            
-            
-            if (pstmt.execute()) {
-                return true;
-            } else {
-                return false;
-            }
 
-        } catch (Exception ex) {
-            System.out.println("Error insertar usuario. " + ex);
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al actualizar el usuario");
+            System.err.println(ex);
             return false;
         }
     }
 
     @Override
     public boolean borrar() {
-        try {            
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -159,22 +175,19 @@ public class Usuario implements BaseDatos<Usuario>{
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
-            
-            if (pstmt.execute()) {
-                return true;
-            } else {
-                return false;
-            }
 
-        } catch (Exception ex) {
-            System.out.println("Error borrar usuario. " + ex);
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al borrar el usuario");
+            System.err.println(ex);
             return false;
         }
     }
 
     @Override
-    public boolean comprobar() { 
-                
+    public boolean comprobar() {
+
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -184,18 +197,14 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
             ResultSet resultado = pstmt.executeQuery();
-            if(resultado.next())
-            {
-                return true;
-            }else{
-                return false;
-            }
 
-        } catch (Exception ex) {
-           System.out.println("Error comprobar usuario. " + ex);
-           return false;
+            return resultado.next();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar el usuario");
+            System.err.println(ex);
+            return false;
         }
-
     }
 
     @Override
@@ -209,25 +218,50 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
             ResultSet resultado = pstmt.executeQuery();
-            if(resultado.next())
-            {
+
+            if (resultado.next()) {
                 this.nombre = resultado.getString("nombre");
-                this.apellido = resultado.getString("apellido");
+                this.apellidos = resultado.getString("apellido");
                 this.sexo = resultado.getString("sexo");
                 this.email = resultado.getString("email");
                 this.password = resultado.getString("password");
                 return true;
-            }else{
+            } else {
                 return false;
             }
 
-        } catch (Exception ex) {
-           System.out.println("Error buscar usuario. " + ex);
-           return false;
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar el usuario");
+            System.err.println(ex);
+            return false;
         }
     }
 
- 
+    public static List<Usuario> getTodos() {
 
-   
- }
+        List<Usuario> usuarios = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from usuario";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                String dni = resultado.getString("dni");
+                String nombre = resultado.getString("nombre");
+                String apellidos = resultado.getString("apellido");
+                String sexo = resultado.getString("sexo");
+                String email = resultado.getString("email");
+                String password = resultado.getString("password");
+                Usuario u = new Usuario(dni, nombre, apellidos, sexo, email, password);
+                usuarios.add(u);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los usuarios");
+            System.err.println(ex);
+        }
+        return usuarios;
+    }
+}
