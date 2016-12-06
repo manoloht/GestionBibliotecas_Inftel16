@@ -6,6 +6,7 @@
 package Modelo;
 
 import Configuracion.*;
+import java.sql.*;
 import java.util.*;
 
 
@@ -21,6 +22,10 @@ public class Autor implements BaseDatos<Autor>{
     private List<Libro> libros;
 
     public Autor() {
+    }
+
+    public Autor(int id_autor) { // constructor para clave
+        this.id_autor = id_autor;
     }
 
     public Autor(int id_autor, String nombre, String apellido) {
@@ -76,9 +81,7 @@ public class Autor implements BaseDatos<Autor>{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + this.id_autor;
-        hash = 59 * hash + Objects.hashCode(this.nombre);
-        hash = 59 * hash + Objects.hashCode(this.apellido);
+        hash = 41 * hash + this.id_autor;
         return hash;
     }
 
@@ -97,39 +100,172 @@ public class Autor implements BaseDatos<Autor>{
         if (this.id_autor != other.id_autor) {
             return false;
         }
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        return Objects.equals(this.apellido, other.apellido);
+        return true;
     }
 
+   
     @Override //ACABAR
     public boolean insertar() {
-        return false;
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "insert into autor (id_autor,nombre,apellido) values (?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, this.id_autor);
+            pstmt.setString(2, this.nombre);
+            pstmt.setString(3, this.apellido);
+           
+            
+            return pstmt.execute();
+            
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al insertar el autor. ");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     @Override //ACABAR
     public boolean actualizar() {
-         return false;
+          try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "update autor set nombre = ?, apellido = ?  where id_autor = ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(3, this.id_autor);
+            pstmt.setString(1, this.nombre);
+            pstmt.setString(2, this.apellido);
+            
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al actualizar el autor. ");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     @Override //ACABAR
     public boolean borrar() {
-         return false;
+         try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "delete from autor where id_autor = ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, this.id_autor);
+          
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al borrar el autor. ");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     @Override //ACABAR
     public boolean comprobar() {
-         return false;
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from autor where id_autor = ? and nombre like ? and apellido like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, this.id_autor);
+            pstmt.setString(2, this.nombre);
+            pstmt.setString(3, this.apellido);
+            ResultSet resultado = pstmt.executeQuery();
+
+            return resultado.next();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar el autor.");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     @Override //ACABAR
     public boolean buscar() {
-         return false;
+         try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from autor where id_autor = ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, this.id_autor);
+            ResultSet resultado = pstmt.executeQuery();
+
+            if (resultado.next()) {
+                this.nombre = resultado.getString("nombre");
+                this.apellido = resultado.getString("apellido");                
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar el autor.");
+            System.err.println(ex);
+            return false;
+        }
     }
     
     //ACABAR
     public static List<Autor> getTodos(){
-        return null;
+         List<Autor> autores = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from autor";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                int id_autor = resultado.getInt("id_autor");
+                String nombre = resultado.getString("nombre");
+                String apellido = resultado.getString("apellido");                
+                Autor a = new Autor(id_autor, nombre, apellido);
+                autores.add(a);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los autores");
+            System.err.println(ex);
+        }
+        return autores;
     }
+    
+      public static void main(String[] args) {
+
+       
+//        Autor x = new Autor(2,"nana","alvaro");
+        // Autor y = new Autor(1,"juan","jose");
+//        boolean exito=false;
+//        Autor z= new Autor(2);
+//          exito=z.buscar(); // exito   devuelve true
+        //exito=x.actualizar();  // exito devuelve false
+        //  exito=x.insertar();  // exito  devuelve false
+       //  exito=x.borrar();  // exito  devuelve false
+      // exito=x.comprobar();  // exito  devuelve true
+//       System.out.println(exito);
+       //System.out.println(z);
+       // System.out.println(x.id_autor);
+       
+        List<Autor> autores = new ArrayList<>();
+        autores=Autor.getTodos();  // exito
+        System.out.println(autores);
+        
+    }
+    
+    
 }
