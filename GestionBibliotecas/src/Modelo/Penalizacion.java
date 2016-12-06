@@ -17,16 +17,16 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
 
     private Date Fecha_inicio;
     private Date Fecha_fin;
-    private String numExp;
+    private String dni;
 
     public Penalizacion() {
     
     }
 
-    public Penalizacion(Date Fecha_inicio, Date Fecha_fin, String numExp) {
+    public Penalizacion(Date Fecha_inicio, Date Fecha_fin, String dni) {
         this.Fecha_inicio = Fecha_inicio;
         this.Fecha_fin = Fecha_fin;
-        this.numExp = numExp;
+        this.dni = dni;
     }
 
     public Date getFecha_inicio() {
@@ -37,8 +37,8 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         return Fecha_fin;
     }
 
-    public String getNumExp() {
-        return numExp;
+    public String getDni() {
+        return dni;
     }
 
     public void setFecha_inicio(Date Fecha_inicio) {
@@ -49,13 +49,13 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         this.Fecha_fin = Fecha_fin;
     }
 
-    public void setNumExp(String numExp) {
-        this.numExp = numExp;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     @Override
     public String toString() {
-        return "Penalizacion{" + "Fecha_inicio=" + Fecha_inicio + ", Fecha_fin=" + Fecha_fin + ", numExp=" + numExp + '}';
+        return "Penalizacion{" + "Fecha_inicio=" + Fecha_inicio + ", Fecha_fin=" + Fecha_fin + ", dni=" + dni + '}';
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         int hash = 5;
         hash = 59 * hash + Objects.hashCode(this.Fecha_inicio);
         hash = 59 * hash + Objects.hashCode(this.Fecha_fin);
-        hash = 59 * hash + Objects.hashCode(this.numExp);
+        hash = 59 * hash + Objects.hashCode(this.dni);
         return hash;
     }
 
@@ -79,7 +79,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             return false;
         }
         final Penalizacion other = (Penalizacion) obj;
-        if (!Objects.equals(this.numExp, other.numExp)) {
+        if (!Objects.equals(this.dni, other.dni)) {
             return false;
         }
         if (!Objects.equals(this.Fecha_inicio, other.Fecha_inicio)) {
