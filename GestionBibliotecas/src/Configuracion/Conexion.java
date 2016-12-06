@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Manuel
+ * @author Manuel y Alberto
  */
 public class Conexion {
 
@@ -25,11 +25,10 @@ public class Conexion {
     public Connection getConnection() {
 
         Connection con = null;
-            
-            try {
+
+        try {
             Properties pr = new Properties();
             InputStream config = ClassLoader.getSystemResourceAsStream(Conexion.class.getPackage().getName() + "/bd.properties");
-            //System.out.println(Conexion.class.getPackage().getName() + "/bd.properties");
             pr.load(config);
             config.close();
 
@@ -48,22 +47,10 @@ public class Conexion {
             // Preparamos la conexion
             String cadConexion = subprotocolo + ":" + usuario + "/" + password + "@" + url + ":" + puerto + ":" + sid;
             con = DriverManager.getConnection(cadConexion);
-            
-            } catch (IOException | ClassNotFoundException | SQLException ex) {
+
+        } catch (IOException | ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return con;
-        
-        /*Connection con = null;
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            String cadConexion = "jdbc:oracle:thin:inftel16_11/inftel@olimpia.lcc.uma.es:1521:edgar";
-            con = DriverManager.getConnection(cadConexion);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-       
+        }
+        return con;
     }
 }
