@@ -43,10 +43,12 @@ public class Conexion {
             String sid = pr.getProperty("sid");
 
             // Cargamos el driver
-            Class.forName(driver);
+            //Class.forName(driver);
+            Class.forName("oracle.jdbc.driver.OracleDriver");
 
             // Preparamos la conexion
-            String cadConexion = subprotocolo + ":" + usuario + "/" + password + "@" + url + ":" + puerto + ":" + sid;
+            //String cadConexion = subprotocolo + ":" + usuario + "/" + password + "@" + url + ":" + puerto + ":" + sid;
+            String cadConexion = "jdbc:oracle:thin:inftel16_11/inftel@olimpia.lcc.uma.es:1521:edgar";
             con = DriverManager.getConnection(cadConexion);
 
         } catch (IOException | ClassNotFoundException | SQLException ex) {
