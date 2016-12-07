@@ -8,10 +8,10 @@
     - Bibliotecario
 - Penalizacion
 - Bibliotecas
-- Categorias
-- Prestamos
-- Reservados
-- Ejemplar
-- Libros
-- Autor
-- Editorial
+- Categorias    hecho yuemei
+- Prestamos     hecho yuemei
+- Reservados    hecho yuemei
+- Ejemplar      hecho yuemei
+- Libros        hecho yuemei
+- Autor         hecho yuemei y probado los metodos,pequeño error;
+- Editorial     hecho yuemei
