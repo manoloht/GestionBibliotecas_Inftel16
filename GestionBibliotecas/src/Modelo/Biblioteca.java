@@ -6,6 +6,9 @@
 package Modelo;
 
 import Configuracion.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -32,10 +35,11 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         this.nombre = nombre;
     }
 
-    public Biblioteca(String nombre, String localizacion, int telefono) {
+    public Biblioteca(String nombre, String localizacion, int telefono, String dni_admin) {
         this.nombre = nombre;
         this.localizacion = localizacion;
         this.telefono = telefono;
+        this.dni_admin = dni_admin;
     }
 
     public Biblioteca(String nombre, String localizacion, int telefono, List<Categoria> cat, String dni_admin, List<Bibliotecario> bibliotecarios, List<Estudiante> estudiantes) {
@@ -131,19 +135,62 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         return Objects.equals(this.nombre, other.nombre);
     }
 
-    @Override //ACABAR
+    @Override //ACABAR----> HECHO
     public boolean insertar() {
-        return false;
+         try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "insert into biblioteca (dni_admin,nombre,localizacion,telefono) values (?,?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.dni_admin);
+            pstmt.setString(2, this.nombre);
+            pstmt.setString(3, this.localizacion);
+            pstmt.setInt(4, this.telefono);
+           
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al insertar el biblioteca");
+            System.err.println(ex);
+            return false;
+        }
+       
     }
 
+    public static void main(String[] args){
+        Biblioteca b = new Biblioteca("Biblioteca Fisica","Sevilla",954367695,"123123");
+        //b.insertar();
+        System.out.println(b.insertar());
+        System.out.println(b);
+        
+    }
+    
+    
     @Override //ACABAR
     public boolean actualizar() {
         return false;
     }
 
-    @Override //ACABAR
+    @Override //ACABAR---->HECHO
     public boolean borrar() {
-        return false;
+         try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "delete from biblioteca where nombre like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.nombre);
+
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al borrar el biblioteca");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     @Override //ACABAR
