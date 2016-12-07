@@ -11,10 +11,8 @@ package Modelo;
  * @param <T>
  */
 
-public interface BaseDatos<T> {
+public interface BaseDatos <T>{
     public boolean insertar();
-    public boolean actualizar(String clave);
+    public boolean actualizar(T obj);
     public boolean borrar();
-    //public boolean comprobar();
-    //public boolean buscar();
 }

@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Juan
  */
-public class Usuario implements BaseDatos<Usuario> {
+public class Usuario implements BaseDatos<Usuario>{
 
     private String dni;
     private String nombre;
@@ -132,8 +132,10 @@ public class Usuario implements BaseDatos<Usuario> {
 
             if (!comprobarUsuario(this.dni)) {
                 pstmt.executeUpdate();
+                con.close();
                 return true;
             } else {
+                con.close();
                 return false;
             }
 
@@ -144,7 +146,8 @@ public class Usuario implements BaseDatos<Usuario> {
         }
     }
 
-    public boolean actualizar(String clave) {
+    @Override
+    public boolean actualizar(Usuario u) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -158,12 +161,14 @@ public class Usuario implements BaseDatos<Usuario> {
             pstmt.setString(4, this.sexo);
             pstmt.setString(5, this.email);
             pstmt.setString(6, this.password);
-            pstmt.setString(7, clave);
+            pstmt.setString(7, u.getDni());
 
-            if (!comprobarUsuario(this.dni)) {
+            if (comprobarUsuario(this.dni)) {
                 pstmt.executeUpdate();
+                con.close();
                 return true;
             } else {
+                con.close();
                 return false;
             }
 
@@ -185,10 +190,12 @@ public class Usuario implements BaseDatos<Usuario> {
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
 
-            if (!comprobarUsuario(this.dni)) {
+            if (comprobarUsuario(this.dni)) {
                 pstmt.executeUpdate();
+                con.close();
                 return true;
             } else {
+                con.close();
                 return false;
             }
 
