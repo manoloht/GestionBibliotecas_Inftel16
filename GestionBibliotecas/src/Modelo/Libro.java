@@ -321,7 +321,7 @@ public class Libro implements BaseDatos<Libro> {
 //    }
     
     // ACABAR
-    public static List<Libro> getTodos(){
+    public static List<Libro> getTodosLibros(){
          List<Libro> libros = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();

@@ -240,7 +240,7 @@ public class Autor implements BaseDatos<Autor>{
 //    }
 //    
     //ACABAR
-    public static List<Autor> getTodos(){
+    public static List<Autor> getTodosAutores(){
          List<Autor> autores = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -281,7 +281,7 @@ public class Autor implements BaseDatos<Autor>{
        // System.out.println(x.id_autor);
        
         List<Autor> autores = new ArrayList<>();
-        autores=Autor.getTodos();  // exito
+        autores=Autor.getTodosAutores();  // exito
         System.out.println(autores);
         
     }

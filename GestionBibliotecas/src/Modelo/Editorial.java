@@ -210,7 +210,7 @@ public class Editorial implements BaseDatos<Editorial> {
 //    }
 
     // ACABAR
-    public static List<Editorial> getTodas() {
+    public static List<Editorial> getTodasEditoriales() {
          List<Editorial> editoriales = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
