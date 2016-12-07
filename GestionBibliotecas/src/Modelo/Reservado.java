@@ -165,7 +165,7 @@ public class Reservado implements BaseDatos<Reservado> {
         return true;
     }
 
-    @Override //ACABAR
+    @Override 
     public boolean insertar() {
        try {
             Conexion conexion = new Conexion();
@@ -182,7 +182,14 @@ public class Reservado implements BaseDatos<Reservado> {
             pstmt.setString(6, this.nombre_cat);
             pstmt.setString(7, this.nombre_bib);
 
-            return pstmt.execute();
+            if (!comprobarReservado(this.dni, this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar el reservado.");
@@ -191,24 +198,36 @@ public class Reservado implements BaseDatos<Reservado> {
         }
     }
 
-    @Override //ACABAR
-    public boolean actualizar() {
+    @Override 
+    public boolean actualizar(Reservado r) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update reservado set fecha_ini = ?,fecha_fin = ? where dni like ? and id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
+            String consulta = "update reservado set fecha_ini = ?,fecha_fin = ?, dni = ?, id_ejem = ?, isbn = ?, nombre_cat = ?, nombre_bib = ? where dni like ? and id_ejem = ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-             pstmt.setDate(1, this.fecha_ini);
+            pstmt.setDate(1, this.fecha_ini);
             pstmt.setDate(2, this.fecha_fin);
             pstmt.setString(3, this.dni);
             pstmt.setInt(4, this.id_ejem);
             pstmt.setString(5, this.isbn);
             pstmt.setString(6, this.nombre_cat);
             pstmt.setString(7, this.nombre_bib);
+            pstmt.setString(8, r.getDni());
+            pstmt.setInt(9, r.getId_ejem());
+            pstmt.setString(10, r.getIsbn());
+            pstmt.setString(11, r.getNombre_cat());
+            pstmt.setString(12, r.getNombre_bib());
 
-            return pstmt.execute();
+            if (comprobarReservado(this.dni, this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el reservado. ");
@@ -217,7 +236,7 @@ public class Reservado implements BaseDatos<Reservado> {
         }
     }
 
-    @Override //ACABAR
+    @Override 
     public boolean borrar() {
         try {
             Conexion conexion = new Conexion();
@@ -232,7 +251,14 @@ public class Reservado implements BaseDatos<Reservado> {
             pstmt.setString(4, this.nombre_cat);
             pstmt.setString(5, this.nombre_bib);
 
-            return pstmt.execute();
+            if (comprobarReservado(this.dni, this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el reservado. ");
@@ -241,8 +267,8 @@ public class Reservado implements BaseDatos<Reservado> {
         }
     }
 
-    @Override //ACABAR
-    public boolean comprobar() {
+
+    private boolean comprobarReservado(String dni, int id_ejem, String isbn, String nombre_cat, String nombre_bib) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -250,11 +276,11 @@ public class Reservado implements BaseDatos<Reservado> {
             String consulta = "select * from reservado where dni like ? and id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
-            pstmt.setInt(2, this.id_ejem);
-            pstmt.setString(3, this.isbn);
-            pstmt.setString(4, this.nombre_cat);
-            pstmt.setString(5, this.nombre_bib);
+            pstmt.setString(1, dni);
+            pstmt.setInt(2, id_ejem);
+            pstmt.setString(3, isbn);
+            pstmt.setString(4, nombre_cat);
+            pstmt.setString(5, nombre_bib);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -266,7 +292,7 @@ public class Reservado implements BaseDatos<Reservado> {
         }
     }
 
-    @Override //ACABAR
+/*
     public boolean buscar() {
        try {
             Conexion conexion = new Conexion();
@@ -297,9 +323,10 @@ public class Reservado implements BaseDatos<Reservado> {
         
     }
     }
-
+*/
+    
     //ACABAR
-    public static List<Reservado> getTodas() {
+    public static List<Reservado> getTodosReservados() {
         List<Reservado> reservados = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();

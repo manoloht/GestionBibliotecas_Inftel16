@@ -169,7 +169,7 @@ public class Prestamo implements BaseDatos<Prestamo> {
 
    
     //ACABAR
-    public static List<Prestamo> getTodos() {
+    public static List<Prestamo> getTodosPrestamos() {
           List<Prestamo> prestamos = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -197,8 +197,33 @@ public class Prestamo implements BaseDatos<Prestamo> {
         return prestamos;
     }
     
+        private boolean comprobarPrestamo(String dni, int id_ejem, String isbn, String nombre_cat, String nombre_bib) {
 
-    @Override  //ACABAR
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from prestamo where dni like ? and id_ejem = ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, dni);
+            pstmt.setInt(2, id_ejem);
+            pstmt.setString(3, isbn);
+            pstmt.setString(4, nombre_cat);
+            pstmt.setString(5, nombre_bib);
+            ResultSet resultado = pstmt.executeQuery();
+
+            return resultado.next();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar el prestamo");
+            System.err.println(ex);
+            return false;
+        }
+    }
+    
+
+    @Override  
     public boolean insertar() {
        try {
             Conexion conexion = new Conexion();
@@ -215,7 +240,14 @@ public class Prestamo implements BaseDatos<Prestamo> {
             pstmt.setString(6, this.nombre_cat);
             pstmt.setString(7, this.nombre_bib);
 
-            return pstmt.execute();
+            if (!comprobarPrestamo(this.dni, this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar el prestamo.");
@@ -224,24 +256,36 @@ public class Prestamo implements BaseDatos<Prestamo> {
         }
     }
 
-    @Override //ACABAR
-    public boolean actualizar() {
+    @Override 
+    public boolean actualizar(Prestamo p) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update prestamo set fecha_ini = ?,fecha_fin = ? where dni like ? and id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
+            String consulta = "update prestamo set fecha_ini = ?,fecha_fin = ?, dni = ?, id_ejem = ?, isbn = ?, nombre_cat = ?, nombre_bib = ? where dni like ? and id_ejem = ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-             pstmt.setDate(1, this.fecha_ini);
+            pstmt.setDate(1, this.fecha_ini);
             pstmt.setDate(2, this.fecha_fin);
             pstmt.setString(3, this.dni);
             pstmt.setInt(4, this.id_ejem);
             pstmt.setString(5, this.isbn);
             pstmt.setString(6, this.nombre_cat);
             pstmt.setString(7, this.nombre_bib);
+            pstmt.setString(8, p.getDni());
+            pstmt.setInt(9, p.getId_ejem());
+            pstmt.setString(10, p.getIsbn());
+            pstmt.setString(11, p.getNombre_cat());
+            pstmt.setString(12, p.getNombre_bib());
 
-            return pstmt.execute();
+            if (comprobarPrestamo(this.dni, this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el prestamo. ");
@@ -250,7 +294,7 @@ public class Prestamo implements BaseDatos<Prestamo> {
         }
     }
 
-    @Override //ACABAR
+    @Override 
     public boolean borrar() {
          try {
             Conexion conexion = new Conexion();
@@ -265,7 +309,14 @@ public class Prestamo implements BaseDatos<Prestamo> {
             pstmt.setString(4, this.nombre_cat);
             pstmt.setString(5, this.nombre_bib);
 
-            return pstmt.execute();
+            if (comprobarPrestamo(this.dni, this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el prestamo. ");
@@ -274,32 +325,8 @@ public class Prestamo implements BaseDatos<Prestamo> {
         }
     }
 
-    @Override //ACABAR
-    public boolean comprobar() {
-         try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
 
-            String consulta = "select * from prestamo where dni like ? and id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
-            pstmt.setInt(2, this.id_ejem);
-            pstmt.setString(3, this.isbn);
-            pstmt.setString(4, this.nombre_cat);
-            pstmt.setString(5, this.nombre_bib);
-            ResultSet resultado = pstmt.executeQuery();
-
-            return resultado.next();
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al comprobar el prestamo.");
-            System.err.println(ex);
-            return false;
-        }
-    }
-
-    @Override //ACABAR
+/* No borrar - Servirá mas adelante
     public boolean buscar() {
         try {
             Conexion conexion = new Conexion();
@@ -330,4 +357,7 @@ public class Prestamo implements BaseDatos<Prestamo> {
         
     }
     }
+*/
+    
+    
 }

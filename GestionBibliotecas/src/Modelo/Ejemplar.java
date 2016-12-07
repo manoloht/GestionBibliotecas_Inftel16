@@ -112,7 +112,7 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
         return true;
     }
 
-    @Override // ACABAR
+    @Override 
     public boolean insertar() {
         try {
             Conexion conexion = new Conexion();
@@ -126,7 +126,14 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
             pstmt.setString(3, this.nombre_cat);
             pstmt.setString(4, this.nombre_bib);
 
-            return pstmt.execute();
+            if (!comprobarEjemplar(this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar el ejemplar");
@@ -135,21 +142,32 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
         }
     }
 
-    @Override // ACABAR
-    public boolean actualizar() {
+    @Override 
+    public boolean actualizar(Ejemplar e) {
          try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update usuario set isbn = ?, nombre_cat = ?, nombre_bib = ? where id_ejem like ?";
+            String consulta = "update usuario set id_ejem = ?, isbn = ?, nombre_cat = ?, nombre_bib = ? where id_ejem = ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(4, this.id_ejem);
-            pstmt.setString(1, this.isbn);
-            pstmt.setString(2, this.nombre_cat);
-            pstmt.setString(3, this.nombre_bib);           
+            pstmt.setInt(1, this.id_ejem);
+            pstmt.setString(2, this.isbn);
+            pstmt.setString(3, this.nombre_cat);
+            pstmt.setString(4, this.nombre_bib);            
+            pstmt.setInt(5, e.getId_ejem());
+            pstmt.setString(6, e.getIsbn());
+            pstmt.setString(7, e.getNombre_cat());
+            pstmt.setString(8, e.getNombre_bib());
 
-            return pstmt.execute();
+            if (comprobarEjemplar(this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el ejemplar");
@@ -164,15 +182,22 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            //String consulta = "delete from ejemplar where id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
-            String consulta = "delete from ejemplar where id_ejem like ?";
+            String consulta = "delete from ejemplar where id_ejem = ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(1, this.id_ejem);
-//            pstmt.setString(2, this.isbn);
-//            pstmt.setString(3, this.nombre_cat);
-//            pstmt.setString(4, this.nombre_bib);
-            return pstmt.execute();
+            pstmt.setString(2, this.isbn);
+            pstmt.setString(3, this.nombre_cat);
+            pstmt.setString(4, this.nombre_bib);
+            
+            if (comprobarEjemplar(this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el ejemplar ");
@@ -181,32 +206,31 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
         }
     }
 
-    @Override // ACABAR
-    public boolean comprobar() {
+
+    private boolean comprobarEjemplar(int id_ejem, String isbn, String nombre_cat, String nombre_bib) {
          try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-           // String consulta = "select * from ejemplar where id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
-           String consulta = "select * from ejemplar where id_ejem like ?"; 
-           PreparedStatement pstmt = con.prepareStatement(consulta);
+            String consulta = "select * from ejemplar where id_ejem like ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, this.id_ejem);
-//            pstmt.setString(2, this.isbn);
-//            pstmt.setString(3, this.nombre_cat);
-//            pstmt.setString(4, this.nombre_bib);
+            pstmt.setInt(1, id_ejem);
+            pstmt.setString(2, isbn);
+            pstmt.setString(3, nombre_cat);
+            pstmt.setString(4, nombre_bib);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al comprobar el usuario");
+            System.err.println("Excepcion SQL: Error al comprobar el Ejemplar");
             System.err.println(ex);
             return false;
         }
     }
 
-    @Override // ACABAR
+/*
     public boolean buscar() {
       try {
             Conexion conexion = new Conexion();
@@ -233,9 +257,10 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
             return false;
         }
     }
+*/
+    
 
-    // ACABAR
-    public static List<Ejemplar> getTodos() {
+    public static List<Ejemplar> getTodosEjemplares() {
          List<Ejemplar> ejemplares = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
