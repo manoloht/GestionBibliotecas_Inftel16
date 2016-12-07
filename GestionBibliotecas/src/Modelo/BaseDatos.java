@@ -15,6 +15,6 @@ public interface BaseDatos<T> {
     public boolean insertar();
     public boolean actualizar();
     public boolean borrar();
-    public boolean comprobar();
-    public boolean buscar();
+    //public boolean comprobar();
+    //public boolean buscar();
 }

@@ -9,7 +9,6 @@ import Configuracion.*;
 import java.sql.*;
 import java.util.*;
 
-
 /**
  *
  * @author Juan
@@ -113,7 +112,7 @@ public class Usuario implements BaseDatos<Usuario> {
         final Usuario other = (Usuario) obj;
         return Objects.equals(this.dni, other.dni);
     }
-    
+
     @Override
     public boolean insertar() {
 
@@ -131,7 +130,12 @@ public class Usuario implements BaseDatos<Usuario> {
             pstmt.setString(5, this.email);
             pstmt.setString(6, this.password);
 
-            return pstmt.execute();
+            if (!comprobarUsuario(this.dni)) {
+                pstmt.executeUpdate();
+                return true;
+            } else {
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar el usuario");
@@ -140,23 +144,28 @@ public class Usuario implements BaseDatos<Usuario> {
         }
     }
 
-    @Override
-    public boolean actualizar() {
+    public boolean actualizar(String clave) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update usuario set nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
+            String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(6, this.dni);
-            pstmt.setString(1, this.nombre);
-            pstmt.setString(2, this.apellidos);
-            pstmt.setString(3, this.sexo);
-            pstmt.setString(4, this.email);
-            pstmt.setString(5, this.password);
+            pstmt.setString(1, this.dni);
+            pstmt.setString(2, this.nombre);
+            pstmt.setString(3, this.apellidos);
+            pstmt.setString(4, this.sexo);
+            pstmt.setString(5, this.email);
+            pstmt.setString(6, this.password);
+            pstmt.setString(7, clave);
 
-            return pstmt.execute();
+            if (!comprobarUsuario(this.dni)) {
+                pstmt.executeUpdate();
+                return true;
+            } else {
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el usuario");
@@ -176,7 +185,12 @@ public class Usuario implements BaseDatos<Usuario> {
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
 
-            return pstmt.execute();
+            if (!comprobarUsuario(this.dni)) {
+                pstmt.executeUpdate();
+                return true;
+            } else {
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el usuario");
@@ -185,8 +199,7 @@ public class Usuario implements BaseDatos<Usuario> {
         }
     }
 
-    @Override
-    public boolean comprobar() {
+    private boolean comprobarUsuario(String dni) {
 
         try {
             Conexion conexion = new Conexion();
@@ -195,7 +208,7 @@ public class Usuario implements BaseDatos<Usuario> {
             String consulta = "select * from usuario where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
+            pstmt.setString(1, dni);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -207,37 +220,7 @@ public class Usuario implements BaseDatos<Usuario> {
         }
     }
 
-    @Override
-    public boolean buscar() {
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select * from usuario where dni like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
-            ResultSet resultado = pstmt.executeQuery();
-
-            if (resultado.next()) {
-                this.nombre = resultado.getString("nombre");
-                this.apellidos = resultado.getString("apellido");
-                this.sexo = resultado.getString("sexo");
-                this.email = resultado.getString("email");
-                this.password = resultado.getString("password");
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar el usuario");
-            System.err.println(ex);
-            return false;
-        }
-    }
-
-    public static List<Usuario> getTodos() {
+    public static List<Usuario> getTodosUsuarios() {
 
         List<Usuario> usuarios = new ArrayList<>();
         try {
