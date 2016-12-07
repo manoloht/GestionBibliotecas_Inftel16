@@ -6,6 +6,11 @@
 package Modelo;
 
 import Configuracion.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 
@@ -88,33 +93,113 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         return Objects.equals(this.Fecha_fin, other.Fecha_fin);
     }
 
-    @Override // ACABAR
+    @Override // ACABAR---->HECHO
     public boolean insertar() {
-       return false;
+       try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "insert into biblioteca (fecha_inicio,fecha_fin,dni) values (?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setDate(1, (java.sql.Date) this.Fecha_inicio);
+            pstmt.setDate(2, (java.sql.Date) this.Fecha_fin);
+            pstmt.setString(3, this.dni);
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al insertar penalizado");
+            System.err.println(ex);
+            return false;
+        }
     }
 
-    @Override // ACABAR
-    public boolean actualizar() {
-        return false;
-    }
+    @Override // ACABAR--->HECHO
+   public boolean actualizar(Penalizacion p) {
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
 
+            String consulta = "update penalizacion set Fecha_inicio = ?, Fecha_fin = ?, dni = ? where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+           
+            pstmt.setDate(1, (java.sql.Date) this.Fecha_inicio);
+            pstmt.setDate(2, (java.sql.Date) this.Fecha_fin);
+            pstmt.setString(3, this.dni);
+            pstmt.setString(4, p.getDni());
+            
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al actualizar la penalizaion");
+            System.err.println(ex);
+            return false;
+        }
+    }
     @Override // ACABAR
     public boolean borrar() {
-        return false;
+       try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "delete from penalizacion where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.dni);
+
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al borrar la penalizacion");
+            System.err.println(ex);
+            return false;
+        }
     }
 
-    @Override // ACABAR
-    public boolean comprobar() {
-        return false;
+       public boolean comprobarPenalizacion(String dni) {
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from penalizacion where dni like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, dni);
+            ResultSet resultado = pstmt.executeQuery();
+
+            return resultado.next();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar la penalizacion");
+            System.err.println(ex);
+            return false;
+        }
     }
 
-    @Override // ACABAR
-    public boolean buscar() {
-        return false;
-    }
+    // ACABAR-----> HECHO
+      public static List<Penalizacion> getTodosPenalizacion() {
 
-    // ACABAR
-    public static List<Penalizacion> getTodas() {
-        return null;
+        List<Penalizacion> penalizaciones = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from penalizacion";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                Date Fecha_inicio = resultado.getDate("Fecha_inicio");
+                Date Fecha_fin = resultado.getDate("Fecha_fin");
+                String dni = resultado.getString("dni");
+                Penalizacion p = new Penalizacion(Fecha_inicio,Fecha_fin, dni);
+                penalizaciones.add(p);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todas las penalizaciones");
+            System.err.println(ex);
+        }
+        return penalizaciones;
     }
 }

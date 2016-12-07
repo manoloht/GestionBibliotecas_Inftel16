@@ -8,7 +8,9 @@ package Modelo;
 import Configuracion.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 
@@ -160,22 +162,22 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     }
 
     public static void main(String[] args){
-        Biblioteca b = new Biblioteca("Biblioteca Fisica","malaga",954367695,"123123");
+        //Biblioteca b = new Biblioteca("Biblioteca Fisica","malaga",954367695,"123123");
         //b.insertar();
-       
-        System.out.println(b.toString());
-        System.out.println(b.actualizar());
+       //Biblioteca b = new Biblioteca();
+       // System.out.println(b.toString());
+        //System.out.println(b.actualizar());
         
     }
     
     
     @Override //ACABAR------> HECHO
-    public boolean actualizar() {
+    public boolean actualizar(Biblioteca b) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ?";
+            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ? and dni_admin ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
            
@@ -183,7 +185,8 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             pstmt.setInt(2, this.telefono);
             pstmt.setString(3, this.localizacion);
             pstmt.setString(4, this.dni_admin);
-           
+            pstmt.setString(5, b.getNombre());
+             pstmt.setString(6, b.getDni_admin());
 
             return pstmt.execute();
 
@@ -214,18 +217,52 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         }
     }
 
-    @Override //ACABAR
-    public boolean comprobar() {
-        return false;
+    public boolean comprobarBiblioteca(String nombre, String dni_admin) {
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from biblioteca where dni_admin like ? and nombre like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, dni_admin);
+            pstmt.setString(2, nombre);
+            ResultSet resultado = pstmt.executeQuery();
+
+            return resultado.next();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar la biblioteca con su admin");
+            System.err.println(ex);
+            return false;
+        }
     }
 
-    @Override //ACABAR
-    public boolean buscar() {
-        return false;
-    }
+  
+    //ACABAR----> HECHO
+    public static List<Biblioteca> getTodosBibliotecas() {
 
-    //ACABAR
-    public static List<Biblioteca> getTodas() {
-        return null;
+        List<Biblioteca> bibliotecas = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from biblioteca";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                String nombre = resultado.getString("nombre");
+                int telefono = resultado.getInt("telefono");
+                String localizacion = resultado.getString("localizacion");
+                String dni_admin = resultado.getString("dni_admin");
+                Biblioteca b = new Biblioteca(nombre, localizacion,telefono, dni_admin);
+                bibliotecas.add(b);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos las bibliotecas");
+            System.err.println(ex);
+        }
+        return bibliotecas;
     }
 }
