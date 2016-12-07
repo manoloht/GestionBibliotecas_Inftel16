@@ -90,7 +90,14 @@ public class Editorial implements BaseDatos<Editorial> {
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_edit);            
 
-            return pstmt.execute();
+            if (!comprobarEditorial(this.nombre_edit)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar la editorial.");
@@ -100,7 +107,7 @@ public class Editorial implements BaseDatos<Editorial> {
     }
 
     @Override //ACABAR
-    public boolean actualizar() {
+    public boolean actualizar(Editorial ed) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -109,9 +116,16 @@ public class Editorial implements BaseDatos<Editorial> {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(2, this.nombre_edit);
-            pstmt.setString(1, this.nombre_edit);
+            pstmt.setString(1, ed.nombre_edit);
            
-            return pstmt.execute();
+               if (comprobarEditorial(this.nombre_edit)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el editorial");
@@ -131,7 +145,14 @@ public class Editorial implements BaseDatos<Editorial> {
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_edit);
 
-            return pstmt.execute();
+          if (comprobarEditorial(this.nombre_edit)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar la editorial.");
@@ -140,8 +161,8 @@ public class Editorial implements BaseDatos<Editorial> {
         }
     }
 
-    @Override //ACABAR
-    public boolean comprobar() {
+    //@Override //ACABAR
+    public boolean comprobarEditorial(String nombre_edit) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -149,7 +170,7 @@ public class Editorial implements BaseDatos<Editorial> {
             String consulta = "select * from editorial where nombre_edit like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.nombre_edit);
+            pstmt.setString(1,nombre_edit);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -161,35 +182,35 @@ public class Editorial implements BaseDatos<Editorial> {
         }
     }
 
-    @Override //ACABAR
-    public boolean buscar() {
-       try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select * from editorial where nombre_edit like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setString(1, this.nombre_edit);
-            ResultSet resultado = pstmt.executeQuery();
-
-            if (resultado.next()) {
-                this.nombre_edit = resultado.getString("nombre_edit");
-               
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar la editorial. ");
-            System.err.println(ex);
-            return false;
-        }
-    }
+//    @Override //ACABAR
+//    public boolean buscar() {
+//       try {
+//            Conexion conexion = new Conexion();
+//            Connection con = conexion.getConnection();
+//
+//            String consulta = "select * from editorial where nombre_edit like ?";
+//            PreparedStatement pstmt = con.prepareStatement(consulta);
+//            pstmt.clearParameters();
+//            pstmt.setString(1, this.nombre_edit);
+//            ResultSet resultado = pstmt.executeQuery();
+//
+//            if (resultado.next()) {
+//                this.nombre_edit = resultado.getString("nombre_edit");
+//               
+//                return true;
+//            } else {
+//                return false;
+//            }
+//
+//        } catch (SQLException ex) {
+//            System.err.println("Excepcion SQL: Error al buscar la editorial. ");
+//            System.err.println(ex);
+//            return false;
+//        }
+//    }
 
     // ACABAR
-    public static List<Editorial> getTodas() {
+    public static List<Editorial> getTodasEditoriales() {
          List<Editorial> editoriales = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
@@ -211,4 +232,5 @@ public class Editorial implements BaseDatos<Editorial> {
         return editoriales;
     }
 
+   
 }
