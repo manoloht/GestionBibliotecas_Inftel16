@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-
 /**
  *
  * @author Juan
@@ -25,7 +24,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
     private String dni;
 
     public Penalizacion() {
-    
+
     }
 
     public Penalizacion(Date Fecha_inicio, Date Fecha_fin, String dni) {
@@ -95,17 +94,25 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
 
     @Override // ACABAR---->HECHO
     public boolean insertar() {
-       try {
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into biblioteca (fecha_inicio,fecha_fin,dni) values (?,?,?)";
+            String consulta = "insert into biblioteca (fecha_inicio, fecha_fin, dni) values (?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setDate(1, (java.sql.Date) this.Fecha_inicio);
             pstmt.setDate(2, (java.sql.Date) this.Fecha_fin);
             pstmt.setString(3, this.dni);
-            return pstmt.execute();
+
+            if (!comprobarPenalizacion(this.dni)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar penalizado");
@@ -115,7 +122,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
     }
 
     @Override // ACABAR--->HECHO
-   public boolean actualizar(Penalizacion p) {
+    public boolean actualizar(Penalizacion p) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -123,13 +130,20 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             String consulta = "update penalizacion set Fecha_inicio = ?, Fecha_fin = ?, dni = ? where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-           
+
             pstmt.setDate(1, (java.sql.Date) this.Fecha_inicio);
             pstmt.setDate(2, (java.sql.Date) this.Fecha_fin);
             pstmt.setString(3, this.dni);
             pstmt.setString(4, p.getDni());
-            
-            return pstmt.execute();
+
+            if (!comprobarPenalizacion(this.dni)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar la penalizaion");
@@ -137,18 +151,26 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             return false;
         }
     }
+
     @Override // ACABAR
     public boolean borrar() {
-       try {
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
             String consulta = "delete from penalizacion where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
-
-            return pstmt.execute();
+            pstmt.setString(1, this.dni
+                    
+            if (!comprobarPenalizacion(this.dni)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar la penalizacion");
@@ -157,7 +179,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         }
     }
 
-       public boolean comprobarPenalizacion(String dni) {
+    private boolean comprobarPenalizacion(String dni) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -178,7 +200,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
     }
 
     // ACABAR-----> HECHO
-      public static List<Penalizacion> getTodosPenalizacion() {
+    public static List<Penalizacion> getTodosPenalizacion() {
 
         List<Penalizacion> penalizaciones = new ArrayList<>();
         try {
@@ -192,7 +214,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
                 Date Fecha_inicio = resultado.getDate("Fecha_inicio");
                 Date Fecha_fin = resultado.getDate("Fecha_fin");
                 String dni = resultado.getString("dni");
-                Penalizacion p = new Penalizacion(Fecha_inicio,Fecha_fin, dni);
+                Penalizacion p = new Penalizacion(Fecha_inicio, Fecha_fin, dni);
                 penalizaciones.add(p);
             }
 

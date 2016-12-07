@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-
 /**
  *
  * @author Juan
@@ -29,10 +28,9 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     private List<Estudiante> estudiantes;
 
     public Biblioteca() {
-    
+
     }
 
-    
     public Biblioteca(String nombre) {
         this.nombre = nombre;
     }
@@ -139,7 +137,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
 
     @Override //ACABAR----> HECHO
     public boolean insertar() {
-         try {
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -150,45 +148,48 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             pstmt.setString(2, this.nombre);
             pstmt.setString(3, this.localizacion);
             pstmt.setInt(4, this.telefono);
-           
-            return pstmt.execute();
+
+            if (!comprobarBiblioteca(this.nombre)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar el biblioteca");
             System.err.println(ex);
             return false;
         }
-       
+
     }
 
-    public static void main(String[] args){
-        //Biblioteca b = new Biblioteca("Biblioteca Fisica","malaga",954367695,"123123");
-        //b.insertar();
-       //Biblioteca b = new Biblioteca();
-       // System.out.println(b.toString());
-        //System.out.println(b.actualizar());
-        
-    }
-    
-    
     @Override //ACABAR------> HECHO
     public boolean actualizar(Biblioteca b) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ? and dni_admin ?";
+            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-           
+
             pstmt.setString(1, this.nombre);
             pstmt.setInt(2, this.telefono);
             pstmt.setString(3, this.localizacion);
             pstmt.setString(4, this.dni_admin);
             pstmt.setString(5, b.getNombre());
-             pstmt.setString(6, b.getDni_admin());
-
-            return pstmt.execute();
+            
+            if (comprobarBiblioteca(this.nombre)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar la biblioteca");
@@ -199,7 +200,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
 
     @Override //ACABAR---->HECHO
     public boolean borrar() {
-         try {
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -208,7 +209,14 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre);
 
-            return pstmt.execute();
+             if (comprobarBiblioteca(this.nombre)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el biblioteca");
@@ -217,28 +225,27 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         }
     }
 
-    public boolean comprobarBiblioteca(String nombre, String dni_admin) {
+    private boolean comprobarBiblioteca(String nombre) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select * from biblioteca where dni_admin like ? and nombre like ?";
+            String consulta = "select * from biblioteca where nombre like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, dni_admin);
-            pstmt.setString(2, nombre);
+
+            pstmt.setString(1, nombre);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al comprobar la biblioteca con su admin");
+            System.err.println("Excepcion SQL: Error al comprobar la biblioteca");
             System.err.println(ex);
             return false;
         }
     }
 
-  
     //ACABAR----> HECHO
     public static List<Biblioteca> getTodosBibliotecas() {
 
@@ -255,7 +262,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
                 int telefono = resultado.getInt("telefono");
                 String localizacion = resultado.getString("localizacion");
                 String dni_admin = resultado.getString("dni_admin");
-                Biblioteca b = new Biblioteca(nombre, localizacion,telefono, dni_admin);
+                Biblioteca b = new Biblioteca(nombre, localizacion, telefono, dni_admin);
                 bibliotecas.add(b);
             }
 
