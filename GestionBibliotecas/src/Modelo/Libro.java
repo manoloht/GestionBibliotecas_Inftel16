@@ -182,7 +182,14 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setString(7, this.pais);
             pstmt.setString(8, this.idioma);
 
-            return pstmt.execute();
+             if (!comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar el libro. ");
@@ -192,24 +199,34 @@ public class Libro implements BaseDatos<Libro> {
     }
 
     @Override //ACABAR
-    public boolean actualizar() {
+    public boolean actualizar(Libro lib) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update libro set titulo = ?, feche_edi= ?, nombre_edit = ?, pais = ?,idioma = ? where isbn like ? and nombre_cat like ? and nombre_bib like ?";
+            String consulta = "update libro set isbn = ?, nombre_cat = ? , nombre_bib =?, titulo = ?, feche_edi= ?, nombre_edit = ?, pais = ?,idioma = ? where isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(6, this.isbn);
-            pstmt.setString(7, this.nombre_categoria);
-            pstmt.setString(8, this.nombre_bib);
-            pstmt.setString(1, this.titulo);
-            pstmt.setDate(2, this.fecha_edi);
-            pstmt.setString(3, this.nombre_editorial);
-            pstmt.setString(4, this.pais);
-            pstmt.setString(5, this.idioma);
-
-            return pstmt.execute();
+            pstmt.setString(9, this.isbn);
+            pstmt.setString(10, this.nombre_categoria);
+            pstmt.setString(11, this.nombre_bib);
+            pstmt.setString(1, lib.isbn);
+            pstmt.setString(2, lib.nombre_categoria);
+            pstmt.setString(3, lib.nombre_bib);
+            pstmt.setString(4, this.titulo);
+            pstmt.setDate(5, this.fecha_edi);
+            pstmt.setString(6, this.nombre_editorial);
+            pstmt.setString(7, this.pais);
+            pstmt.setString(8, this.idioma);
+            
+  if (comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el libro. ");
@@ -231,7 +248,14 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setString(2, this.nombre_categoria);
             pstmt.setString(3, this.nombre_bib);
 
-            return pstmt.execute();
+             if (comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el libro");
@@ -240,8 +264,8 @@ public class Libro implements BaseDatos<Libro> {
         }
     }
 
-    @Override //ACABAR
-    public boolean comprobar() {
+  //  @Override //ACABAR
+    public boolean comprobarLibro(String isbn, String nombre_categoria, String nombre_bib) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -249,9 +273,10 @@ public class Libro implements BaseDatos<Libro> {
             String consulta = "select * from libro where isbn like ? and nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.isbn);
-            pstmt.setString(2, this.nombre_categoria);
-            pstmt.setString(3, this.nombre_bib);
+            pstmt.setString(1, isbn);
+            pstmt.setString(2, nombre_categoria);
+            pstmt.setString(3, nombre_bib);
+            
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -263,37 +288,37 @@ public class Libro implements BaseDatos<Libro> {
         }
     }
 
-    @Override //ACABAR
-    public boolean buscar() {
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select * from libro where isbn like ? and nombre_cat like ? and nombre_bib like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-           pstmt.setString(1, this.isbn);
-            pstmt.setString(2, this.nombre_categoria);
-            pstmt.setString(3, this.nombre_bib);
-            ResultSet resultado = pstmt.executeQuery();
-
-            if (resultado.next()) {
-                this.titulo = resultado.getString("titulo");
-                this.fecha_edi = resultado.getDate("fecha_edi");
-                this.nombre_editorial = resultado.getString("nombre_edit");
-                this.pais = resultado.getString("pais");
-                this.idioma = resultado.getString("idioma");
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar el libro. ");
-            System.err.println(ex);
-            return false;
-        }
-    }
+//    @Override //ACABAR
+//    public boolean buscar() {
+//        try {
+//            Conexion conexion = new Conexion();
+//            Connection con = conexion.getConnection();
+//
+//            String consulta = "select * from libro where isbn like ? and nombre_cat like ? and nombre_bib like ?";
+//            PreparedStatement pstmt = con.prepareStatement(consulta);
+//            pstmt.clearParameters();
+//           pstmt.setString(1, this.isbn);
+//            pstmt.setString(2, this.nombre_categoria);
+//            pstmt.setString(3, this.nombre_bib);
+//            ResultSet resultado = pstmt.executeQuery();
+//
+//            if (resultado.next()) {
+//                this.titulo = resultado.getString("titulo");
+//                this.fecha_edi = resultado.getDate("fecha_edi");
+//                this.nombre_editorial = resultado.getString("nombre_edit");
+//                this.pais = resultado.getString("pais");
+//                this.idioma = resultado.getString("idioma");
+//                return true;
+//            } else {
+//                return false;
+//            }
+//
+//        } catch (SQLException ex) {
+//            System.err.println("Excepcion SQL: Error al buscar el libro. ");
+//            System.err.println(ex);
+//            return false;
+//        }
+//    }
     
     // ACABAR
     public static List<Libro> getTodos(){
@@ -326,4 +351,5 @@ public class Libro implements BaseDatos<Libro> {
         return libros;
     }
 
+   
 }

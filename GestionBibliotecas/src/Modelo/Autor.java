@@ -116,9 +116,15 @@ public class Autor implements BaseDatos<Autor>{
             pstmt.setInt(1, this.id_autor);
             pstmt.setString(2, this.nombre);
             pstmt.setString(3, this.apellido);
-           
-            
-            return pstmt.execute();
+              
+            if (!comprobarAutor(this.id_autor)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
             
 
         } catch (SQLException ex) {
@@ -129,19 +135,27 @@ public class Autor implements BaseDatos<Autor>{
     }
 
     @Override //ACABAR
-    public boolean actualizar() {
+    public boolean actualizar(Autor a) {
           try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update autor set nombre = ?, apellido = ?  where id_autor = ?";
+            String consulta = "update autor set id_autor = ?, nombre = ?, apellido = ?  where id_autor = ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(3, this.id_autor);
-            pstmt.setString(1, this.nombre);
-            pstmt.setString(2, this.apellido);
+            pstmt.setInt(4, this.id_autor);
+            pstmt.setString(2, this.nombre);
+            pstmt.setString(3, this.apellido);
+            pstmt.setInt(1, a.getId_autor());
             
-            return pstmt.execute();
+              if (comprobarAutor(this.id_autor)) {
+                pstmt.executeUpdate();
+                con.close();               
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el autor. ");
@@ -161,7 +175,14 @@ public class Autor implements BaseDatos<Autor>{
             pstmt.clearParameters();
             pstmt.setInt(1, this.id_autor);
           
-            return pstmt.execute();
+           if (comprobarAutor(this.id_autor)) {
+                pstmt.executeUpdate();
+                con.close();               
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar el autor. ");
@@ -170,8 +191,8 @@ public class Autor implements BaseDatos<Autor>{
         }
     }
 
-    @Override //ACABAR
-    public boolean comprobar() {
+   // @Override //ACABAR
+    public boolean comprobarAutor(int id_autor) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -179,9 +200,8 @@ public class Autor implements BaseDatos<Autor>{
             String consulta = "select * from autor where id_autor = ? and nombre like ? and apellido like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, this.id_autor);
-            pstmt.setString(2, this.nombre);
-            pstmt.setString(3, this.apellido);
+            pstmt.setInt(1, id_autor);
+            
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -193,33 +213,32 @@ public class Autor implements BaseDatos<Autor>{
         }
     }
 
-    @Override //ACABAR
-    public boolean buscar() {
-         try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select * from autor where id_autor = ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, this.id_autor);
-            ResultSet resultado = pstmt.executeQuery();
-
-            if (resultado.next()) {
-                this.nombre = resultado.getString("nombre");
-                this.apellido = resultado.getString("apellido");                
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar el autor.");
-            System.err.println(ex);
-            return false;
-        }
-    }
-    
+//        public boolean buscar() {
+//         try {
+//            Conexion conexion = new Conexion();
+//            Connection con = conexion.getConnection();
+//
+//            String consulta = "select * from autor where id_autor = ?";
+//            PreparedStatement pstmt = con.prepareStatement(consulta);
+//            pstmt.clearParameters();
+//            pstmt.setInt(1, this.id_autor);
+//            ResultSet resultado = pstmt.executeQuery();
+//
+//            if (resultado.next()) {
+//                this.nombre = resultado.getString("nombre");
+//                this.apellido = resultado.getString("apellido");                
+//                return true;
+//            } else {
+//                return false;
+//            }
+//
+//        } catch (SQLException ex) {
+//            System.err.println("Excepcion SQL: Error al buscar el autor.");
+//            System.err.println(ex);
+//            return false;
+//        }
+//    }
+//    
     //ACABAR
     public static List<Autor> getTodos(){
          List<Autor> autores = new ArrayList<>();
@@ -266,6 +285,8 @@ public class Autor implements BaseDatos<Autor>{
         System.out.println(autores);
         
     }
+
+  
     
     
 }
