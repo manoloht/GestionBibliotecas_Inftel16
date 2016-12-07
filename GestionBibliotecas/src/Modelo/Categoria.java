@@ -9,35 +9,32 @@ import Configuracion.*;
 import java.sql.*;
 import java.util.*;
 
-
 /**
  *
  * @author YUEMEI
  */
 public class Categoria implements BaseDatos<Categoria> {
 
-    private String nombre_biblioteca;
+    private String nombre_bib;
     private String nombre_cat;
     private List<Libro> libros;
 
     public Categoria() {
     }
 
-    public Categoria(String nombre_biblioteca, String nombre_cat) {
-        this.nombre_biblioteca = nombre_biblioteca;
+    public Categoria(String nombre_bib, String nombre_cat) {
+        this.nombre_bib = nombre_bib;
         this.nombre_cat = nombre_cat;
     }
 
-   
-
-    public Categoria(String nombre_biblioteca, String nombre_cat, List<Libro> libros) {
-        this.nombre_biblioteca = nombre_biblioteca;
+    public Categoria(String nombre_bib, String nombre_cat, List<Libro> libros) {
+        this.nombre_bib = nombre_bib;
         this.nombre_cat = nombre_cat;
         this.libros = libros;
     }
 
     public String getNombre_biblioteca() {
-        return nombre_biblioteca;
+        return nombre_bib;
     }
 
     public String getNombre_cat() {
@@ -48,8 +45,8 @@ public class Categoria implements BaseDatos<Categoria> {
         return libros;
     }
 
-    public void setNombre_biblioteca(String nombre_biblioteca) {
-        this.nombre_biblioteca = nombre_biblioteca;
+    public void setNombre_biblioteca(String nombre_bib) {
+        this.nombre_bib = nombre_bib;
     }
 
     public void setNombre_cat(String nombre_cat) {
@@ -62,13 +59,13 @@ public class Categoria implements BaseDatos<Categoria> {
 
     @Override
     public String toString() {
-        return "Categoria{" + "nombre_biblioteca=" + nombre_biblioteca + ", nombre_cat=" + nombre_cat + ", libros=" + libros + '}';
+        return "Categoria{" + "nombre_bib=" + nombre_bib + ", nombre_cat=" + nombre_cat + ", libros=" + libros + '}';
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.nombre_biblioteca);
+        hash = 29 * hash + Objects.hashCode(this.nombre_bib);
         hash = 29 * hash + Objects.hashCode(this.nombre_cat);
         return hash;
     }
@@ -85,15 +82,15 @@ public class Categoria implements BaseDatos<Categoria> {
             return false;
         }
         final Categoria other = (Categoria) obj;
-        if (!Objects.equals(this.nombre_biblioteca, other.nombre_biblioteca)) {
+        if (!Objects.equals(this.nombre_bib, other.nombre_bib)) {
             return false;
         }
         return Objects.equals(this.nombre_cat, other.nombre_cat);
     }
 
-    @Override //ACABAR
+    @Override //ACABAR------>HECHO
     public boolean insertar() {
-          try {
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -101,33 +98,48 @@ public class Categoria implements BaseDatos<Categoria> {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_cat);
-            pstmt.setString(2, this.nombre_biblioteca);
-           
-            return pstmt.execute();
+            pstmt.setString(2, this.nombre_bib);
+
+            if (!comprobarCategoria(this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar la categoria. ");
             System.err.println(ex);
             return false;
         }
-        
+
     }
 
-    @Override //ACABAR
-    public boolean actualizar() {//???????????
+    @Override //ACABAR----HECHO
+    public boolean actualizar(Categoria c) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update categoria set nombre_cat = ? where nombre_cat like ? and nombre_bib like ?";
+            String consulta = "update categoria set nombre_cat = ?, nombre_bib = ? where nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();         
-            pstmt.setString(2, this.nombre_cat);
-            pstmt.setString(3, this.nombre_biblioteca);
-            pstmt.setString(1, this.nombre_cat);
-            
+            pstmt.clearParameters();
 
-            return pstmt.execute();
+            pstmt.setString(2, this.nombre_bib);
+            pstmt.setString(1, this.nombre_cat);
+            pstmt.setString(3, c.nombre_cat);
+            pstmt.setString(4, c.nombre_bib);
+
+            if (comprobarCategoria(this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar la categoria");
@@ -146,9 +158,16 @@ public class Categoria implements BaseDatos<Categoria> {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_cat);
-            pstmt.setString(2, this.nombre_biblioteca);
+            pstmt.setString(2, this.nombre_bib);
 
-            return pstmt.execute();
+            if (comprobarCategoria(this.nombre_cat, this.nombre_bib)) {
+                pstmt.executeUpdate();
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar la categoria.");
@@ -156,18 +175,18 @@ public class Categoria implements BaseDatos<Categoria> {
             return false;
         }
     }
+// HECHO COMPROBAR
 
-    @Override //ACABAR
-    public boolean comprobar() {
-          try {
+    private boolean comprobarCategoria(String nombre_cat, String nombre_bib) {
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
             String consulta = "select * from categoria where nombre_cat like ? and nombre_bib like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.nombre_cat);
-            pstmt.setString(2, this.nombre_biblioteca);
+            pstmt.setString(1, nombre_cat);
+            pstmt.setString(2, nombre_bib);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -179,8 +198,7 @@ public class Categoria implements BaseDatos<Categoria> {
         }
     }
 
-    @Override
-    public boolean buscar() {
+    /* public boolean buscar() {
          try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -189,12 +207,12 @@ public class Categoria implements BaseDatos<Categoria> {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
            pstmt.setString(1, this.nombre_cat);
-            pstmt.setString(2, this.nombre_biblioteca);
+            pstmt.setString(2, this.nombre_bib);
             ResultSet resultado = pstmt.executeQuery();
 
             if (resultado.next()) {
                 this.nombre_cat = resultado.getString("nombre_cat");
-                this.nombre_biblioteca = resultado.getString("nombre_bib");
+                this.nombre_bib = resultado.getString("nombre_bib");
                
                 return true;
             } else {
@@ -208,11 +226,10 @@ public class Categoria implements BaseDatos<Categoria> {
         }
        
     }
-    
-  
-    // ACABAR
-    public static List<Categoria> getTodas(){
-         List<Categoria> categorias = new ArrayList<>();
+     */
+    // ACABAR---->HECHO
+    public static List<Categoria> getTodosCategorias() {
+        List<Categoria> categorias = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -228,7 +245,7 @@ public class Categoria implements BaseDatos<Categoria> {
             }
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al obtener todos las categorias.");
+            System.err.println("Excepcion SQL: Error al obtener todas las categorias.");
             System.err.println(ex);
         }
         return categorias;
