@@ -23,7 +23,7 @@ public class Libro implements BaseDatos<Libro> {
 
     private String isbn;  //clave
     private String titulo;
-    private Date fecha_edi;
+    private String fecha_edi;
     private String nombre_editorial;
     private String nombre_categoria;//clave
     private String nombre_bib;  //clave
@@ -42,7 +42,9 @@ public class Libro implements BaseDatos<Libro> {
         this.nombre_bib = nombre_bib;
     }
 
-    public Libro(String isbn, String titulo, Date fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma) {
+    
+    
+    public Libro(String isbn, String titulo, String fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.fecha_edi = fecha_edi;
@@ -53,7 +55,7 @@ public class Libro implements BaseDatos<Libro> {
         this.idioma = idioma;
     }
 
-    public Libro(String isbn, String titulo, Date fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma, List<Ejemplar> ejemplares, List<Autor> autores) {
+    public Libro(String isbn, String titulo, String fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma, List<Ejemplar> ejemplares, List<Autor> autores) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.fecha_edi = fecha_edi;
@@ -77,7 +79,7 @@ public class Libro implements BaseDatos<Libro> {
         return titulo;
     }
 
-    public Date getFecha_edi() {
+    public String getFecha_edi() {
         return fecha_edi;
     }
 
@@ -105,7 +107,7 @@ public class Libro implements BaseDatos<Libro> {
         this.titulo = titulo;
     }
 
-    public void setFecha_edi(Date fecha_edi) {
+    public void setFecha_edi(String fecha_edi) {
         this.fecha_edi = fecha_edi;
     }
 
@@ -175,7 +177,7 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.clearParameters();
             pstmt.setString(1, this.isbn);
             pstmt.setString(2, this.titulo);
-            pstmt.setDate(3, this.fecha_edi);
+            pstmt.setString(3, this.fecha_edi);
             pstmt.setString(4, this.nombre_editorial);
             pstmt.setString(5, this.nombre_categoria);
             pstmt.setString(6, this.nombre_bib);
@@ -214,7 +216,7 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setString(2, lib.nombre_categoria);
             pstmt.setString(3, lib.nombre_bib);
             pstmt.setString(4, this.titulo);
-            pstmt.setDate(5, this.fecha_edi);
+            pstmt.setString(5, this.fecha_edi);
             pstmt.setString(6, this.nombre_editorial);
             pstmt.setString(7, this.pais);
             pstmt.setString(8, this.idioma);
@@ -333,7 +335,7 @@ public class Libro implements BaseDatos<Libro> {
             while (resultado.next()) {
                 String isbn= resultado.getString("isbn");
                 String titulo= resultado.getString("titulo");
-                Date fecha_edi= resultado.getDate("fecha_edi");
+                String fecha_edi= resultado.getString("fecha_edi");
                 String nombre_editorial= resultado.getString("nombre_edit");
                 String nombre_categoria= resultado.getString("nombre_cat");
                 String nombre_bib= resultado.getString("nombre_bib");
@@ -349,6 +351,24 @@ public class Libro implements BaseDatos<Libro> {
             System.err.println(ex);
         }
         return libros;
+    }
+          public static void main(String[] args) {
+       
+        boolean exito=false;
+        
+//        Libro x = new Libro("3442568X","titulo","11/11/1988","SUR","fisica","Cordoba","España","español");
+//        exito=x.insertar();
+        Libro y = new Libro("3442558X","teoria de fisica","13/11/1988","SUR","fisica","Cordoba","España","español");
+       exito=y.insertar();
+Libro z = new Libro("3442558X","teoria de fisica","13/11/1988","SUR","fisica","Cordoba","España","español");
+        exito=z.borrar();
+//        System.out.println(exito);
+        
+          System.out.println(exito);
+        List<Libro> libros = new ArrayList<>();
+        libros=Libro.getTodosLibros();  // exito
+        System.out.println(libros);
+        
     }
 
    

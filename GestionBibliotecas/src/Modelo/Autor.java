@@ -117,7 +117,7 @@ public class Autor implements BaseDatos<Autor>{
             pstmt.setString(2, this.nombre);
             pstmt.setString(3, this.apellido);
               
-            if (!comprobarAutor(this.id_autor)) {
+            if (!this.comprobarAutor()) {
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -148,7 +148,7 @@ public class Autor implements BaseDatos<Autor>{
             pstmt.setString(3, this.apellido);
             pstmt.setInt(1, a.getId_autor());
             
-              if (comprobarAutor(this.id_autor)) {
+              if (this.comprobarAutor()) {
                 pstmt.executeUpdate();
                 con.close();               
                 return true;
@@ -175,7 +175,7 @@ public class Autor implements BaseDatos<Autor>{
             pstmt.clearParameters();
             pstmt.setInt(1, this.id_autor);
           
-           if (comprobarAutor(this.id_autor)) {
+           if (this.comprobarAutor()) {
                 pstmt.executeUpdate();
                 con.close();               
                 return true;
@@ -192,15 +192,15 @@ public class Autor implements BaseDatos<Autor>{
     }
 
    // @Override //ACABAR
-    public boolean comprobarAutor(int id_autor) {
+    public boolean comprobarAutor() {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select * from autor where id_autor = ? and nombre like ? and apellido like ?";
+            String consulta = "select * from autor where id_autor = ? ";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, id_autor);
+            pstmt.setInt(1, this.id_autor);
             
             ResultSet resultado = pstmt.executeQuery();
 
@@ -265,21 +265,17 @@ public class Autor implements BaseDatos<Autor>{
     }
     
       public static void main(String[] args) {
-
        
-//        Autor x = new Autor(2,"nana","alvaro");
-        // Autor y = new Autor(1,"juan","jose");
-//        boolean exito=false;
-//        Autor z= new Autor(2);
-//          exito=z.buscar(); // exito   devuelve true
-        //exito=x.actualizar();  // exito devuelve false
-        //  exito=x.insertar();  // exito  devuelve false
-       //  exito=x.borrar();  // exito  devuelve false
-      // exito=x.comprobar();  // exito  devuelve true
-//       System.out.println(exito);
-       //System.out.println(z);
-       // System.out.println(x.id_autor);
+        boolean exito=false;
+//        Autor x = new Autor(3,"maria","quitana");
+//        exito=x.insertar();
+//        Autor x = new Autor(3,"maria","quitana");
+//        exito=x.borrar();
        
+         Autor z = new Autor(1,"juan","jose");
+          Autor y = new Autor(4);
+          exito= z.actualizar(y);
+           System.out.println(exito);
         List<Autor> autores = new ArrayList<>();
         autores=Autor.getTodosAutores();  // exito
         System.out.println(autores);

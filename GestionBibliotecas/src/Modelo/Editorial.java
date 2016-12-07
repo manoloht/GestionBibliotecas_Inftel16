@@ -112,7 +112,7 @@ public class Editorial implements BaseDatos<Editorial> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update usuario set nombre_edit = ? where nombre_edit like ?";
+            String consulta = "update editorial set nombre_edit = ? where nombre_edit like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(2, this.nombre_edit);
@@ -230,6 +230,25 @@ public class Editorial implements BaseDatos<Editorial> {
             System.err.println(ex);
         }
         return editoriales;
+    }
+public static void main(String[] args) {
+       
+        boolean exito=false;
+//          Editorial y = new Editorial("SUR");
+//          exito=y.insertar();
+//            Editorial x = new Editorial("ANAYA");
+//            exito=x.insertar();
+//        Editorial x = new Editorial("ANAYA");
+//        exito=x.borrar();      
+// Editorial y = new Editorial("SUR");
+  Editorial x = new Editorial("NORTE");
+   Editorial z = new Editorial("NORTEE");
+  exito= x.actualizar(z);
+  System.out.println(exito);
+        List<Editorial> editoriales = new ArrayList<>();
+        editoriales=Editorial.getTodasEditoriales();  // exito
+        System.out.println(editoriales);
+        
     }
 
    
