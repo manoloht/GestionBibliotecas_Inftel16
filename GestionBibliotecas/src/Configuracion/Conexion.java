@@ -13,7 +13,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author Manuel y Alberto
@@ -28,8 +27,8 @@ public class Conexion {
         Connection con = null;
 
         try {
-            Properties pr = new Properties();
-            InputStream config = ClassLoader.getSystemResourceAsStream(Conexion.class.getPackage().getName() + "/bd.properties");
+            /*Properties pr = new Properties();
+            //InputStream config = ClassLoader.getSystemResourceAsStream(Conexion.class.getPackage().getName() + "/bd.properties");
             pr.load(config);
             config.close();
 
@@ -40,7 +39,7 @@ public class Conexion {
             String password = pr.getProperty("password");
             String url = pr.getProperty("url");
             int puerto = Integer.parseInt(pr.getProperty("puerto"));
-            String sid = pr.getProperty("sid");
+            String sid = pr.getProperty("sid");*/
 
             // Cargamos el driver
             //Class.forName(driver);
@@ -51,7 +50,7 @@ public class Conexion {
             String cadConexion = "jdbc:oracle:thin:inftel16_11/inftel@olimpia.lcc.uma.es:1521:edgar";
             con = DriverManager.getConnection(cadConexion);
 
-        } catch (IOException | ClassNotFoundException | SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return con;
