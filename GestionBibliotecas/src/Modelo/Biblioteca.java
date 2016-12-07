@@ -27,9 +27,9 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     private List<Estudiante> estudiantes;
 
     public Biblioteca() {
+    
     }
 
-    ;
     
     public Biblioteca(String nombre) {
         this.nombre = nombre;
@@ -160,17 +160,38 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     }
 
     public static void main(String[] args){
-        Biblioteca b = new Biblioteca("Biblioteca Fisica","Sevilla",954367695,"123123");
+        Biblioteca b = new Biblioteca("Biblioteca Fisica","malaga",954367695,"123123");
         //b.insertar();
-        System.out.println(b.insertar());
-        System.out.println(b);
+       
+        System.out.println(b.toString());
+        System.out.println(b.actualizar());
         
     }
     
     
-    @Override //ACABAR
+    @Override //ACABAR------> HECHO
     public boolean actualizar() {
-        return false;
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+           
+            pstmt.setString(1, this.nombre);
+            pstmt.setInt(2, this.telefono);
+            pstmt.setString(3, this.localizacion);
+            pstmt.setString(4, this.dni_admin);
+           
+
+            return pstmt.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al actualizar la biblioteca");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     @Override //ACABAR---->HECHO
