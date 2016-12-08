@@ -19,10 +19,16 @@ public class Estudiante extends Usuario {
     private String nombre_biblioteca;
     private List<Prestamo> prestamos;
     private List<Reservado> reservas;
-    
-    public Estudiante(String dni, String numExp){
+
+    public Estudiante(String dni, String numExp) {
         super(dni);
         this.numExp = numExp;
+    }
+
+    public Estudiante(String numexp, String dni, String nombre_bi) {
+        super(dni);
+        this.numExp = numexp;
+        this.nombre_biblioteca = nombre_bi;
     }
 
     public Estudiante(String dni, String nombre, String apellido, String sexo, String email, String password, String numExp, String nombre_biblioteca) {
@@ -255,6 +261,32 @@ public class Estudiante extends Usuario {
                 String numExp = resultado.getString("numExp");
                 String nombre_bib = resultado.getString("nombre_bib");
                 Estudiante e = new Estudiante(dni, nombre, apellidos, sexo, email, password, numExp, nombre_bib);
+                estudiantes.add(e);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los estudiantes");
+            System.err.println(ex);
+        }
+        return estudiantes;
+    }
+
+    public static List<Estudiante> getTodosEstudiantesBiblioteca(String nombre_bi) {
+        List<Estudiante> estudiantes = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from estudiante where nombre_bib like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, nombre_bi);
+            ResultSet resultado = pstmt.executeQuery();
+
+            while (resultado.next()) {
+                String numExp = resultado.getString("numExp");
+                String dni = resultado.getString("dni");
+                String nombre_bib = resultado.getString("nombre_bib");
+                Estudiante e = new Estudiante(numExp, dni,  nombre_bib);
                 estudiantes.add(e);
             }
 
