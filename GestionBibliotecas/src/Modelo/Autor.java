@@ -144,8 +144,8 @@ public class Autor implements BaseDatos<Autor>{
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(4, this.id_autor);
-            pstmt.setString(2, this.nombre);
-            pstmt.setString(3, this.apellido);
+            pstmt.setString(2, a.getNombre());
+            pstmt.setString(3, a.getApellido());
             pstmt.setInt(1, a.getId_autor());
             
               if (this.comprobarAutor()) {
@@ -272,15 +272,19 @@ public class Autor implements BaseDatos<Autor>{
 //        Autor x = new Autor(3,"maria","quitana");
 //        exito=x.borrar();
        
+         
          Autor z = new Autor(1,"juan","jose");
           Autor y = new Autor(4);
-          exito= z.actualizar(y);
+         // exito= z.actualizar(y);
+          Autor x = new Autor(4,"juan","jose");
+          Autor w = new Autor(4,"juan","jota");
+          exito= x.actualizar(w);
            System.out.println(exito);
         List<Autor> autores = new ArrayList<>();
         autores=Autor.getTodosAutores();  // exito
         System.out.println(autores);
         
-    }
+      }
 
   
     

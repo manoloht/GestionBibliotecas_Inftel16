@@ -10,7 +10,7 @@ import Configuracion.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Date;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -68,69 +68,97 @@ public class Libro implements BaseDatos<Libro> {
         this.autores = autores;
     }
 
-   
-
-  
     public String getIsbn() {
         return isbn;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public String getFecha_edi() {
-        return fecha_edi;
-    }
-
-    public String getNombre_categoria() {
-        return nombre_categoria;
-    }
-
-    public List<Ejemplar> getEjemplares() {
-        return ejemplares;
-    }
-
-    public List<Autor> getAutores() {
-        return autores;
-    }
-
-    public String getEditorial() {
-        return nombre_editorial;
     }
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public String getFecha_edi() {
+        return fecha_edi;
     }
 
     public void setFecha_edi(String fecha_edi) {
         this.fecha_edi = fecha_edi;
     }
 
+    public String getNombre_editorial() {
+        return nombre_editorial;
+    }
+
+    public void setNombre_editorial(String nombre_editorial) {
+        this.nombre_editorial = nombre_editorial;
+    }
+
+    public String getNombre_categoria() {
+        return nombre_categoria;
+    }
+
     public void setNombre_categoria(String nombre_categoria) {
         this.nombre_categoria = nombre_categoria;
+    }
+
+    public String getNombre_bib() {
+        return nombre_bib;
+    }
+
+    public void setNombre_bib(String nombre_bib) {
+        this.nombre_bib = nombre_bib;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getIdioma() {
+        return idioma;
+    }
+
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
+    }
+
+    public List<Ejemplar> getEjemplares() {
+        return ejemplares;
     }
 
     public void setEjemplares(List<Ejemplar> ejemplares) {
         this.ejemplares = ejemplares;
     }
 
+    public List<Autor> getAutores() {
+        return autores;
+    }
+
     public void setAutores(List<Autor> autores) {
         this.autores = autores;
     }
 
-    public void setEditorial(String editorial) {
-        this.nombre_editorial = editorial;
-    }
+   
+
+  
+  
 
     @Override
     public String toString() {
-        return "Libro{" + "isbn=" + isbn + ", titulo=" + titulo + ", fecha_edi=" + fecha_edi + ", nombre_categoria=" + nombre_categoria + ", ejemplares=" + ejemplares + ", autores=" + autores + ", editorial=" + nombre_editorial + '}';
+        return "Libro{" + "isbn=" + isbn + ", titulo=" + titulo + ", fecha_edi=" + fecha_edi + ", nombre_editorial=" + nombre_editorial + ", nombre_categoria=" + nombre_categoria + ", nombre_bib=" + nombre_bib + ", pais=" + pais + ", idioma=" + idioma + ", ejemplares=" + ejemplares + ", autores=" + autores + '}';
     }
+
+   
 
     @Override
     public int hashCode() {
@@ -206,20 +234,20 @@ public class Libro implements BaseDatos<Libro> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update libro set isbn = ?, nombre_cat = ? , nombre_bib =?, titulo = ?, feche_edi= ?, nombre_edit = ?, pais = ?,idioma = ? where isbn like ? and nombre_cat like ? and nombre_bib like ?";
+           String consulta = "update libro set isbn = ?, nombre_cat = ? , nombre_bib =?, titulo = ?, fecha_edi= ?, nombre_edit = ?, pais = ?,idioma = ? where isbn like ? and nombre_cat like ? and nombre_bib like ?";          
             PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
+            pstmt.clearParameters();         
             pstmt.setString(9, this.isbn);
             pstmt.setString(10, this.nombre_categoria);
             pstmt.setString(11, this.nombre_bib);
-            pstmt.setString(1, lib.isbn);
-            pstmt.setString(2, lib.nombre_categoria);
-            pstmt.setString(3, lib.nombre_bib);
-            pstmt.setString(4, this.titulo);
-            pstmt.setString(5, this.fecha_edi);
-            pstmt.setString(6, this.nombre_editorial);
-            pstmt.setString(7, this.pais);
-            pstmt.setString(8, this.idioma);
+            pstmt.setString(1, lib.getIsbn());
+            pstmt.setString(2, lib.getNombre_categoria());
+            pstmt.setString(3, lib.getNombre_bib());
+            pstmt.setString(4, lib.getTitulo());
+            pstmt.setString(5, lib.getFecha_edi());
+            pstmt.setString(6, lib.getNombre_editorial());
+            pstmt.setString(7, lib.getPais());
+            pstmt.setString(8, lib.getIdioma());
             
   if (comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib)) {
                 pstmt.executeUpdate();
@@ -356,12 +384,14 @@ public class Libro implements BaseDatos<Libro> {
        
         boolean exito=false;
         
-//        Libro x = new Libro("3442568X","titulo","11/11/1988","SUR","fisica","Cordoba","España","español");
+//        Libro x = new Libro("1000X","gravedad","11/11/1988","SUR","fisica","Cordoba","España","español");
 //        exito=x.insertar();
-        Libro y = new Libro("3442558X","teoria de fisica","13/11/1988","SUR","fisica","Cordoba","España","español");
-       exito=y.insertar();
-Libro z = new Libro("3442558X","teoria de fisica","13/11/1988","SUR","fisica","Cordoba","España","español");
-        exito=z.borrar();
+//          exito=x.borrar();
+        Libro y = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Cordoba","España","ingles");
+//       exito=y.insertar();
+        Libro z = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Cordoba","España","español");
+          exito=z.actualizar(y); 
+//        exito=z.borrar();
 //        System.out.println(exito);
         
           System.out.println(exito);

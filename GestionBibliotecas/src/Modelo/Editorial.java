@@ -115,8 +115,8 @@ public class Editorial implements BaseDatos<Editorial> {
             String consulta = "update editorial set nombre_edit = ? where nombre_edit like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(2, this.nombre_edit);
             pstmt.setString(1, ed.nombre_edit);
+            pstmt.setString(2, this.nombre_edit);
            
                if (comprobarEditorial(this.nombre_edit)) {
                 pstmt.executeUpdate();
@@ -226,7 +226,7 @@ public class Editorial implements BaseDatos<Editorial> {
             }
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al obtener todos los usuarios");
+            System.err.println("Excepcion SQL: Error al obtener todos las editoriales");
             System.err.println(ex);
         }
         return editoriales;
@@ -241,8 +241,8 @@ public static void main(String[] args) {
 //        Editorial x = new Editorial("ANAYA");
 //        exito=x.borrar();      
 // Editorial y = new Editorial("SUR");
-  Editorial x = new Editorial("NORTE");
-   Editorial z = new Editorial("NORTEE");
+  Editorial x = new Editorial("nana");
+   Editorial z = new Editorial("anaya");
   exito= x.actualizar(z);
   System.out.println(exito);
         List<Editorial> editoriales = new ArrayList<>();
