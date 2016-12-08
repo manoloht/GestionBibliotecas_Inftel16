@@ -153,7 +153,7 @@ public class Admin extends Usuario {
         }
     }
 
-    private boolean comprobarAdmin(String dni) {
+    public boolean comprobarAdmin(String dni) {
 
         try {
             Conexion conexion = new Conexion();
