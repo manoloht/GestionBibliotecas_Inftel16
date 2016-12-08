@@ -16,6 +16,10 @@ import java.sql.*;
 public class Admin extends Usuario {
 
     private List<Biblioteca> bibliotecas;
+    
+    public Admin(String dni){
+        super(dni);
+    }
 
     public Admin(String dni, String nombre, String apellido, String sexo, String email, String password) {
         super(dni, nombre, apellido, sexo, email, password);
@@ -86,28 +90,28 @@ public class Admin extends Usuario {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, super.getDni());
-            pstmt.setString(2, super.getNombre());
-            pstmt.setString(3, super.getApellidos());
-            pstmt.setString(4, super.getSexo());
-            pstmt.setString(5, super.getEmail());
-            pstmt.setString(6, super.getPassword());
-            pstmt.setString(7, a.getDni());
+            pstmt.setString(2, a.getNombre());
+            pstmt.setString(3, a.getApellidos());
+            pstmt.setString(4, a.getSexo());
+            pstmt.setString(5, a.getEmail());
+            pstmt.setString(6, a.getPassword());
+            pstmt.setString(7, super.getDni());
 
             String consulta2 = "update admin set dni = ? where dni like ?";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
             pstmt2.setString(1, super.getDni());
-            pstmt2.setString(2, a.getDni());
-
-            if (comprobarAdmin(super.getDni())) {
+            pstmt2.setString(2, super.getDni());
+            
+            if (comprobarAdmin(a.getDni())) {
                 pstmt.executeUpdate();
-                pstmt2.executeUpdate();
                 con.close();
-                return true;
             } else {
-                con.close();
-                return false;
+                a.insertar();
+                this.borrar();
+                con.close(); 
             }
+            return true;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el administrador");

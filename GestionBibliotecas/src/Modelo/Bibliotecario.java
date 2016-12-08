@@ -16,6 +16,10 @@ import java.util.*;
 public class Bibliotecario extends Usuario {
 
     private String nombre_biblioteca;
+    
+    public Bibliotecario(String dni){
+        super(dni);
+    }
 
     public Bibliotecario(String dni, String nombre, String apellido, String sexo, String email, String password) {
         super(dni, nombre, apellido, sexo, email, password);
@@ -72,7 +76,7 @@ public class Bibliotecario extends Usuario {
             }
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al insertar el administrador");
+            System.err.println("Excepcion SQL: Error al insertar el bibliotecario");
             System.err.println(ex);
             return false;
         }
@@ -87,28 +91,31 @@ public class Bibliotecario extends Usuario {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, super.getDni());
-            pstmt.setString(2, super.getNombre());
-            pstmt.setString(3, super.getApellidos());
-            pstmt.setString(4, super.getSexo());
-            pstmt.setString(5, super.getEmail());
-            pstmt.setString(6, super.getPassword());
-            pstmt.setString(7, b.getDni());
+            pstmt.setString(2, b.getNombre());
+            pstmt.setString(3, b.getApellidos());
+            pstmt.setString(4, b.getSexo());
+            pstmt.setString(5, b.getEmail());
+            pstmt.setString(6, b.getPassword());
+            pstmt.setString(7, super.getDni());
 
-            String consulta2 = "update bibliotecario set dni = ? where dni like ?";
+            String consulta2 = "update bibliotecario set dni = ?, nombre_bib = ? where dni like ?";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
             pstmt2.setString(1, super.getDni());
-            pstmt2.setString(2, b.getDni());
-
-            if (comprobarBibliotecario(super.getDni())) {
+            pstmt2.setString(2, b.getNombre_biblioteca());
+            pstmt2.setString(3, super.getDni());
+            
+            
+            if (comprobarBibliotecario(b.getDni())) {
                 pstmt.executeUpdate();
                 pstmt2.executeUpdate();
                 con.close();
-                return true;
             } else {
-                con.close();
-                return false;
+                b.insertar();
+                this.borrar();
+                con.close(); 
             }
+            return true;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el bibliotecario");
