@@ -387,10 +387,11 @@ public class Libro implements BaseDatos<Libro> {
 //        Libro x = new Libro("1000X","gravedad","11/11/1988","SUR","fisica","Cordoba","España","español");
 //        exito=x.insertar();
 //          exito=x.borrar();
-        Libro y = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Cordoba","España","ingles");
-//       exito=y.insertar();
-        Libro z = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Cordoba","España","español");
-          exito=z.actualizar(y); 
+        Libro y = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Cordoba","España","español");
+////       exito=y.insertar();
+        Libro z = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Biblioteca Fisica","España","inglesespañol");
+          exito=z.actualizar(y); //
+//          exito=y.actualizar(z); 
 //        exito=z.borrar();
 //        System.out.println(exito);
         
