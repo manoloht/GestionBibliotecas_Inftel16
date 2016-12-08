@@ -19,6 +19,11 @@ public class Estudiante extends Usuario {
     private String nombre_biblioteca;
     private List<Prestamo> prestamos;
     private List<Reservado> reservas;
+    
+    public Estudiante(String dni, String numExp){
+        super(dni);
+        this.numExp = numExp;
+    }
 
     public Estudiante(String dni, String nombre, String apellido, String sexo, String email, String password, String numExp, String nombre_biblioteca) {
         super(dni, nombre, apellido, sexo, email, password);
@@ -109,14 +114,14 @@ public class Estudiante extends Usuario {
             pstmt.setString(5, super.getEmail());
             pstmt.setString(6, super.getPassword());
 
-            String consulta2 = "insert into estudiante values (?,?,?)";
+            String consulta2 = "insert into estudiante (numexp,dni,nombre_bib) values (?,?,?)";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
             pstmt2.setString(1, this.numExp);
             pstmt2.setString(2, super.getDni());
-            pstmt2.setString(1, this.nombre_biblioteca);
+            pstmt2.setString(3, this.nombre_biblioteca);
 
-            if (!comprobarEstudiante(super.getDni(), this.getNumExp())) {
+            if (!comprobarEstudiante(super.getDni(), this.numExp)) {
                 pstmt.executeUpdate();
                 pstmt2.executeUpdate();
                 con.close();
@@ -142,30 +147,31 @@ public class Estudiante extends Usuario {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, super.getDni());
-            pstmt.setString(2, super.getNombre());
-            pstmt.setString(3, super.getApellidos());
-            pstmt.setString(4, super.getSexo());
-            pstmt.setString(5, super.getEmail());
-            pstmt.setString(6, super.getPassword());
-            pstmt.setString(7, e.getDni());
+            pstmt.setString(2, e.getNombre());
+            pstmt.setString(3, e.getApellidos());
+            pstmt.setString(4, e.getSexo());
+            pstmt.setString(5, e.getEmail());
+            pstmt.setString(6, e.getPassword());
+            pstmt.setString(7, super.getDni());
 
-            String consulta2 = "update estudiante set numexp = ?, dni = ?, nombre_bib= ? where numexp like ?";
+            String consulta2 = "update estudiante set numexp = ?, dni = ?, nombre_bib= ? where dni like ?";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
-            pstmt2.setString(1, this.numExp);
+            pstmt2.setString(1, e.getNumExp());
             pstmt2.setString(2, super.getDni());
             pstmt2.setString(3, this.nombre_biblioteca);
-            pstmt2.setString(4, e.getNumExp());
+            pstmt2.setString(4, super.getDni());
 
-            if (comprobarEstudiante(super.getDni(), this.numExp)) {
+            if (comprobarEstudiante(e.getDni(), e.getNumExp())) {
                 pstmt.executeUpdate();
                 pstmt2.executeUpdate();
                 con.close();
-                return true;
             } else {
+                e.insertar();
+                this.borrar();
                 con.close();
-                return false;
             }
+            return true;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el estudiante");
