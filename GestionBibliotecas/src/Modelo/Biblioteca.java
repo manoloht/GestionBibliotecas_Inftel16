@@ -18,7 +18,7 @@ import java.util.*;
  * @author Juan
  */
 public class Biblioteca implements BaseDatos<Biblioteca> {
-    int id_biblioteca;
+    int id_bib;
     private String nombre;
     private String localizacion;
     private int telefono;
@@ -108,17 +108,17 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         this.estudiantes = estudiantes;
     }
 
-    public int getId_biblioteca() {
-        return id_biblioteca;
+    public int getId_bibl() {
+        return id_bib;
     }
 
-    public void setId_biblioteca(int id_biblioteca) {
-        this.id_biblioteca = id_biblioteca;
+    public void setId_bib(int id_biblioteca) {
+        this.id_bib = id_bib;
     }
 
     @Override
     public String toString() {
-        return "Biblioteca{" + "id_biblioteca=" + id_biblioteca + ", nombre=" + nombre + ", localizacion=" + localizacion + ", telefono=" + telefono + ", categorias=" + categorias + ", dni_admin=" + dni_admin + ", bibliotecarios=" + bibliotecarios + ", estudiantes=" + estudiantes + '}';
+        return "Biblioteca{" + "id_bib=" + id_bib + ", nombre=" + nombre + ", localizacion=" + localizacion + ", telefono=" + telefono + ", categorias=" + categorias + ", dni_admin=" + dni_admin + ", bibliotecarios=" + bibliotecarios + ", estudiantes=" + estudiantes + '}';
     }
     
 
@@ -152,7 +152,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into biblioteca (id_biblioteca,nombre,localizacion,telefono,dni_admin) values (seq_id_biblioteca.nextval,?,?,?,?)";
+            String consulta = "insert into biblioteca (id_bib,nombre,localizacion,telefono,dni_admin) values (seq_id_bib.nextval,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(4, this.dni_admin);
