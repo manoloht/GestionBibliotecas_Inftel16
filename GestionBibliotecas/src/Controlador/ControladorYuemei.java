@@ -3,6 +3,8 @@ Escribir los metodos hechos, para consultar mas rapido
  */
 package Controlador;
 
+import gestionbibliotecas.VentanaYuemei;
+
 /**
  *
  * @author Manuel
