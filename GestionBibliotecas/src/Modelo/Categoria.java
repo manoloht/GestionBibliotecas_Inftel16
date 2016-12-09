@@ -18,6 +18,7 @@ public class Categoria implements BaseDatos<Categoria> {
     private String nombre_bib;
     private String nombre_cat;
     private List<Libro> libros;
+    int id_cat;
 
     public Categoria() {
     }
@@ -57,6 +58,16 @@ public class Categoria implements BaseDatos<Categoria> {
         this.libros = libros;
     }
 
+    public int getId_cat() {
+        return id_cat;
+    }
+
+    public void setId_cat(int id_cat) {
+        this.id_cat = id_cat;
+    }
+
+    
+    
     @Override
     public String toString() {
         return "Categoria{" + "nombre_bib=" + nombre_bib + ", nombre_cat=" + nombre_cat + ", libros=" + libros + '}';
@@ -94,7 +105,7 @@ public class Categoria implements BaseDatos<Categoria> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into categoria (nombre_cat,nombre_bib) values (?,?)";
+            String consulta = "insert into categoria (id_cat, nombre_cat,nombre_bib) values (seq_id_cat.nextval,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_cat);
