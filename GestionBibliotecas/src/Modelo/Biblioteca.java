@@ -18,7 +18,7 @@ import java.util.*;
  * @author Juan
  */
 public class Biblioteca implements BaseDatos<Biblioteca> {
-
+    int id_biblioteca;
     private String nombre;
     private String localizacion;
     private int telefono;
@@ -108,10 +108,21 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         this.estudiantes = estudiantes;
     }
 
+    public int getId_biblioteca() {
+        return id_biblioteca;
+    }
+
+    public void setId_biblioteca(int id_biblioteca) {
+        this.id_biblioteca = id_biblioteca;
+    }
+
     @Override
     public String toString() {
-        return "Biblioteca{" + "nombre=" + nombre + ", localizacion=" + localizacion + ", telefono=" + telefono + ", categorias=" + categorias + ", dni_admin=" + dni_admin + ", bibliotecarios=" + bibliotecarios + ", estudiantes=" + estudiantes + '}';
+        return "Biblioteca{" + "id_biblioteca=" + id_biblioteca + ", nombre=" + nombre + ", localizacion=" + localizacion + ", telefono=" + telefono + ", categorias=" + categorias + ", dni_admin=" + dni_admin + ", bibliotecarios=" + bibliotecarios + ", estudiantes=" + estudiantes + '}';
     }
+    
+
+   
 
     @Override
     public int hashCode() {
@@ -141,7 +152,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into biblioteca (nombre,localizacion,telefono,dni_admin) values (?,?,?,?)";
+            String consulta = "insert into biblioteca (id_biblioteca,nombre,localizacion,telefono,dni_admin) values (seq_id_biblioteca.nextval,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(4, this.dni_admin);
@@ -257,11 +268,8 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     }
 
     public static void main(String[] args){
-        Biblioteca b = new Biblioteca("toyHarto",null,0,null);
-        Biblioteca b2 = new Biblioteca("toyHarto","madrid",1,null);
-        
-        System.out.println(b.actualizar(b2));
-        
+     
+    
     }
     
     
@@ -284,6 +292,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
                 String dni_admin = resultado.getString("dni_admin");
                 Biblioteca b = new Biblioteca(nombre, localizacion, telefono, dni_admin);
                 bibliotecas.add(b);
+                
             }
 
         } catch (SQLException ex) {
