@@ -141,13 +141,13 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into biblioteca (dni_admin,nombre,localizacion,telefono) values (?,?,?,?)";
+            String consulta = "insert into biblioteca (nombre,localizacion,telefono,dni_admin) values (?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni_admin);
-            pstmt.setString(2, this.nombre);
-            pstmt.setString(3, this.localizacion);
-            pstmt.setInt(4, this.telefono);
+            pstmt.setString(4, this.dni_admin);
+            pstmt.setString(1, this.nombre);
+            pstmt.setString(2, this.localizacion);
+            pstmt.setInt(3, this.telefono);
 
             if (!comprobarBiblioteca(this.nombre)) {
                 pstmt.executeUpdate();
@@ -246,6 +246,16 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         }
     }
 
+    public static void main(String[] args){
+        Biblioteca b = new Biblioteca("toyHarto",null,0,null);
+        Biblioteca b2 = new Biblioteca("toyHarto","madrid",1,null);
+        
+        System.out.println(b.actualizar(b2));
+        
+    }
+    
+    
+    
     //ACABAR----> HECHO
     public static List<Biblioteca> getTodosBibliotecas() {
 
