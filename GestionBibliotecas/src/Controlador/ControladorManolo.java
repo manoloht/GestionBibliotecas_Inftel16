@@ -5,7 +5,11 @@ package Controlador;
 import Configuracion.*;
 import Controlador.*;
 import Modelo.*;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -14,29 +18,48 @@ import java.sql.Date;
  */
 public class ControladorManolo {
     
+    // Categoria
+    public static int buscarId(String nombre, String nombre_cat){
+        int id=0;
+        int id_bib = Biblioteca.buscarId(nombre);
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select id_cat from categoria where nombre_cat like ? and id_bib = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, nombre_cat);
+            pstmt.setInt(2, id_bib);
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               id = resultado.getInt("id_cat");
+                
+            }            
+            return id;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar id Biblioteca.");
+            System.err.println(ex);
+            return 0;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     public static void main(String[] args){
         
-        // Comprobar CRUE Prestamo
-        // Prestamo(int id_ejem, String isbn, String dni, String nombre_cat, String nombre_bib)
-        int id_ejem = 1001;
-        String isbn = "isbn111";
-        String dni = "00999999X";
-        String categoria = "CategoriaA";
-        String biblioteca = "PruebasManolo";
-        Date fecha_ini = new Date(10000);
+  
+        System.out.println(ControladorManolo.buscarId("PruebasManolo","CategoriaAAA"));
 
-                
-        Prestamo p = new Prestamo(id_ejem,isbn,dni,categoria,biblioteca);
-        //System.out.println(p.insertar());
-        p.setFecha_ini(fecha_ini);
-
-        
-        System.out.println(p.toString());
-        
-        System.out.println(p.insertar());
-        
-        Categoria e = new Categoria("CategoriaXXX","PruebasManolo");
-        System.out.println(e.insertar());
     }
     
 }
