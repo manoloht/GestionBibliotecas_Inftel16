@@ -21,6 +21,7 @@ public class Usuario implements BaseDatos<Usuario>{
     private String sexo;
     private String email;
     private String password;
+    private int id_usuario;
 
     public Usuario() {
     }
@@ -36,6 +37,14 @@ public class Usuario implements BaseDatos<Usuario>{
         this.sexo = sexo;
         this.email = email;
         this.password = password;
+    }
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
     }
 
     public String getDni() {
@@ -254,4 +263,34 @@ public class Usuario implements BaseDatos<Usuario>{
         }
         return usuarios;
     }
+    
+    //  metodo static buscaId
+     public static int buscarId(String dni){
+          int id=10;
+            try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select id_usuario from usuario where dni like ? ";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, dni);            
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               id = resultado.getInt("id_usuario");
+               
+                System.out.println("hola yuemei");
+            }            
+            return id;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar id usuario.");
+            System.err.println(ex);
+            return -1;
+        }               
+        
+     }
 }
