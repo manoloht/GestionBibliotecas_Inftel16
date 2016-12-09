@@ -24,10 +24,12 @@ public class Autor implements BaseDatos<Autor>{
     public Autor() {
     }
 
-    public Autor(int id_autor) { // constructor para clave
-        this.id_autor = id_autor;
-    }
 
+    public Autor(String nombre, String apellido) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+    
     public Autor(int id_autor, String nombre, String apellido) {
         this.id_autor = id_autor;
         this.nombre = nombre;
@@ -196,7 +198,7 @@ public class Autor implements BaseDatos<Autor>{
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
+            setId_autor(buscarId());
             String consulta = "select * from autor where id_autor = ? ";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
@@ -213,6 +215,29 @@ public class Autor implements BaseDatos<Autor>{
         }
     }
 
+    public int buscarId() {
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from autor where nombre like ? and apellido like ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, this.nombre);
+            pstmt.setString(2, this.apellido);
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            resultado.next();
+            return resultado.getInt("id_autor");
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar el autor.");
+            System.err.println(ex);
+            return 0;
+        }
+    }
+    
 //        public boolean buscar() {
 //         try {
 //            Conexion conexion = new Conexion();
@@ -253,7 +278,7 @@ public class Autor implements BaseDatos<Autor>{
                 int id_autor = resultado.getInt("id_autor");
                 String nombre = resultado.getString("nombre");
                 String apellido = resultado.getString("apellido");                
-                Autor a = new Autor(id_autor, nombre, apellido);
+                Autor a = new Autor(nombre, apellido);
                 autores.add(a);
             }
 
@@ -263,30 +288,7 @@ public class Autor implements BaseDatos<Autor>{
         }
         return autores;
     }
-    
-      public static void main(String[] args) {
-       
-        boolean exito=false;
-//        Autor x = new Autor(3,"maria","quitana");
-//        exito=x.insertar();
-//        Autor x = new Autor(3,"maria","quitana");
-//        exito=x.borrar();
-       
-         
-         Autor z = new Autor(1,"juan","jose");
-          Autor y = new Autor(4);
-         // exito= z.actualizar(y);
-          Autor x = new Autor(4,"juan","jose");
-          Autor w = new Autor(4,"juan","jota");
-          exito= x.actualizar(w);
-           System.out.println(exito);
-        List<Autor> autores = new ArrayList<>();
-        autores=Autor.getTodosAutores();  // exito
-        System.out.println(autores);
-        
-      }
-
-  
+     
     
     
 }

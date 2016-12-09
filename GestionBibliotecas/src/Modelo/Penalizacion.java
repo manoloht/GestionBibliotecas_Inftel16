@@ -18,55 +18,65 @@ import java.util.*;
  * @author Juan
  */
 public class Penalizacion implements BaseDatos<Penalizacion> {
-
-    private Date Fecha_inicio;
-    private Date Fecha_fin;
+    int id_penal;
+    private Date fecha_inicio;
+    private Date fecha_fin;
     private String dni;
 
     public Penalizacion() {
 
     }
 
-    public Penalizacion(Date Fecha_inicio, Date Fecha_fin, String dni) {
-        this.Fecha_inicio = Fecha_inicio;
-        this.Fecha_fin = Fecha_fin;
+    public Penalizacion(Date fecha_inicio, Date fecha_fin, String dni) {
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_fin = fecha_fin;
         this.dni = dni;
     }
 
-    public Date getFecha_inicio() {
-        return Fecha_inicio;
+    public Date getfecha_inicio() {
+        return fecha_inicio;
     }
 
-    public Date getFecha_fin() {
-        return Fecha_fin;
+    public Date getfecha_fin() {
+        return fecha_fin;
     }
 
     public String getDni() {
         return dni;
     }
 
-    public void setFecha_inicio(Date Fecha_inicio) {
-        this.Fecha_inicio = Fecha_inicio;
+    public void setfecha_inicio(Date fecha_inicio) {
+        this.fecha_inicio = fecha_inicio;
     }
 
-    public void setFecha_fin(Date Fecha_fin) {
-        this.Fecha_fin = Fecha_fin;
+    public void setfecha_fin(Date fecha_fin) {
+        this.fecha_fin = fecha_fin;
     }
 
     public void setDni(String dni) {
         this.dni = dni;
     }
 
+    public int getId_penal() {
+        return id_penal;
+    }
+
+    public void setId_penal(int id_penal) {
+        this.id_penal = id_penal;
+    }
+
     @Override
     public String toString() {
-        return "Penalizacion{" + "Fecha_inicio=" + Fecha_inicio + ", Fecha_fin=" + Fecha_fin + ", dni=" + dni + '}';
+        return "Penalizacion{" + "id_penal=" + id_penal + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", dni=" + dni + '}';
     }
+
+    
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.Fecha_inicio);
-        hash = 59 * hash + Objects.hashCode(this.Fecha_fin);
+        hash = 59 * hash + Objects.hashCode(this.fecha_inicio);
+        hash = 59 * hash + Objects.hashCode(this.fecha_fin);
         hash = 59 * hash + Objects.hashCode(this.dni);
         return hash;
     }
@@ -86,10 +96,10 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         if (!Objects.equals(this.dni, other.dni)) {
             return false;
         }
-        if (!Objects.equals(this.Fecha_inicio, other.Fecha_inicio)) {
+        if (!Objects.equals(this.fecha_inicio, other.fecha_inicio)) {
             return false;
         }
-        return Objects.equals(this.Fecha_fin, other.Fecha_fin);
+        return Objects.equals(this.fecha_fin, other.fecha_fin);
     }
 
     @Override // ACABAR---->HECHO
@@ -98,11 +108,11 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into biblioteca (fecha_inicio, fecha_fin, dni) values (?,?,?)";
+            String consulta = "insert into penalizacion (fecha_inicio, fecha_fin, dni) values (?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setDate(1, (java.sql.Date) this.Fecha_inicio);
-            pstmt.setDate(2, (java.sql.Date) this.Fecha_fin);
+            pstmt.setDate(1, (java.sql.Date) this.fecha_inicio);
+            pstmt.setDate(2, (java.sql.Date) this.fecha_fin);
             pstmt.setString(3, this.dni);
 
             if (!comprobarPenalizacion(this.dni)) {
@@ -120,6 +130,11 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             return false;
         }
     }
+    public static void main(String[] args){
+        Penalizacion p = new Penalizacion(null,null,"pepe232");
+        p.insertar();
+        System.out.println(p.insertar());
+    }
 
     @Override // ACABAR--->HECHO
     public boolean actualizar(Penalizacion p) {
@@ -127,12 +142,12 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update penalizacion set Fecha_inicio = ?, Fecha_fin = ?, dni = ? where dni like ?";
+            String consulta = "update penalizacion set fecha_inicio = ?, fecha_fin = ?, dni = ? where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
 
-            pstmt.setDate(1, (java.sql.Date) this.Fecha_inicio);
-            pstmt.setDate(2, (java.sql.Date) this.Fecha_fin);
+            pstmt.setDate(1, (java.sql.Date) this.fecha_inicio);
+            pstmt.setDate(2, (java.sql.Date) this.fecha_fin);
             pstmt.setString(3, this.dni);
             pstmt.setString(4, p.getDni());
 
@@ -161,7 +176,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             String consulta = "delete from penalizacion where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni
+            pstmt.setString(1, this.dni);
                     
             if (!comprobarPenalizacion(this.dni)) {
                 pstmt.executeUpdate();
@@ -211,10 +226,10 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
-                Date Fecha_inicio = resultado.getDate("Fecha_inicio");
-                Date Fecha_fin = resultado.getDate("Fecha_fin");
+                Date fecha_inicio = resultado.getDate("fecha_inicio");
+                Date fecha_fin = resultado.getDate("fecha_fin");
                 String dni = resultado.getString("dni");
-                Penalizacion p = new Penalizacion(Fecha_inicio, Fecha_fin, dni);
+                Penalizacion p = new Penalizacion(fecha_inicio, fecha_fin, dni);
                 penalizaciones.add(p);
             }
 

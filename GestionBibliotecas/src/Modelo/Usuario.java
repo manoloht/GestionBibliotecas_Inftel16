@@ -205,7 +205,7 @@ public class Usuario implements BaseDatos<Usuario>{
             return false;
         }
     }
-
+//HECHO COMPROBAR
     private boolean comprobarUsuario(String dni) {
 
         try {
@@ -226,7 +226,7 @@ public class Usuario implements BaseDatos<Usuario>{
             return false;
         }
     }
-
+//HECHO
     public static List<Usuario> getTodosUsuarios() {
 
         List<Usuario> usuarios = new ArrayList<>();

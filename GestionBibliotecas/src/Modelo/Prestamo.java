@@ -21,7 +21,7 @@ import java.util.*;
  * @author YUEMEI
  */
 public class Prestamo implements BaseDatos<Prestamo> {
-
+    int id_prestamo;
     private Date fecha_ini;
     private Date fecha_fin;
    // private String numExp;  // hace falta????
@@ -113,10 +113,20 @@ public class Prestamo implements BaseDatos<Prestamo> {
         this.nombre_bib = nombre_bib;
     }
 
+    public int getId_prestamo() {
+        return id_prestamo;
+    }
+
+    public void setId_prestamo(int id_prestamo) {
+        this.id_prestamo = id_prestamo;
+    }
+
     @Override
     public String toString() {
-        return "Prestamo{" + "fecha_ini=" + fecha_ini + ", fecha_fin=" + fecha_fin + ", id_ejem=" + id_ejem + ", isbn=" + isbn + ", dni=" + dni + ", nombre_cat=" + nombre_cat + ", nombre_bib=" + nombre_bib + '}';
+        return "Prestamo{" + "id_prestamo=" + id_prestamo + ", fecha_ini=" + fecha_ini + ", fecha_fin=" + fecha_fin + ", id_ejem=" + id_ejem + ", isbn=" + isbn + ", dni=" + dni + ", nombre_cat=" + nombre_cat + ", nombre_bib=" + nombre_bib + '}';
     }
+
+    
 
     @Override
     public int hashCode() {
@@ -229,7 +239,7 @@ public class Prestamo implements BaseDatos<Prestamo> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into prestamo (fecha_ini,fecha_fin,dni,id_ejem,isbn,nombre_cat,nombre_bib) values (?,?,?,?,?,?,?)";
+            String consulta = "insert into prestamo (id_prestamo,fecha_ini,fecha_fin,dni,id_ejem,isbn,nombre_cat,nombre_bib) values (seq_id_prestamo.nextval,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setDate(1, this.fecha_ini);

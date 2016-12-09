@@ -21,7 +21,7 @@ import java.util.*;
  * @author YUEMEI
  */
 public class Reservado implements BaseDatos<Reservado> {
-
+    int id_reservado;
     private Date fecha_ini;
     private Date fecha_fin;
     //private String numExp;
@@ -111,10 +111,20 @@ public class Reservado implements BaseDatos<Reservado> {
         this.nombre_bib = nombre_bib;
     }
 
+    public int getId_reservado() {
+        return id_reservado;
+    }
+
+    public void setId_reservado(int id_reservado) {
+        this.id_reservado = id_reservado;
+    }
+
     @Override
     public String toString() {
-        return "Reservado{" + "fecha_ini=" + fecha_ini + ", fecha_fin=" + fecha_fin + ", id_ejem=" + id_ejem + ", isbn=" + isbn + ", dni=" + dni + ", nombre_cat=" + nombre_cat + ", nombre_bib=" + nombre_bib + '}';
+        return "Reservado{" + "id_reservado=" + id_reservado + ", fecha_ini=" + fecha_ini + ", fecha_fin=" + fecha_fin + ", id_ejem=" + id_ejem + ", isbn=" + isbn + ", dni=" + dni + ", nombre_cat=" + nombre_cat + ", nombre_bib=" + nombre_bib + '}';
     }
+
+    
 
     @Override
     public int hashCode() {
@@ -171,7 +181,7 @@ public class Reservado implements BaseDatos<Reservado> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into reservado (fecha_ini,fecha_fin,dni,id_ejem,isbn,nombre_cat,nombre_bib) values (?,?,?,?,?,?,?)";
+            String consulta = "insert into reservado (id_reservado,fecha_ini,fecha_fin,dni,id_ejem,isbn,nombre_cat,nombre_bib) values (seq_id_reservado.nextval,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setDate(1, this.fecha_ini);
