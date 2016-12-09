@@ -155,7 +155,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             String consulta = "insert into biblioteca (id_bib,nombre,localizacion,telefono,id_usuario) values (seq_id_bib.nextval,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(4, this.dni_admin);
+            pstmt.setInt(4, Usuario.buscarId(this.getDni_admin()));
             pstmt.setString(1, this.nombre);
             pstmt.setString(2, this.localizacion);
             pstmt.setInt(3, this.telefono);
@@ -290,7 +290,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al buscar id Biblioteca.");
             System.err.println(ex);
-            return 0;
+            return -1;
         }
     }
     

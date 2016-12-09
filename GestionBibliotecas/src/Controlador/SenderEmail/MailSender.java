@@ -38,7 +38,7 @@ public class MailSender {
 //        this.content = content;
 //    }
 
-    public static void sendMessage(String toAddress,String subject,String content) throws AddressException, MessagingException {
+    public static void sendMessage(String toAddress,String subject, String content) throws AddressException, MessagingException {
         
          // Step 1:  Configure the mail session
         Properties props = new Properties();       
@@ -68,6 +68,7 @@ public class MailSender {
        // message.setRecipient(Message.RecipientType.TO, to);
          message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(toAddress));
         message.setSubject(subject);
+        
         message.setText(content);
         Transport.send(message);
          System.out.println("Sent message successfully....from uma.cc");
