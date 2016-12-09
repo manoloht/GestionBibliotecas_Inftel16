@@ -20,7 +20,7 @@ import java.util.*;
  * @author YUEMEI
  */
 public class Editorial implements BaseDatos<Editorial> {
-
+    int id_edit;
     private String nombre_edit;
     private List<Libro> libros;
 
@@ -54,8 +54,10 @@ public class Editorial implements BaseDatos<Editorial> {
 
     @Override
     public String toString() {
-        return "Editorial{" + "nombre_edit=" + nombre_edit + ", libros=" + libros + '}';
+        return "Editorial{" + "id_edit=" + id_edit + ", nombre_edit=" + nombre_edit + ", libros=" + libros + '}';
     }
+
+    
 
     @Override
     public int hashCode() {
@@ -85,7 +87,7 @@ public class Editorial implements BaseDatos<Editorial> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into editorial (nombre_edit) values (?)";
+            String consulta = "insert into editorial (id_edit,nombre_edit) values (seq_id_edit.nextval,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_edit);            
@@ -221,7 +223,7 @@ public class Editorial implements BaseDatos<Editorial> {
 
             while (resultado.next()) {               
                 String nombre = resultado.getString("nombre_edit");                
-                Editorial ed = new Editorial( nombre);
+                Editorial ed = new Editorial(nombre);
                 editoriales.add(ed);
             }
 

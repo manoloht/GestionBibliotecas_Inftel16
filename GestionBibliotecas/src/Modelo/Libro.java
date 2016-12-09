@@ -20,7 +20,7 @@ import java.sql.Statement;
  * @author YUEMEI
  */
 public class Libro implements BaseDatos<Libro> {
-
+    int id_libro;
     private String isbn;  //clave
     private String titulo;
     private String fecha_edi;
@@ -148,18 +148,20 @@ public class Libro implements BaseDatos<Libro> {
         this.autores = autores;
     }
 
-   
+    public int getId_libro() {
+        return id_libro;
+    }
 
-  
-  
+    public void setId_libro(int id_libro) {
+        this.id_libro = id_libro;
+    }
 
     @Override
     public String toString() {
-        return "Libro{" + "isbn=" + isbn + ", titulo=" + titulo + ", fecha_edi=" + fecha_edi + ", nombre_editorial=" + nombre_editorial + ", nombre_categoria=" + nombre_categoria + ", nombre_bib=" + nombre_bib + ", pais=" + pais + ", idioma=" + idioma + ", ejemplares=" + ejemplares + ", autores=" + autores + '}';
+        return "Libro{" + "id_libro=" + id_libro + ", isbn=" + isbn + ", titulo=" + titulo + ", fecha_edi=" + fecha_edi + ", nombre_editorial=" + nombre_editorial + ", nombre_categoria=" + nombre_categoria + ", nombre_bib=" + nombre_bib + ", pais=" + pais + ", idioma=" + idioma + ", ejemplares=" + ejemplares + ", autores=" + autores + '}';
     }
 
    
-
     @Override
     public int hashCode() {
         int hash = 5;
@@ -200,7 +202,7 @@ public class Libro implements BaseDatos<Libro> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into libro (isbn,titulo,fecha_edi,nombre_edit,nombre_cat,nombre_bib,pais,idioma) values (?,?,?,?,?,?,?,?)";
+            String consulta = "insert into libro (id_libro,isbn,titulo,fecha_edi,nombre_edit,nombre_cat,nombre_bib,pais,idioma) values (id_libro,?,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.isbn);

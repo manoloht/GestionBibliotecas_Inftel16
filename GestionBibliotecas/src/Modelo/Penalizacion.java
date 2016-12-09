@@ -18,7 +18,7 @@ import java.util.*;
  * @author Juan
  */
 public class Penalizacion implements BaseDatos<Penalizacion> {
-
+    int id_penal;
     private Date fecha_inicio;
     private Date fecha_fin;
     private String dni;
@@ -57,10 +57,20 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         this.dni = dni;
     }
 
+    public int getId_penal() {
+        return id_penal;
+    }
+
+    public void setId_penal(int id_penal) {
+        this.id_penal = id_penal;
+    }
+
     @Override
     public String toString() {
-        return "Penalizacion{" + "fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", dni=" + dni + '}';
+        return "Penalizacion{" + "id_penal=" + id_penal + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", dni=" + dni + '}';
     }
+
+    
 
     @Override
     public int hashCode() {
