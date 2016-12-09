@@ -175,14 +175,24 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
+            pstmt.setString(1, b.getNombre());
+            pstmt.setInt(2, b.getTelefono());
+            pstmt.setString(3, b.getLocalizacion());
+            pstmt.setString(4, b.getDni_admin());
+            pstmt.setString(5, this.nombre);
 
-            pstmt.setString(1, this.nombre);
-            pstmt.setInt(2, this.telefono);
-            pstmt.setString(3, this.localizacion);
-            pstmt.setString(4, this.dni_admin);
-            pstmt.setString(5, b.getNombre());
+            Admin admin = new Admin(b.getDni_admin());
             
-            if (comprobarBiblioteca(this.nombre)) {
+            if (comprobarBiblioteca(this.nombre) && admin.comprobarAdmin(admin.getDni())) {
+               /* List<Estudiante> est = Estudiante.getTodosEstudiantesBiblioteca(this.nombre);
+                for (Estudiante e : est) {
+                    String consulta2 = "update estudiante set nombre_bib = ? where dni like ?";
+                    PreparedStatement pstmt2 = con.prepareStatement(consulta2);
+                    pstmt2.clearParameters();
+                    pstmt2.setString(2, e.getDni());
+                    pstmt2.setString(1, e.getNombre_biblioteca());
+                    pstmt2.executeUpdate();
+                }*/
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -209,7 +219,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre);
 
-             if (comprobarBiblioteca(this.nombre)) {
+            if (comprobarBiblioteca(this.nombre)) {
                 pstmt.executeUpdate();
                 con.close();
                 return true;
