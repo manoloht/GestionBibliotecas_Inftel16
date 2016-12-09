@@ -209,36 +209,36 @@ public class Categoria implements BaseDatos<Categoria> {
         }
     }
 
-    /* public boolean buscar() {
-         try {
+        public static int buscarId(String nombre, String nombre_cat){
+        int id=0;
+        int id_bib = Biblioteca.buscarId(nombre);
+        
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select * from categoria wherewhere nombre_cat like ? and nombre_bib like ?";
+            String consulta = "select id_cat from categoria where nombre_cat like ? and id_bib = ?";
+
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-           pstmt.setString(1, this.nombre_cat);
-            pstmt.setString(2, this.nombre_bib);
+            pstmt.setString(1, nombre_cat);
+            pstmt.setInt(2, id_bib);
+            
             ResultSet resultado = pstmt.executeQuery();
 
-            if (resultado.next()) {
-                this.nombre_cat = resultado.getString("nombre_cat");
-                this.nombre_bib = resultado.getString("nombre_bib");
-               
-                return true;
-            } else {
-                return false;
-            }
+            while(resultado.next()){
+               id = resultado.getInt("id_cat");
+                
+            }            
+            return id;
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar la categoria.");
+            System.err.println("Excepcion SQL: Error al buscar id Biblioteca.");
             System.err.println(ex);
-            return false;
+            return 0;
         }
-       
     }
-     */
-    // ACABAR---->HECHO
+    
     public static List<Categoria> getTodosCategorias() {
         List<Categoria> categorias = new ArrayList<>();
         try {

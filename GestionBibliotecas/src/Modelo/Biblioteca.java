@@ -152,7 +152,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into biblioteca (id_bib,nombre,localizacion,telefono,dni_admin) values (seq_id_bib.nextval,?,?,?,?)";
+            String consulta = "insert into biblioteca (id_bib,nombre,localizacion,telefono,id_usuario) values (seq_id_bib.nextval,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(4, this.dni_admin);
@@ -267,14 +267,36 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         }
     }
 
-    public static void main(String[] args){
-     
     
+    public static int buscarId(String nombre){
+        int id=0;
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select id_bib from biblioteca where nombre like ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, nombre);
+            
+            ResultSet resultado = pstmt.executeQuery();
+ 
+            while(resultado.next()){
+               id = resultado.getInt("id_bib");
+                
+            }            
+            return id;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar id Biblioteca.");
+            System.err.println(ex);
+            return 0;
+        }
     }
     
     
     
-    //ACABAR----> HECHO
+
     public static List<Biblioteca> getTodosBibliotecas() {
 
         List<Biblioteca> bibliotecas = new ArrayList<>();
