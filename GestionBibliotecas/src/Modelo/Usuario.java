@@ -129,7 +129,7 @@ public class Usuario implements BaseDatos<Usuario>{
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into usuario (dni,nombre,apellido,sexo,email,password) values (?,?,?,?,?,?)";
+            String consulta = "insert into usuario (id_usuario,dni,nombre,apellido,sexo,email,password) values (seq_id_usuario.nextval,?,?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.dni);
@@ -164,13 +164,13 @@ public class Usuario implements BaseDatos<Usuario>{
             String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
-            pstmt.setString(2, this.nombre);
-            pstmt.setString(3, this.apellidos);
-            pstmt.setString(4, this.sexo);
-            pstmt.setString(5, this.email);
-            pstmt.setString(6, this.password);
-            pstmt.setString(7, u.getDni());
+            pstmt.setString(1, u.getDni());
+            pstmt.setString(2, u.nombre);
+            pstmt.setString(3, u.getApellidos());
+            pstmt.setString(4, u.getSexo());
+            pstmt.setString(5, u.getEmail());
+            pstmt.setString(6, u.getPassword());
+            pstmt.setString(7, this.dni);
 
             if (comprobarUsuario(this.dni)) {
                 pstmt.executeUpdate();
