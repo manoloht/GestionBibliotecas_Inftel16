@@ -105,11 +105,11 @@ public class Categoria implements BaseDatos<Categoria> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into categoria (id_cat, nombre_cat,nombre_bib) values (seq_id_cat.nextval,?,?)";
+            String consulta = "insert into categoria (id_cat, nombre_cat,id_bib) values (seq_id_cat.nextval,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.nombre_cat);
-            pstmt.setString(2, this.nombre_bib);
+            pstmt.setInt(2, Biblioteca.buscarId(this.nombre_bib));
 
             if (!comprobarCategoria(this.nombre_cat, this.nombre_bib)) {
                 pstmt.executeUpdate();
