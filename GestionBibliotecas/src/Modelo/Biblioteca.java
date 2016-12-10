@@ -18,7 +18,9 @@ import java.util.*;
  * @author Juan
  */
 public class Biblioteca implements BaseDatos<Biblioteca> {
+
     int id_bib;
+    int id_admin;
     private String nombre;
     private String localizacion;
     private int telefono;
@@ -50,6 +52,14 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         this.dni_admin = dni_admin;
         this.bibliotecarios = bibliotecarios;
         this.estudiantes = estudiantes;
+    }
+
+    public int getId_admin() {
+        return id_admin;
+    }
+
+    public void setId_admin(int id_admin) {
+        this.id_admin = id_admin;
     }
 
     public String getNombre() {
@@ -120,9 +130,6 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     public String toString() {
         return "Biblioteca{" + "id_bib=" + id_bib + ", nombre=" + nombre + ", localizacion=" + localizacion + ", telefono=" + telefono + ", categorias=" + categorias + ", dni_admin=" + dni_admin + ", bibliotecarios=" + bibliotecarios + ", estudiantes=" + estudiantes + '}';
     }
-    
-
-   
 
     @Override
     public int hashCode() {
@@ -182,28 +189,24 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?, dni_admin = ? where nombre like ?";
+//             int id=Usuario.buscarId(b.getDni_admin());
+            String consulta = "update biblioteca set nombre = ?, telefono = ?, localizacion = ?,id_usuario = ? where nombre like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, b.getNombre());
             pstmt.setInt(2, b.getTelefono());
             pstmt.setString(3, b.getLocalizacion());
-            pstmt.setString(4, b.getDni_admin());
+//             pstmt.setInt(4, 1);
+            pstmt.setInt(4, Usuario.buscarId(b.getDni_admin()));
             pstmt.setString(5, this.nombre);
-
-            Admin admin = new Admin(b.getDni_admin());
-            
-            if (comprobarBiblioteca(this.nombre) && admin.comprobarAdmin(admin.getDni())) {
-               /* List<Estudiante> est = Estudiante.getTodosEstudiantesBiblioteca(this.nombre);
-                for (Estudiante e : est) {
-                    String consulta2 = "update estudiante set nombre_bib = ? where dni like ?";
-                    PreparedStatement pstmt2 = con.prepareStatement(consulta2);
-                    pstmt2.clearParameters();
-                    pstmt2.setString(2, e.getDni());
-                    pstmt2.setString(1, e.getNombre_biblioteca());
-                    pstmt2.executeUpdate();
-                }*/
+//           
+            System.out.println("new nombre:" + b.getNombre());
+            System.out.println("old nombre:" + this.nombre);
+            System.out.println("new telefono:" + b.getTelefono());
+            System.out.println("new localizacion:" + b.getLocalizacion());
+           System.out.println("existe es biblioteca old name?"+comprobarBiblioteca(this.nombre));
+            if (comprobarBiblioteca(this.nombre)) {
+                 System.out.println("existe es biblioteca");
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -267,9 +270,8 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
         }
     }
 
-    
-    public static int buscarId(String nombre){
-        int id=0;
+    public static int buscarId(String nombre) {
+        int id = 0;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -278,13 +280,13 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, nombre);
-            
+
             ResultSet resultado = pstmt.executeQuery();
- 
-            while(resultado.next()){
-               id = resultado.getInt("id_bib");
-                
-            }            
+
+            while (resultado.next()) {
+                id = resultado.getInt("id_bib");
+
+            }
             return id;
 
         } catch (SQLException ex) {
@@ -293,9 +295,6 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             return -1;
         }
     }
-    
-    
-    
 
     public static List<Biblioteca> getTodosBibliotecas() {
 
@@ -314,7 +313,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
                 String dni_admin = resultado.getString("dni_admin");
                 Biblioteca b = new Biblioteca(nombre, localizacion, telefono, dni_admin);
                 bibliotecas.add(b);
-                
+
             }
 
         } catch (SQLException ex) {

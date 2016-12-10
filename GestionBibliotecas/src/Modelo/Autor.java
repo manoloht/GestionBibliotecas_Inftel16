@@ -112,14 +112,14 @@ public class Autor implements BaseDatos<Autor>{
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into autor (id_autor,nombre,apellido) values (?,?,?)";
+            String consulta = "insert into autor (id_autor,nombre,apellido) values (seq_id_autor.nextval,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, this.id_autor);
-            pstmt.setString(2, this.nombre);
-            pstmt.setString(3, this.apellido);
+           
+            pstmt.setString(1, this.nombre);
+            pstmt.setString(2, this.apellido);
               
-            if (!this.comprobarAutor()) {
+            if (!comprobarAutor(this.nombre,this.apellido)) {
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -141,16 +141,16 @@ public class Autor implements BaseDatos<Autor>{
           try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "update autor set id_autor = ?, nombre = ?, apellido = ?  where id_autor = ?";
+            int id=Autor.buscarId(this.nombre, this.apellido);
+            String consulta = "update autor set nombre = ?, apellido = ?  where id_autor = ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(4, this.id_autor);
-            pstmt.setString(2, a.getNombre());
-            pstmt.setString(3, a.getApellido());
-            pstmt.setInt(1, a.getId_autor());
+            pstmt.setInt(3, id);
+            pstmt.setString(1, a.getNombre());
+            pstmt.setString(2, a.getApellido());
             
-              if (this.comprobarAutor()) {
+            
+              if (comprobarAutor(this.nombre, this.apellido)) {
                 pstmt.executeUpdate();
                 con.close();               
                 return true;
@@ -172,12 +172,13 @@ public class Autor implements BaseDatos<Autor>{
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "delete from autor where id_autor = ?";
+            String consulta = "delete from autor where nombre = ? and apellido = ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, this.id_autor);
+            pstmt.setString(1, this.nombre);
+            pstmt.setString(2, this.apellido);
           
-           if (this.comprobarAutor()) {
+           if (comprobarAutor(this.nombre,this.apellido)) {
                 pstmt.executeUpdate();
                 con.close();               
                 return true;
@@ -194,15 +195,16 @@ public class Autor implements BaseDatos<Autor>{
     }
 
    // @Override //ACABAR
-    public boolean comprobarAutor() {
+    public boolean comprobarAutor(String nombre,String apellido) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            setId_autor(buscarId());
-            String consulta = "select * from autor where id_autor = ? ";
+          
+            String consulta = "select * from autor where nombre = ? and apellido like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, this.id_autor);
+            pstmt.setString(1, nombre);
+             pstmt.setString(2, apellido);
             
             ResultSet resultado = pstmt.executeQuery();
 
@@ -215,7 +217,8 @@ public class Autor implements BaseDatos<Autor>{
         }
     }
 
-    public int buscarId() {
+    public  static int buscarId(String nombre,String apellido) {
+              int id=-1;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -223,18 +226,20 @@ public class Autor implements BaseDatos<Autor>{
             String consulta = "select * from autor where nombre like ? and apellido like ? ";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.nombre);
-            pstmt.setString(2, this.apellido);
+            pstmt.setString(1, nombre);
+            pstmt.setString(2, apellido);
             
             ResultSet resultado = pstmt.executeQuery();
-
-            resultado.next();
-            return resultado.getInt("id_autor");
+             while (resultado.next()) {
+                  id= resultado.getInt("id_autor");
+            
+             }
+              return id;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el autor.");
             System.err.println(ex);
-            return 0;
+            return -1;
         }
     }
     

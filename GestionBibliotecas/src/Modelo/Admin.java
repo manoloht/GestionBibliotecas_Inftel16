@@ -16,8 +16,8 @@ import java.sql.*;
 public class Admin extends Usuario {
 
     private List<Biblioteca> bibliotecas;
-    
-    public Admin(String dni){
+
+    public Admin(String dni) {
         super(dni);
     }
 
@@ -48,25 +48,16 @@ public class Admin extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "insert into usuario (dni,nombre,apellido,sexo,email,password) values (?,?,?,?,?,?)";
+            super.insertar();  // insertar en tabla de usuario, genera un id(nextval)              
+            int id_admin = Usuario.buscarId(super.getDni()); // buscar id(nextval) de usuario para insertar en tabla admin
+            
+            String consulta = "insert into admin (id_usuario) values (?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, super.getDni());
-            pstmt.setString(2, super.getNombre());
-            pstmt.setString(3, super.getApellidos());
-            pstmt.setString(4, super.getSexo());
-            pstmt.setString(5, super.getEmail());
-            pstmt.setString(6, super.getPassword());
+            pstmt.setInt(1, id_admin);
 
-            String consulta2 = "insert into admin values (?)";
-            PreparedStatement pstmt2 = con.prepareStatement(consulta2);
-            pstmt2.clearParameters();
-            pstmt2.setString(1, super.getDni());
-
-            if (!comprobarAdmin(super.getDni())) {
+            if (!comprobarAdmin(id_admin)) {           
                 pstmt.executeUpdate();
-                pstmt2.executeUpdate();
                 con.close();
                 return true;
             } else {
@@ -85,34 +76,15 @@ public class Admin extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setString(1, super.getDni());
-            pstmt.setString(2, a.getNombre());
-            pstmt.setString(3, a.getApellidos());
-            pstmt.setString(4, a.getSexo());
-            pstmt.setString(5, a.getEmail());
-            pstmt.setString(6, a.getPassword());
-            pstmt.setString(7, super.getDni());
-
-            String consulta2 = "update admin set dni = ? where dni like ?";
-            PreparedStatement pstmt2 = con.prepareStatement(consulta2);
-            pstmt2.clearParameters();
-            pstmt2.setString(1, super.getDni());
-            pstmt2.setString(2, super.getDni());
-            
-            if (comprobarAdmin(a.getDni())) {
-                pstmt.executeUpdate();
+             int id_admin = Usuario.buscarId(super.getDni());//           
+            if (comprobarAdmin(id_admin)) { // en la tabla admin existe este id_admin
+                super.actualizar(a);
                 con.close();
-            } else {
-                a.insertar();
-                this.borrar();
-                con.close(); 
+                return true;
+            } else {             
+                con.close();
+                return false;
             }
-            return true;
-
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el administrador");
             System.err.println(ex);
@@ -125,20 +97,16 @@ public class Admin extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "delete from admin where dni like ? ";
+            int id_admin = Usuario.buscarId(super.getDni()); // buscar id de admin en tabla usuario
+            String consulta = "delete from admin where id_usuario like ? ";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, super.getDni());
+            pstmt.setInt(1, id_admin);       
 
-            String consulta2 = "delete from usuario where dni like ?";
-            PreparedStatement pstmt2 = con.prepareStatement(consulta2);
-            pstmt2.clearParameters();
-            pstmt2.setString(1, super.getDni());
+            if (comprobarAdmin(id_admin)) {  // existe id en tabla admin
+                pstmt.executeUpdate();  // boorrar en tabla admin
+                super.borrar();    // borrar en tabla usuario
 
-            if (comprobarAdmin(super.getDni())) {
-                pstmt.executeUpdate();
-                pstmt2.executeUpdate();
                 con.close();
                 return true;
             } else {
@@ -153,18 +121,16 @@ public class Admin extends Usuario {
         }
     }
 
-    public boolean comprobarAdmin(String dni) {
+    public static boolean comprobarAdmin(int id_admin) {
 
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "select dni from admin where dni like ?";
+            String consulta = "select * from admin where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, dni);
-            ResultSet resultado = pstmt.executeQuery();
-
+            pstmt.setInt(1, id_admin);
+            ResultSet resultado = pstmt.executeQuery();       
             return resultado.next();
 
         } catch (SQLException ex) {

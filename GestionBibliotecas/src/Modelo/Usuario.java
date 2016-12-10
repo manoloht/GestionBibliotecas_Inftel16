@@ -165,7 +165,7 @@ public class Usuario implements BaseDatos<Usuario>{
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, u.getDni());
-            pstmt.setString(2, u.nombre);
+            pstmt.setString(2, u.getNombre());
             pstmt.setString(3, u.getApellidos());
             pstmt.setString(4, u.getSexo());
             pstmt.setString(5, u.getEmail());
@@ -280,9 +280,7 @@ public class Usuario implements BaseDatos<Usuario>{
             ResultSet resultado = pstmt.executeQuery();
 
             while(resultado.next()){
-               id = resultado.getInt("id_usuario");
-               
-                System.out.println("hola yuemei");
+               id = resultado.getInt("id_usuario");                             
             }            
             return id;
 
