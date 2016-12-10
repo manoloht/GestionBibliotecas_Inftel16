@@ -80,9 +80,10 @@ public class libro_autor {
         
         int id_autor = Autor.buscarId(this.nombre_autor, this.apellido_autor);
         int id_bib = Biblioteca.buscarId(this.biblioteca);
-        int id_cat = Categoria.buscarId(this.categoria, this.biblioteca);
+        int id_cat = Categoria.buscarId( this.biblioteca,this.categoria);
+       
         int id_libro = Libro.buscarId(this.biblioteca, this.categoria, this.isbn);
-
+         System.out.println("id_autor+id_libro+id_bib+id_cat:"+id_autor+id_libro+id_bib+id_cat);
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -116,13 +117,13 @@ public class libro_autor {
     public boolean borrarLibroAutor() {
         int id_autor = Autor.buscarId(this.nombre_autor, this.apellido_autor);
         int id_bib = Biblioteca.buscarId(this.biblioteca);
-        int id_cat = Categoria.buscarId(this.categoria, this.biblioteca);
+        int id_cat = Categoria.buscarId(this.biblioteca,this.categoria);
         int id_libro = Libro.buscarId(this.biblioteca, this.categoria, this.isbn);
-
+          System.out.println("id_autor+id_libro+id_bib+id_cat:"+id_autor+id_libro+id_bib+id_cat);
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            String consulta = "delete from libro_autor (id_libro, id_cat, id_bib, id_autor) values (?,?,?,?)";
+            String consulta = "delete from libro_autor where id_libro like ? and id_cat like ? and id_bib like ? and id_autor like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(1, id_libro);

@@ -55,7 +55,8 @@ public class ControladorYuemei {
         libro_autor b= new libro_autor("pepe","jose","isbn222","informatica","mate");
         libro_autor c= new libro_autor("mario","jose","isbn333","derecho","dibujo");
         
-        exito=a.InsertarLibroAutor();
+        exito= c.borrarLibroAutor();
+//        exito=a.borrarLibroAutor();
 //        libro_autor d= new libro_autor("juan","jose","isbn111","informatica","fisica");
         
         System.out.println(exito);
