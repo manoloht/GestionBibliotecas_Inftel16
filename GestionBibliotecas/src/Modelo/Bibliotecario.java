@@ -56,7 +56,7 @@ public class Bibliotecario extends Usuario {
             super.insertar();  // insertar dato en tabla de usuario  
             //  buscar id(nextval) de usuario para insertar en tabla bibliotecario
             int id_bibliotecario = Usuario.buscarId(super.getDni());
-            // buscar id de biblioteca que trabaja para insertar en tabla bibliotecario
+            // buscar id de biblioteca que trabaja el bibliotecario para insertar en tabla bibliotecario
             int id_bib = Biblioteca.buscarId(this.nombre_biblioteca);
 
             String consulta2 = "insert into bibliotecario(id_usuario,id_bib) values (?, ?)";
@@ -65,7 +65,7 @@ public class Bibliotecario extends Usuario {
             pstmt2.setInt(1, id_bibliotecario);
             pstmt2.setInt(2, id_bib);
 
-            if (!comprobarBibliotecario(id_bibliotecario)) {
+            if (!comprobarBibliotecario(id_bibliotecario)) {// tabla biblioteca no existe este biblioteca 
 //             
                 pstmt2.executeUpdate();
                 con.close();
@@ -100,8 +100,7 @@ public class Bibliotecario extends Usuario {
                 pstmt2.executeUpdate(); // actualizar sito que trabajo
                 con.close();
             } else {
-                b.insertar();
-                this.borrar();
+              
                 con.close();
             }
             return true;
@@ -147,7 +146,7 @@ public class Bibliotecario extends Usuario {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select id_usuario from bibliotecario where id_usuario like ?";
+            String consulta = "select * from bibliotecario where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(1, id_usuario);

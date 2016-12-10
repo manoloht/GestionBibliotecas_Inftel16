@@ -51,19 +51,31 @@ public class ControladorYuemei {
 
         boolean exito;
 
-        Bibliotecario a = new Bibliotecario("w99", "valen", "petro", "M", "hotmail22", "899", "Turismo");
-        Bibliotecario b = new Bibliotecario("w10", "valen", "petro", "M", "hotmail22", "899", "derecho");
-        Bibliotecario c = new Bibliotecario("w11", "valen", "petro", "M", "hotmail22", "899", "Turismo");
-        Bibliotecario d = new Bibliotecario("w12", "valen", "petro", "M", "hotmail22", "899", "derecho");
-        Bibliotecario e = new Bibliotecario("w13", "valen", "petro", "M", "hotmail22", "899", "Turismo");
-        Bibliotecario f = new Bibliotecario("w14", "valencia", "petro", "M", "hotmail22", "899", "informatica");
-        Bibliotecario g = new Bibliotecario("w15", "valen", "petro", "M", "hotmail22", "899", "Turismo");
-
-//               exito=d.insertar();//funciona
-//               exito=c.borrar();//funciona
-        exito = d.actualizar(f);
-
+        Estudiante a = new Estudiante("e99a", "valen", "petro", "M", "hotmail22", "899","e991", "Turismo");
+        Estudiante b = new Estudiante("e99b", "valen", "petro", "M", "hotmail22", "899","e9912", "derecho");
+        Estudiante c = new Estudiante("e99c", "valen", "petro", "M", "hotmail22", "899","e9913", "informatica");
+        Estudiante d = new Estudiante("e99d", "valen", "petro", "M", "hotmail22", "899","e9914", "derecho");
+        Estudiante e = new Estudiante("e99e", "valen", "petro", "M", "hotmail22", "899","e9915", "informatica");
+        Estudiante f = new Estudiante("e99f", "valen", "petro", "M", "hotmail22", "899","e9916", "Turismo");
+        Estudiante g = new Estudiante("e99g", "yuemei", "petro", "M", "hotmail22", "899","e9917", "informatica");
+//        exito=c.insertar();  // funciona
+//       exito= d.borrar(); // funciona
+           exito= a.actualizar(g); // funciona
+//        e.insertar();
         System.out.println(exito);
+//        Bibliotecario a = new Bibliotecario("w99", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+//        Bibliotecario b = new Bibliotecario("w10", "valen", "petro", "M", "hotmail22", "899", "derecho");
+//        Bibliotecario c = new Bibliotecario("w11", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+//        Bibliotecario d = new Bibliotecario("w12", "valen", "petro", "M", "hotmail22", "899", "derecho");
+//        Bibliotecario e = new Bibliotecario("w13", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+//        Bibliotecario f = new Bibliotecario("w14", "valencia", "petro", "M", "hotmail22", "899", "informatica");
+//        Bibliotecario g = new Bibliotecario("w15", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+//
+////               exito=d.insertar();//funciona
+////               exito=c.borrar();//funciona
+//        exito = d.actualizar(f);
+//
+//        System.out.println(exito);
 //         Admin a=new Admin("y66","val","petro","M","hotmail22","899");
 //         Admin b=new Admin("w77","hum","petro","M","hotmail22","899");
 //         Admin c= new Admin("w88","mama","petro","M","hotmail22","899");

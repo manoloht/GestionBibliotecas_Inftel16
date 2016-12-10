@@ -126,7 +126,7 @@ public class Admin extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            String consulta = "select id_usuario from admin where id_usuario like ?";
+            String consulta = "select * from admin where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(1, id_admin);
