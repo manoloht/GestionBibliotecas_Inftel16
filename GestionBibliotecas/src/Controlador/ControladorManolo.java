@@ -18,39 +18,41 @@ import java.sql.SQLException;
  */
 public class ControladorManolo {
     
-    // Categoria
-    public static int buscarId(String nombre, String nombre_cat){
+    // Libro
+    public static int buscarId(String nombre_bib, String nombre_cat, String isbn){
         int id=0;
-        int id_bib = Biblioteca.buscarId(nombre);
+        int id_bib = Biblioteca.buscarId(nombre_bib);
+        int id_cat = Categoria.buscarId(nombre_bib, nombre_cat);
         
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select id_cat from categoria where nombre_cat like ? and id_bib = ?";
+            String consulta = "select id_libro from libro where id_cat = ? and id_bib = ? and isbn like ?";
 
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, nombre_cat);
+            pstmt.setInt(1, id_cat);
             pstmt.setInt(2, id_bib);
+            pstmt.setString(3, isbn);
             
             ResultSet resultado = pstmt.executeQuery();
 
             while(resultado.next()){
-               id = resultado.getInt("id_cat");
+               id = resultado.getInt("id_libro");
                 
             }            
             return id;
 
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar id Biblioteca.");
+            System.err.println("Excepcion SQL: Error al buscar id Libro.");
             System.err.println(ex);
-            return 0;
+            return -1;
         }
     }
     
     
-    
+   
     
     
     
@@ -58,8 +60,43 @@ public class ControladorManolo {
     public static void main(String[] args){
         
   
-        System.out.println(ControladorManolo.buscarId("PruebasManolo","CategoriaAAA"));
-
+       
+ /*       
+        String categoria = "CategoriaXXXXXXXXX";
+        String biblioteca= "PruebasManolo";
+        
+        Categoria c = new Categoria();
+        c.setNombre_cat(categoria);
+        c.setNombre_biblioteca(biblioteca);
+ 
+ 
+    // Método buscar libro
+        String isbn="isbn111";
+        String nombre_bib="PruebasManolo";
+        String nombre_cat="CategoriaA";
+ 
+        Libro l = new Libro();
+        l.setIsbn(isbn);
+        l.setNombre_bib(nombre_bib);
+        l.setNombre_categoria(nombre_cat); 
+ 
+        System.out.println(l.toString());
+        System.out.println(ControladorManolo.buscarId(nombre_bib, nombre_cat, isbn));
+ */
+        
+        // Insertar
+        String isbn="isbn999";
+        String nombre_bib="PruebasManolo";
+        String nombre_cat="CategoriaB";
+ 
+        Libro l = new Libro();
+        l.setIsbn(isbn);
+        l.setNombre_bib(nombre_bib);
+        l.setNombre_categoria(nombre_cat); 
+        
+        System.out.println(l.insertar());
+        
+        
     }
     
 }
