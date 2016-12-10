@@ -280,9 +280,7 @@ public class Usuario implements BaseDatos<Usuario>{
             ResultSet resultado = pstmt.executeQuery();
 
             while(resultado.next()){
-               id = resultado.getInt("id_usuario");
-               
-                System.out.println("hola yuemei");
+               id = resultado.getInt("id_usuario");                             
             }            
             return id;
 

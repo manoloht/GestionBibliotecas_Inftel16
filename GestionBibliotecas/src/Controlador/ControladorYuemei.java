@@ -50,17 +50,27 @@ public class ControladorYuemei {
 
     public static void main(String[] args) {
         
-        int telefono=689756;
+       
          boolean exito;
-        Biblioteca b1= new Biblioteca("informatica","cordoba",telefono,"555");
-         Biblioteca b2= new Biblioteca("derecho","cordoba",telefono,"123");
-         Biblioteca b3= new Biblioteca("Turismo","servilla",telefono,"123");
-          Biblioteca nuevob1= new Biblioteca("informa","malaga",telefono,"123");
+         Admin a=new Admin("y66","val","petro","M","hotmail22","899");
+         Admin b=new Admin("w77","hum","petro","M","hotmail22","899");
+         Admin c= new Admin("w88","mama","petro","M","hotmail22","899");
+         Admin d=new Admin("w99","valen","petro","M","hotmail22","899");
+          exito= c.actualizar(d);
+//         Admin borr= new Admin("w77");
+//         exito=  borr.borrar();  // funciona
+//         exito=a.insertar();
+//           exito=c.insertar();
+//          int telefono=689756;
+//        Biblioteca b1= new Biblioteca("informatica","cordoba",telefono,"555");
+//         Biblioteca b2= new Biblioteca("derecho","cordoba",telefono,"123");
+//         Biblioteca b3= new Biblioteca("Turismo","servilla",telefono,"123");
+//          Biblioteca nuevob1= new Biblioteca("informa","malaga",telefono,"123");
          
 //         exito=b3.insertar();// funciona
 //         exito=b3.borrar();  // funciona
 //          exito=b1.actualizar(nuevob1);
-          exito=nuevob1.actualizar(b1);
+//          exito=nuevob1.actualizar(b1);
 //        exito=b1.insertar();
 
          System.out.println(exito);
