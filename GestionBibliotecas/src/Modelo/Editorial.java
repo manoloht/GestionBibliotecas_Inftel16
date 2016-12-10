@@ -36,6 +36,14 @@ public class Editorial implements BaseDatos<Editorial> {
         this.libros = libros;
     }
 
+    public int getId_edit() {
+        return id_edit;
+    }
+
+    public void setId_edit(int id_edit) {
+        this.id_edit = id_edit;
+    }    
+    
     public String getNombre_edit() {
         return nombre_edit;
     }
@@ -120,7 +128,7 @@ public class Editorial implements BaseDatos<Editorial> {
             pstmt.setString(1, ed.nombre_edit);
             pstmt.setString(2, this.nombre_edit);
            
-               if (comprobarEditorial(this.nombre_edit)) {
+               if (comprobarEditorial(this.nombre_edit) && !comprobarEditorial(ed.nombre_edit)) {
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -163,7 +171,7 @@ public class Editorial implements BaseDatos<Editorial> {
         }
     }
 
-    //@Override //ACABAR
+    //@Override 
     public boolean comprobarEditorial(String nombre_edit) {
         try {
             Conexion conexion = new Conexion();
@@ -184,33 +192,34 @@ public class Editorial implements BaseDatos<Editorial> {
         }
     }
 
-//    @Override //ACABAR
-//    public boolean buscar() {
-//       try {
-//            Conexion conexion = new Conexion();
-//            Connection con = conexion.getConnection();
-//
-//            String consulta = "select * from editorial where nombre_edit like ?";
-//            PreparedStatement pstmt = con.prepareStatement(consulta);
-//            pstmt.clearParameters();
-//            pstmt.setString(1, this.nombre_edit);
-//            ResultSet resultado = pstmt.executeQuery();
-//
-//            if (resultado.next()) {
-//                this.nombre_edit = resultado.getString("nombre_edit");
-//               
-//                return true;
-//            } else {
-//                return false;
-//            }
-//
-//        } catch (SQLException ex) {
-//            System.err.println("Excepcion SQL: Error al buscar la editorial. ");
-//            System.err.println(ex);
-//            return false;
-//        }
-//    }
 
+    public static int buscarId(String nombre_edit){
+        int id=0;
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select id_edit from editorial where nombre_edit like ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, nombre_edit);
+            
+            ResultSet resultado = pstmt.executeQuery();
+            while(resultado.next()){
+               id = resultado.getInt("id_edit");
+            }            
+            return id;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar id Libro.");
+            System.err.println(ex);
+            return -1;
+        }
+    }
+    
+    
     // ACABAR
     public static List<Editorial> getTodasEditoriales() {
          List<Editorial> editoriales = new ArrayList<>();

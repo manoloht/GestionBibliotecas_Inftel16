@@ -114,20 +114,22 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
 
     @Override 
     public boolean insertar() {
+        int id_libro = Libro.buscarId(nombre_bib, nombre_cat, isbn);
+        int id_cat = Categoria.buscarId(nombre_bib, nombre_cat);
+        int id_bib = Biblioteca.buscarId(nombre_bib);
+       
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into ejemplar (id_ejem,isbn,nombre_cat,nombre_bib) values (?,?,?,?)";
+            String consulta = "insert into ejemplar (id_ejem, id_libro, id_cat, id_bib) values (seq_id_ejem.nextval,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, this.id_ejem);
-            pstmt.setString(2, this.isbn);
-            pstmt.setString(3, this.nombre_cat);
-            pstmt.setString(4, this.nombre_bib);
+            pstmt.setInt(1, id_libro);
+            pstmt.setInt(2, id_cat);
+            pstmt.setInt(3, id_bib);
 
-            if (!comprobarEjemplar(this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
-                pstmt.executeUpdate();
+            if (pstmt.executeUpdate() == 1) {
                 con.close();
                 return true;
             } else {
@@ -144,7 +146,7 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
 
     @Override 
     public boolean actualizar(Ejemplar e) {
-         try {
+    /*     try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -173,25 +175,22 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
             System.err.println("Excepcion SQL: Error al actualizar el ejemplar");
             System.err.println(ex);
             return false;
-        }
+        }*/return true;
     }
 
-    @Override // ACABAR
+    @Override
     public boolean borrar() {
+
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "delete from ejemplar where id_ejem = ? and isbn like ? and nombre_cat like ? and nombre_bib like ?";
+            String consulta = "delete from ejemplar where id_ejem = ? ";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(1, this.id_ejem);
-            pstmt.setString(2, this.isbn);
-            pstmt.setString(3, this.nombre_cat);
-            pstmt.setString(4, this.nombre_bib);
             
-            if (comprobarEjemplar(this.id_ejem, this.isbn, this.nombre_cat, this.nombre_bib)) {
-                pstmt.executeUpdate();
+            if (pstmt.executeUpdate() == 1) {
                 con.close();
                 return true;
             } else {
@@ -208,6 +207,7 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
 
 
     private boolean comprobarEjemplar(int id_ejem, String isbn, String nombre_cat, String nombre_bib) {
+       /*
          try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -227,37 +227,8 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
             System.err.println("Excepcion SQL: Error al comprobar el Ejemplar");
             System.err.println(ex);
             return false;
-        }
+        }*/ return true;
     }
-
-/*
-    public boolean buscar() {
-      try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select * from ejemplar where id_ejem like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, this.id_ejem);
-            ResultSet resultado = pstmt.executeQuery();
-
-            if (resultado.next()) {
-                this.isbn = resultado.getString("isbn");
-                this.nombre_cat = resultado.getString("nombre_cat");
-                this.nombre_bib = resultado.getString("nombre_bib");                
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar el ejempar");
-            System.err.println(ex);
-            return false;
-        }
-    }
-*/
     
 
     public static List<Ejemplar> getTodosEjemplares() {
