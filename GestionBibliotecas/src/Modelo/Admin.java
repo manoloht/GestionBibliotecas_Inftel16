@@ -64,7 +64,7 @@ public class Admin extends Usuario {
             pstmt2.clearParameters();
             pstmt2.setString(1, super.getDni());
 
-            if (!comprobarAdmin(super.getDni())) {
+            if (!comprobarAdmin(super.getId_usuario())) {
                 pstmt.executeUpdate();
                 pstmt2.executeUpdate();
                 con.close();
@@ -103,7 +103,7 @@ public class Admin extends Usuario {
             pstmt2.setString(1, super.getDni());
             pstmt2.setString(2, super.getDni());
             
-            if (comprobarAdmin(a.getDni())) {
+            if (comprobarAdmin(a.getId_usuario())) {
                 pstmt.executeUpdate();
                 con.close();
             } else {
@@ -136,7 +136,7 @@ public class Admin extends Usuario {
             pstmt2.clearParameters();
             pstmt2.setString(1, super.getDni());
 
-            if (comprobarAdmin(super.getDni())) {
+            if (comprobarAdmin(super.getId_usuario())) {
                 pstmt.executeUpdate();
                 pstmt2.executeUpdate();
                 con.close();
@@ -153,18 +153,21 @@ public class Admin extends Usuario {
         }
     }
 
-    public boolean comprobarAdmin(String dni) {
+    public static boolean comprobarAdmin(int id_admin) {
 
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "select dni from admin where dni like ?";
+//            int id=Usuario.buscarId(dni);
+             
+            String consulta = "select id_usuario from admin where id_usuario like ?";
+          
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, dni);
+            pstmt.setInt(1, id_admin);
             ResultSet resultado = pstmt.executeQuery();
 
+          // System.out.println("resultado.next() es " +resultado.next());
             return resultado.next();
 
         } catch (SQLException ex) {

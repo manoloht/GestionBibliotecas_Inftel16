@@ -52,14 +52,15 @@ public class ControladorYuemei {
         
         int telefono=689756;
          boolean exito;
-        Biblioteca b1= new Biblioteca("informatica","malaga",telefono,"123");
+        Biblioteca b1= new Biblioteca("informatica","cordoba",telefono,"555");
          Biblioteca b2= new Biblioteca("derecho","cordoba",telefono,"123");
          Biblioteca b3= new Biblioteca("Turismo","servilla",telefono,"123");
           Biblioteca nuevob1= new Biblioteca("informa","malaga",telefono,"123");
          
-//         exito=b3.insertar();
-//         exito=b3.borrar();
-          exito=b1.actualizar(nuevob1);
+//         exito=b3.insertar();// funciona
+//         exito=b3.borrar();  // funciona
+//          exito=b1.actualizar(nuevob1);
+          exito=nuevob1.actualizar(b1);
 //        exito=b1.insertar();
 
          System.out.println(exito);
