@@ -51,16 +51,28 @@ public class ControladorYuemei {
     public static void main(String[] args) {
 
         boolean exito;
+        Autor a= new Autor("juan","jose");
+        Autor a1= new Autor("mario","jose");
+        Autor a2= new Autor("pepe","jose");
+        Autor a3= new Autor("kaka","jose");
+        Autor a4= new Autor("dada","jose");
+        
+        exito= a3.actualizar(a1);
+        
+        
+        
+        
+        
        
-         Penalizacion p = new Penalizacion("11/12/2016","25/12/2016","e99g");
-         Penalizacion nuevop = new Penalizacion("01/12/2016","20/12/2016","e99g");
-         Penalizacion p1 = new Penalizacion("22/12/2016","25/12/2016","e99b");
-         Penalizacion p2 = new Penalizacion("10/12/2016","25/12/2016","e99c");
-         Penalizacion p3 = new Penalizacion("11/12/2016","25/12/2016","e99e");
-         
+//         Penalizacion p = new Penalizacion("11/12/2016","25/12/2016","e99g");
+//         Penalizacion nuevop = new Penalizacion("01/12/2016","20/12/2016","e99g");
+//         Penalizacion p1 = new Penalizacion("22/12/2016","25/12/2016","e99b");
+//         Penalizacion p2 = new Penalizacion("10/12/2016","25/12/2016","e99c");
+//         Penalizacion p3 = new Penalizacion("11/12/2016","25/12/2016","e99e");
+//         
 ////          exito= p3.insertar();// funcion
 //          exito=p2.borrar(); // function
-             exito=p.actualizar(nuevop);
+//             exito=p.actualizar(nuevop);
 //          exito= p1.insertar();
        
            System.out.println(exito);
