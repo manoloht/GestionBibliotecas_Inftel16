@@ -14,7 +14,7 @@ import java.util.*;
  * @author Juan
  */
 public class Estudiante extends Usuario {
-
+    
     private String numExp;
     private String nombre_biblioteca;
     private List<Prestamo> prestamos;
@@ -143,7 +143,7 @@ public class Estudiante extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-             int id_estudiante = Usuario.buscarId(super.getDni());// buscar id en tabla usuario para probar existencia
+            int  id_estudiante = Usuario.buscarId(super.getDni());// buscar id en tabla usuario para probar existencia
             int id_bib = Biblioteca.buscarId(e.getNombre_biblioteca()); // bucar id_bib para actualizar           
 
             String consulta2 = "update estudiante set numexp = ?, id_bib = ? where id_usuario like ?";

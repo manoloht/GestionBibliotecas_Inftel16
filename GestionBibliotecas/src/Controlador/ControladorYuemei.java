@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 /**
  *
@@ -50,19 +51,31 @@ public class ControladorYuemei {
     public static void main(String[] args) {
 
         boolean exito;
-
-        Estudiante a = new Estudiante("e99a", "valen", "petro", "M", "hotmail22", "899","e991", "Turismo");
-        Estudiante b = new Estudiante("e99b", "valen", "petro", "M", "hotmail22", "899","e9912", "derecho");
-        Estudiante c = new Estudiante("e99c", "valen", "petro", "M", "hotmail22", "899","e9913", "informatica");
-        Estudiante d = new Estudiante("e99d", "valen", "petro", "M", "hotmail22", "899","e9914", "derecho");
-        Estudiante e = new Estudiante("e99e", "valen", "petro", "M", "hotmail22", "899","e9915", "informatica");
-        Estudiante f = new Estudiante("e99f", "valen", "petro", "M", "hotmail22", "899","e9916", "Turismo");
-        Estudiante g = new Estudiante("e99g", "yuemei", "petro", "M", "hotmail22", "899","e9917", "informatica");
-//        exito=c.insertar();  // funciona
-//       exito= d.borrar(); // funciona
-           exito= a.actualizar(g); // funciona
-//        e.insertar();
-        System.out.println(exito);
+       
+         Penalizacion p = new Penalizacion("11/12/2016","25/12/2016","e99g");
+         Penalizacion nuevop = new Penalizacion("01/12/2016","20/12/2016","e99g");
+         Penalizacion p1 = new Penalizacion("22/12/2016","25/12/2016","e99b");
+         Penalizacion p2 = new Penalizacion("10/12/2016","25/12/2016","e99c");
+         Penalizacion p3 = new Penalizacion("11/12/2016","25/12/2016","e99e");
+         
+////          exito= p3.insertar();// funcion
+//          exito=p2.borrar(); // function
+             exito=p.actualizar(nuevop);
+//          exito= p1.insertar();
+       
+           System.out.println(exito);
+//        Estudiante a = new Estudiante("e99a", "valen", "petro", "M", "hotmail22", "899","e991", "Turismo");
+//        Estudiante b = new Estudiante("e99b", "valen", "petro", "M", "hotmail22", "899","e9912", "derecho");
+//        Estudiante c = new Estudiante("e99c", "valen", "petro", "M", "hotmail22", "899","e9913", "informatica");
+//        Estudiante d = new Estudiante("e99d", "valen", "petro", "M", "hotmail22", "899","e9914", "derecho");
+//        Estudiante e = new Estudiante("e99e", "valen", "petro", "M", "hotmail22", "899","e9915", "informatica");
+//        Estudiante f = new Estudiante("e99f", "valen", "petro", "M", "hotmail22", "899","e9916", "Turismo");
+//        Estudiante g = new Estudiante("e99g", "yuemei", "petro", "M", "hotmail22", "899","e9917", "informatica");
+////        exito=c.insertar();  // funciona
+////       exito= d.borrar(); // funciona
+//           exito= a.actualizar(g); // funciona
+////        e.insertar();
+       
 //        Bibliotecario a = new Bibliotecario("w99", "valen", "petro", "M", "hotmail22", "899", "Turismo");
 //        Bibliotecario b = new Bibliotecario("w10", "valen", "petro", "M", "hotmail22", "899", "derecho");
 //        Bibliotecario c = new Bibliotecario("w11", "valen", "petro", "M", "hotmail22", "899", "Turismo");

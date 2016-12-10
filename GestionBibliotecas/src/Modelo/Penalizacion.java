@@ -18,26 +18,34 @@ import java.util.*;
  * @author Juan
  */
 public class Penalizacion implements BaseDatos<Penalizacion> {
-    int id_penal;
-    private Date fecha_inicio;
-    private Date fecha_fin;
+    private int id_estudiante;
+    private String fecha_inicio;
+    private String fecha_fin;
     private String dni;
 
     public Penalizacion() {
 
     }
 
-    public Penalizacion(Date fecha_inicio, Date fecha_fin, String dni) {
+    public Penalizacion(String fecha_inicio, String fecha_fin, String dni) {
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
         this.dni = dni;
     }
 
-    public Date getfecha_inicio() {
+    public int getId_estudiante() {
+        return id_estudiante;
+    }
+
+    public void setId_estudiante(int id_estudiante) {
+        this.id_estudiante = id_estudiante;
+    }
+
+    public String getfecha_inicio() {
         return fecha_inicio;
     }
 
-    public Date getfecha_fin() {
+    public String getfecha_fin() {
         return fecha_fin;
     }
 
@@ -45,11 +53,11 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         return dni;
     }
 
-    public void setfecha_inicio(Date fecha_inicio) {
+    public void setfecha_inicio(String fecha_inicio) {
         this.fecha_inicio = fecha_inicio;
     }
 
-    public void setfecha_fin(Date fecha_fin) {
+    public void setfecha_fin(String fecha_fin) {
         this.fecha_fin = fecha_fin;
     }
 
@@ -57,18 +65,14 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         this.dni = dni;
     }
 
-    public int getId_penal() {
-        return id_penal;
-    }
-
-    public void setId_penal(int id_penal) {
-        this.id_penal = id_penal;
-    }
-
     @Override
     public String toString() {
-        return "Penalizacion{" + "id_penal=" + id_penal + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", dni=" + dni + '}';
+        return "Penalizacion{" + "id_estudiante=" + id_estudiante + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", dni=" + dni + '}';
     }
+
+   
+
+   
 
     
 
@@ -107,15 +111,17 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "insert into penalizacion (fecha_inicio, fecha_fin, dni) values (?,?,?)";
+            id_estudiante=Estudiante.buscarId(this.dni);
+            
+            String consulta = "insert into penalizacion (id_usuario,fecha_inicio, fecha_fin) values (?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setDate(1, (java.sql.Date) this.fecha_inicio);
-            pstmt.setDate(2, (java.sql.Date) this.fecha_fin);
-            pstmt.setString(3, this.dni);
+            pstmt.setInt(1, id_estudiante);
+            pstmt.setString(2, this.fecha_inicio);
+            pstmt.setString(3, this.fecha_fin);
+          
 
-            if (!comprobarPenalizacion(this.dni)) {
+            if (!comprobarPenalizacion( id_estudiante)) {  // no existe penalizacion, un estudiante solo permite una penalizacion
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -130,28 +136,23 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             return false;
         }
     }
-    public static void main(String[] args){
-        Penalizacion p = new Penalizacion(null,null,"pepe232");
-        p.insertar();
-        System.out.println(p.insertar());
-    }
-
+ 
     @Override // ACABAR--->HECHO
     public boolean actualizar(Penalizacion p) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "update penalizacion set fecha_inicio = ?, fecha_fin = ?, dni = ? where dni like ?";
+            id_estudiante=Estudiante.buscarId(this.dni);
+            String consulta = "update penalizacion set fecha_inicio = ?, fecha_fin = ? where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
+            
+            pstmt.setString(1,  p.getfecha_inicio());
+            pstmt.setString(2,  p.getfecha_fin());
+            pstmt.setInt(3, id_estudiante);
+           
 
-            pstmt.setDate(1, (java.sql.Date) this.fecha_inicio);
-            pstmt.setDate(2, (java.sql.Date) this.fecha_fin);
-            pstmt.setString(3, this.dni);
-            pstmt.setString(4, p.getDni());
-
-            if (!comprobarPenalizacion(this.dni)) {
+            if (comprobarPenalizacion(id_estudiante)) {  // existe penalizacion para este estudiante
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -172,13 +173,14 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "delete from penalizacion where dni like ?";
+            id_estudiante=Estudiante.buscarId(this.dni);
+            System.out.println(id_estudiante);
+            String consulta = "delete from penalizacion where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, this.dni);
+            pstmt.setInt(1, id_estudiante);
                     
-            if (!comprobarPenalizacion(this.dni)) {
+            if (comprobarPenalizacion(id_estudiante)) {  // existe la penalizacion
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -194,15 +196,15 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         }
     }
 
-    private boolean comprobarPenalizacion(String dni) {
+    private boolean comprobarPenalizacion(int id_estudiante) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select * from penalizacion where dni like ?";
+            String consulta = "select * from penalizacion where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, dni);
+            pstmt.setInt(1, id_estudiante);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();
@@ -226,8 +228,8 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
-                Date fecha_inicio = resultado.getDate("fecha_inicio");
-                Date fecha_fin = resultado.getDate("fecha_fin");
+                String fecha_inicio = resultado.getString("fecha_inicio");
+                String fecha_fin = resultado.getString("fecha_fin");
                 String dni = resultado.getString("dni");
                 Penalizacion p = new Penalizacion(fecha_inicio, fecha_fin, dni);
                 penalizaciones.add(p);
