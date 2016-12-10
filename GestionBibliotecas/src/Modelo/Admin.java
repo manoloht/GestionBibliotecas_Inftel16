@@ -48,8 +48,9 @@ public class Admin extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            super.insertar();  // insertar en tabla de usuario                  
-            int id_admin = Usuario.buscarId(super.getDni()); // buscar id de usuario para intertar en tabla admin
+            super.insertar();  // insertar en tabla de usuario, genera un id(nextval)              
+            int id_admin = Usuario.buscarId(super.getDni()); // buscar id(nextval) de usuario para insertar en tabla admin
+            
             String consulta = "insert into admin (id_usuario) values (?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
@@ -105,7 +106,7 @@ public class Admin extends Usuario {
             if (comprobarAdmin(id_admin)) {  // existe id en tabla admin
                 pstmt.executeUpdate();  // boorrar en tabla admin
                 super.borrar();    // borrar en tabla usuario
-//                pstmt2.executeUpdate();
+
                 con.close();
                 return true;
             } else {

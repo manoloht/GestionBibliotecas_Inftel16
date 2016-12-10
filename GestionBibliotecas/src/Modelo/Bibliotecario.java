@@ -16,9 +16,14 @@ import java.util.*;
 public class Bibliotecario extends Usuario {
 
     private String nombre_biblioteca;
-    
-    public Bibliotecario(String dni){
+
+    public Bibliotecario(String dni) {
         super(dni);
+    }
+
+    public Bibliotecario(String nombre_biblioteca, String dni) {
+        super(dni);
+        this.nombre_biblioteca = nombre_biblioteca;
     }
 
     public Bibliotecario(String dni, String nombre, String apellido, String sexo, String email, String password) {
@@ -48,25 +53,20 @@ public class Bibliotecario extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
+            super.insertar();  // insertar dato en tabla de usuario  
+            //  buscar id(nextval) de usuario para insertar en tabla bibliotecario
+            int id_bibliotecario = Usuario.buscarId(super.getDni());
+            // buscar id de biblioteca que trabaja para insertar en tabla bibliotecario
+            int id_bib = Biblioteca.buscarId(this.nombre_biblioteca);
 
-            String consulta = "insert into usuario (dni,nombre,apellido,sexo,email,password) values (?,?,?,?,?,?)";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setString(1, super.getDni());
-            pstmt.setString(2, super.getNombre());
-            pstmt.setString(3, super.getApellidos());
-            pstmt.setString(4, super.getSexo());
-            pstmt.setString(5, super.getEmail());
-            pstmt.setString(6, super.getPassword());
-
-            String consulta2 = "insert into bibliotecario values (?, ?)";
+            String consulta2 = "insert into bibliotecario(id_usuario,id_bib) values (?, ?)";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
-            pstmt2.setString(1, super.getDni());
-            pstmt2.setString(2, this.nombre_biblioteca);
+            pstmt2.setInt(1, id_bibliotecario);
+            pstmt2.setInt(2, id_bib);
 
-            if (!comprobarBibliotecario(super.getDni())) {
-                pstmt.executeUpdate();
+            if (!comprobarBibliotecario(id_bibliotecario)) {
+//             
                 pstmt2.executeUpdate();
                 con.close();
                 return true;
@@ -86,34 +86,23 @@ public class Bibliotecario extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setString(1, super.getDni());
-            pstmt.setString(2, b.getNombre());
-            pstmt.setString(3, b.getApellidos());
-            pstmt.setString(4, b.getSexo());
-            pstmt.setString(5, b.getEmail());
-            pstmt.setString(6, b.getPassword());
-            pstmt.setString(7, super.getDni());
-
-            String consulta2 = "update bibliotecario set dni = ?, nombre_bib = ? where dni like ?";
+            int id_bibliotecario = Usuario.buscarId(super.getDni());// buscar id en tabla usuario para probar existencia
+            int id_bib = Biblioteca.buscarId(b.getNombre_biblioteca()); // bucar id_bib para actualizar
+//        
+            String consulta2 = "update bibliotecario set id_bib = ? where id_usuario like ?";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
-            pstmt2.setString(1, super.getDni());
-            pstmt2.setString(2, b.getNombre_biblioteca());
-            pstmt2.setString(3, super.getDni());
-            
-            
-            if (comprobarBibliotecario(b.getDni())) {
-                pstmt.executeUpdate();
-                pstmt2.executeUpdate();
+            pstmt2.setInt(1, id_bib);
+            pstmt2.setInt(2, id_bibliotecario);
+
+            if (comprobarBibliotecario(id_bibliotecario)) { // existe en tabla bibliotecario
+                super.actualizar(b); // actualizar dato personal en tabla usuario
+                pstmt2.executeUpdate(); // actualizar sito que trabajo
                 con.close();
             } else {
                 b.insertar();
                 this.borrar();
-                con.close(); 
+                con.close();
             }
             return true;
 
@@ -129,20 +118,15 @@ public class Bibliotecario extends Usuario {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-            String consulta = "delete from bibliotecario where dni like ? ";
+            int id_bibliotecario = Usuario.buscarId(super.getDni()); // buscar id de bibliotecario en tabla usuario
+            String consulta = "delete from bibliotecario where id_usuario like ? ";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, super.getDni());
+            pstmt.setInt(1, id_bibliotecario);
 
-            String consulta2 = "delete from usuario where dni like ?";
-            PreparedStatement pstmt2 = con.prepareStatement(consulta2);
-            pstmt2.clearParameters();
-            pstmt2.setString(1, super.getDni());
-
-            if (comprobarBibliotecario(super.getDni())) {
-                pstmt.executeUpdate();
-                pstmt2.executeUpdate();
+            if (comprobarBibliotecario(id_bibliotecario)) { // existe id en tabla biliotecario
+                pstmt.executeUpdate(); // borrar en tabla bibliotecario
+                super.borrar();  // borrar en tabla usuario, por cascade borrar en tabla bibliotecario ojo !!!
                 con.close();
                 return true;
             } else {
@@ -157,16 +141,16 @@ public class Bibliotecario extends Usuario {
         }
     }
 
-    private boolean comprobarBibliotecario(String dni) {
+    private boolean comprobarBibliotecario(int id_usuario) {
 
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "select dni from bibliotecario where dni like ?";
+            String consulta = "select id_usuario from bibliotecario where id_usuario like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, dni);
+            pstmt.setInt(1, id_usuario);
             ResultSet resultado = pstmt.executeQuery();
 
             return resultado.next();

@@ -47,16 +47,29 @@ public class ControladorYuemei {
 //        }
 //
 //    }
-
     public static void main(String[] args) {
-        
-       
-         boolean exito;
-         Admin a=new Admin("y66","val","petro","M","hotmail22","899");
-         Admin b=new Admin("w77","hum","petro","M","hotmail22","899");
-         Admin c= new Admin("w88","mama","petro","M","hotmail22","899");
-         Admin d=new Admin("w99","valen","petro","M","hotmail22","899");
-          exito= c.actualizar(d);
+
+        boolean exito;
+
+        Bibliotecario a = new Bibliotecario("w99", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+        Bibliotecario b = new Bibliotecario("w10", "valen", "petro", "M", "hotmail22", "899", "derecho");
+        Bibliotecario c = new Bibliotecario("w11", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+        Bibliotecario d = new Bibliotecario("w12", "valen", "petro", "M", "hotmail22", "899", "derecho");
+        Bibliotecario e = new Bibliotecario("w13", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+        Bibliotecario f = new Bibliotecario("w14", "valencia", "petro", "M", "hotmail22", "899", "informatica");
+        Bibliotecario g = new Bibliotecario("w15", "valen", "petro", "M", "hotmail22", "899", "Turismo");
+
+//               exito=d.insertar();//funciona
+//               exito=c.borrar();//funciona
+        exito = d.actualizar(f);
+
+        System.out.println(exito);
+//         Admin a=new Admin("y66","val","petro","M","hotmail22","899");
+//         Admin b=new Admin("w77","hum","petro","M","hotmail22","899");
+//         Admin c= new Admin("w88","mama","petro","M","hotmail22","899");
+//         Admin d=new Admin("w99","valen","petro","M","hotmail22","899");
+//         exito=d.borrar();
+//          exito= c.actualizar(d);
 //         Admin borr= new Admin("w77");
 //         exito=  borr.borrar();  // funciona
 //         exito=a.insertar();
@@ -66,17 +79,13 @@ public class ControladorYuemei {
 //         Biblioteca b2= new Biblioteca("derecho","cordoba",telefono,"123");
 //         Biblioteca b3= new Biblioteca("Turismo","servilla",telefono,"123");
 //          Biblioteca nuevob1= new Biblioteca("informa","malaga",telefono,"123");
-         
+
 //         exito=b3.insertar();// funciona
 //         exito=b3.borrar();  // funciona
 //          exito=b1.actualizar(nuevob1);
 //          exito=nuevob1.actualizar(b1);
 //        exito=b1.insertar();
-
-         System.out.println(exito);
-         
-        
-        
+//         System.out.println(exito);
 //        String dni="y55";
 //        String nombre="valencia";
 //        String apellidos="pepe";
@@ -91,9 +100,7 @@ public class ControladorYuemei {
 //          exito=u.borrar();  // funciona!
 //            exito=viejoU.actualizar(nueovoU); // funciona!
 //         System.out.println(exito);
-        
 //        System.out.println("dni=123 su id es"+ControladorYuemei.buscarId("123"));
-
     }
 
 //     public static void main(String[] args) {
