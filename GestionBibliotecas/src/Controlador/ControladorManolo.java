@@ -202,6 +202,8 @@ System.err.println("Prueba1");
             - Categoria ?? Comprobar todo
             - Libro 
             - Editorial
+            - Reservado - Comprobado
+            - Prestamo - Comprobado
         
 */              
   
@@ -276,6 +278,36 @@ System.err.println("Prueba1");
         System.out.println(e.toString());
         System.out.println("Ejemplar borrar: "+ e.borrar());
         System.out.println("Ejemplar Insertar: "+ e.insertar());
+
+
+        //////////////////////////////////////// Prestamo
+        Prestamo p = new Prestamo(4000, "isbn111", "00111111X", "CategoriaA", "PruebasManolo");
+        p.setFecha_ini("01/01/2000");
+        p.setFecha_fin("10/01/2000");
+        
+        System.out.println(p.toString());
+        System.out.println(p.borrar());
+        System.out.println(p.insertar());
+        
+        Prestamo p2 = new Prestamo();
+        p2.setFecha_ini("01/01/2000");
+        p2.setFecha_fin("10/01/2000");
+        System.out.println(p.actualizar(p2));
+
+
+        //////////////////////////////////////// Reservado
+        Reservado p = new Reservado(5000, "isbn222", "00111111X", "CategoriaA", "PruebasManolo");
+        p.setFecha_ini("01/01/2000");
+        p.setFecha_fin("10/01/2000");
+        
+        System.out.println(p.toString());
+        System.out.println(p.borrar());
+        System.out.println(p.insertar());
+        
+        Reservado p2 = new Reservado();
+        p2.setFecha_ini("01/01/2000");
+        p2.setFecha_fin("15/01/2000");
+        System.out.println(p.actualizar(p2));
  
         
 
@@ -307,9 +339,7 @@ System.err.println("Prueba1");
  */
  
  // ----- Prestamo ----------
-        Prestamo p = new Prestamo();
-        //Prestamo(int id_ejem, String isbn, String dni, String nombre_cat, String nombre_bib)
-        //Prestamo(String fecha_ini, String fecha_fin, int id_ejem, String isbn, String dni, String nombre_cat, String nombre_bib)
+        
  
 
     
