@@ -51,14 +51,22 @@ public class ControladorYuemei {
     public static void main(String[] args) {
 
         boolean exito;
-        Autor a= new Autor("juan","jose");
-        Autor a1= new Autor("mario","jose");
-        Autor a2= new Autor("pepe","jose");
-        Autor a3= new Autor("kaka","jose");
-        Autor a4= new Autor("dada","jose");
+        libro_autor a= new libro_autor("juan","jose","isbn111","informatica","fisica");
+        libro_autor b= new libro_autor("pepe","jose","isbn222","informatica","mate");
+        libro_autor c= new libro_autor("mario","jose","isbn333","derecho","dibujo");
         
-        exito= a3.actualizar(a1);
+        exito=a.InsertarLibroAutor();
+//        libro_autor d= new libro_autor("juan","jose","isbn111","informatica","fisica");
         
+        System.out.println(exito);
+//        Autor a= new Autor("juan","jose");
+//        Autor a1= new Autor("mario","jose");
+//        Autor a2= new Autor("pepe","jose");
+//        Autor a3= new Autor("kaka","jose");
+//        Autor a4= new Autor("dada","jose");
+//        
+//        exito= a3.actualizar(a1);
+//        
         
         
         
@@ -75,7 +83,7 @@ public class ControladorYuemei {
 //             exito=p.actualizar(nuevop);
 //          exito= p1.insertar();
        
-           System.out.println(exito);
+           
 //        Estudiante a = new Estudiante("e99a", "valen", "petro", "M", "hotmail22", "899","e991", "Turismo");
 //        Estudiante b = new Estudiante("e99b", "valen", "petro", "M", "hotmail22", "899","e9912", "derecho");
 //        Estudiante c = new Estudiante("e99c", "valen", "petro", "M", "hotmail22", "899","e9913", "informatica");

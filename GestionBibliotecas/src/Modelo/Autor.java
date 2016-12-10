@@ -99,10 +99,7 @@ public class Autor implements BaseDatos<Autor>{
             return false;
         }
         final Autor other = (Autor) obj;
-        if (this.id_autor != other.id_autor) {
-            return false;
-        }
-        return true;
+        return this.id_autor == other.id_autor;
     }
 
    
@@ -195,7 +192,7 @@ public class Autor implements BaseDatos<Autor>{
     }
 
    // @Override //ACABAR
-    public boolean comprobarAutor(String nombre,String apellido) {
+    public static boolean comprobarAutor(String nombre,String apellido) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
