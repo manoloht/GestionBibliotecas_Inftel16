@@ -266,7 +266,7 @@ public class Usuario implements BaseDatos<Usuario>{
     
     //  metodo static buscaId
      public static int buscarId(String dni){
-          int id=10;
+          int id=0;
             try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();

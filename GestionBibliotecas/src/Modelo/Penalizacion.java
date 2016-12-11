@@ -27,6 +27,11 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
 
     }
 
+    public Penalizacion(int id_estudiante, String fecha_fin) {
+        this.id_estudiante = id_estudiante;
+        this.fecha_fin = fecha_fin;
+    }
+
     public Penalizacion(String fecha_inicio, String fecha_fin, String dni) {
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;

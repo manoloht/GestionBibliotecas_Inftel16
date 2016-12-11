@@ -8,11 +8,18 @@ import Configuracion.*;
 import Controlador.*;
 import Modelo.*;
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,122 +27,193 @@ import java.util.Calendar;
  */
 public class ControladorYuemei {
 
-//    public static int buscarId(String dni) {
-//        int id = 10;
+//     public static Libro buscarLibro(int id){
+//        Libro l = new Libro();
+//        
 //        try {
 //            Conexion conexion = new Conexion();
 //            Connection con = conexion.getConnection();
 //
-//            String consulta = "select id_usuario from usuario where dni like ? ";
+////            String consulta = "select * from libro where id_libro = ?";
+//            String consulta = "select libro.isbn,libro.titulo,libro.fecha_ed, biblioteca.nombre,"+
+//                             "categoria.nombre_cat, editorial.nombre_edit"+
+//                              " from libro,categoria,biblioteca,editorial"+
+//                              "where libro.id_bib=biblioteca.id_bib"+
+//                              "and libro.id_cat=categoria.id_cat"+ 
+//                              " and libro.id_edit=editorial.id_edit"+
+//                               " and id_libro=?";
+//            PreparedStatement pstmt = con.prepareStatement(consulta);
+//            pstmt.clearParameters();
+//            pstmt.setInt(1, id);            
+//            ResultSet resultado = pstmt.executeQuery();
+//
+//            while(resultado.next()){
+//               l.setId_libro(resultado.getInt("id_libro"));
+//                l.setNombre_categoria(resultado.getString("nombre_cat"));
+//               l.setNombre_bib(resultado.getString("nombre"));
+//               l.setNombre_editorial(resultado.getString("nombre_edit"));
+////               l.setNombre_categoria(ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat());
+////               l.setNombre_bib(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
+////               l.setNombre_editorial(ControladorManolo.buscarEditorial(resultado.getInt("id_edit")).getNombre_edit());
+//               
+//               l.setIsbn(resultado.getString("isbn"));
+//               l.setTitulo(resultado.getString("titulo"));
+//               l.setPais(resultado.getString("pais"));
+//               l.setIdioma(resultado.getString("idioma"));
+//               l.setFecha_edi(resultado.getString("fecha_edi"));               
+//            }            
+//            return l;
+//
+//        } catch (SQLException ex) {
+//            System.err.println("Excepcion SQL: Error al buscar Objeto Libro.");
+//            System.err.println(ex);
+//            return l;
+//        }
+//    
+//    }
+//    public static Categoria buscarCategoria(int id) {
+//        Categoria c = new Categoria();
+//
+//        try {
+//            Conexion conexion = new Conexion();
+//            Connection con = conexion.getConnection();
+////            String consulta = "select * from categoria where id_cat = ?";
+//            String consulta = "select categoria.nombre_cat,biblioteca.nombre from categoria,"
+//                    + "biblioteca where categoria.id_bib= biblioteca.id_bib and id_cat= ?";
 //
 //            PreparedStatement pstmt = con.prepareStatement(consulta);
 //            pstmt.clearParameters();
-//            pstmt.setString(1, dni);
+//            pstmt.setInt(1, id);
 //
 //            ResultSet resultado = pstmt.executeQuery();
 //
 //            while (resultado.next()) {
-//                id = resultado.getInt("id_usuario");
-//
-//                System.out.println("hola yuemei");
+//                c.setId_cat(resultado.getInt("id_cat"));
+//                c.setNombre_cat(resultado.getString("nombre_cat"));
+//                //  c.setNombre_biblioteca(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
+//                c.setNombre_biblioteca(resultado.getString("nombre"));
 //            }
-//            return id;
+//            return c;
 //
 //        } catch (SQLException ex) {
-//            System.err.println("Excepcion SQL: Error al buscar id usuario.");
+//            System.err.println("Excepcion SQL: Error al buscar Objeto Categoria.");
 //            System.err.println(ex);
-//            return -1;
+//            return c;
 //        }
 //
 //    }
-     public static Libro buscarLibro(int id){
-        Libro l = new Libro();
+    public static Calendar ToCalendar( String fecha) throws ParseException{
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaDate = df.parse(fecha);
+        Calendar fecha_fin = Calendar.getInstance();
+        fecha_fin.clear();
+        fecha_fin.setTime(fechaDate);
+        
+        return fecha_fin;     
+        
+    }
+    
+    public  static String CalcularFechaPenalizada(Calendar fecha_fin, Calendar hoy) throws ParseException {
+        
+        // transformar a milsegundos
+        long sl = fecha_fin.getTimeInMillis();
+        long el = hoy.getTimeInMillis();
+         // calcular diferencia;
+        long ei = el - sl;
+        int dia_retraso = (int) (ei / (1000 * 60 * 60 * 24));
+        int dia_penaliza=2*dia_retraso;
+        //CalcularFechaPenalizada
+        Calendar Fecha_penalizada = (Calendar) hoy.clone();
+        Fecha_penalizada.add(Calendar.DATE, dia_penaliza);
+        String Fecha = (new SimpleDateFormat("dd/MM/yyyy")).format(Fecha_penalizada.getTime());
+        return Fecha;
+    }
+    
+         
+    public  static void InsertarPenalizacion() throws ParseException{
+        Calendar hoy = Calendar.getInstance();
+        hoy.clear();              
+        hoy.setTime(new Date()); // establece feche de hoy;
+        String Fecha_penalizada;     
+        int dia_retraso;
+        int dia_penaliza;
+        Penalizacion p=new Penalizacion();
+       
         
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-
-//            String consulta = "select * from libro where id_libro = ?";
-            String consulta = "select libro.isbn,libro.titulo,libro.fecha_ed, biblioteca.nombre,"+
-                             "categoria.nombre_cat, editorial.nombre_edit"+
-                              " from libro,categoria,biblioteca,editorial"+
-                              "where libro.id_bib=biblioteca.id_bib"+
-                              "and libro.id_cat=categoria.id_cat"+ 
-                              " and libro.id_edit=editorial.id_edit"+
-                               " and id_libro=?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, id);            
-            ResultSet resultado = pstmt.executeQuery();
-
-            while(resultado.next()){
-               l.setId_libro(resultado.getInt("id_libro"));
-                l.setNombre_categoria(resultado.getString("nombre_cat"));
-               l.setNombre_bib(resultado.getString("nombre"));
-               l.setNombre_editorial(resultado.getString("nombre_edit"));
-//               l.setNombre_categoria(ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat());
-//               l.setNombre_bib(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
-//               l.setNombre_editorial(ControladorManolo.buscarEditorial(resultado.getInt("id_edit")).getNombre_edit());
-               
-               l.setIsbn(resultado.getString("isbn"));
-               l.setTitulo(resultado.getString("titulo"));
-               l.setPais(resultado.getString("pais"));
-               l.setIdioma(resultado.getString("idioma"));
-               l.setFecha_edi(resultado.getString("fecha_edi"));               
-            }            
-            return l;
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar Objeto Libro.");
-            System.err.println(ex);
-            return l;
-        }
-    
-    }
-    public static Categoria buscarCategoria(int id) {
-        Categoria c = new Categoria();
-
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-//            String consulta = "select * from categoria where id_cat = ?";
-            String consulta = "select categoria.nombre_cat,biblioteca.nombre from categoria,"
-                    + "biblioteca where categoria.id_bib= biblioteca.id_bib and id_cat= ?";
-
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, id);
-
-            ResultSet resultado = pstmt.executeQuery();
+            String consulta = "select id_usuario,fecha_fin from prestamo";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
-                c.setId_cat(resultado.getInt("id_cat"));
-                c.setNombre_cat(resultado.getString("nombre_cat"));
-                //  c.setNombre_biblioteca(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
-                c.setNombre_biblioteca(resultado.getString("nombre"));
+             
+                String fecha =resultado.getString("fecha_fin");               
+                int id_usuario = resultado.getInt("id_usuario");  
+                
+                Calendar fecha_fin=ToCalendar(fecha); // transforma String a Calendar
+                if (hoy.after(fecha_fin)){ // cuando existe retraso
+                Fecha_penalizada=CalcularFechaPenalizada(fecha_fin,hoy); // calcula fecha penalizada
+                p.setId_estudiante(id_usuario);
+                p.setfecha_inicio(fecha);
+                p.setfecha_fin(Fecha_penalizada);
+                
+                
+                p.insertar();
+                
+                
+                
+                }
+               
+                              
+               
             }
-            return c;
-
+            con.close();
         } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar Objeto Categoria.");
+            System.err.println("Excepcion SQL: Error al obtener todos los prestamos.");
             System.err.println(ex);
-            return c;
         }
-
+      
+        
+        
     }
+    public static void main(String[] args) throws ParseException {
 
-    public static void main(String[] args) {
+        String fecha = "09/12/2016";
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha_fin = df.parse(fecha);
 
-        boolean exito;
-        libro_autor a = new libro_autor("juan", "jose", "isbn111", "informatica", "fisica");
-        libro_autor b = new libro_autor("pepe", "jose", "isbn222", "informatica", "mate");
-        libro_autor c = new libro_autor("mario", "jose", "isbn333", "derecho", "dibujo");
+        System.out.println("fecha_fin es：" + fecha_fin);
+        System.out.println("现在时间是：" + new Date());
 
-        exito = c.borrarLibroAutor();
+        Calendar fecha_finn = Calendar.getInstance();
+        fecha_finn.clear();
+        fecha_finn.setTime(fecha_fin);
+
+//        Calendar hoy = Calendar.getInstance();
+//        hoy.clear();
+//        hoy.setTime(new Date());
+
+        boolean pasado;
+        pasado = hoy.after(fecha_finn);
+        System.out.println("ha pasado fecha_fin?" + pasado);
+
+        int dia_retraso;
+        dia_retraso = CalcularDiaRetraso(fecha,hoy);
+        
+        System.out.println("dia_retraso:" + dia_retraso);
+//        
+//       SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd" );  
+
+//        boolean exito;
+//        libro_autor a = new libro_autor("juan", "jose", "isbn111", "informatica", "fisica");
+//        libro_autor b = new libro_autor("pepe", "jose", "isbn222", "informatica", "mate");
+//        libro_autor c = new libro_autor("mario", "jose", "isbn333", "derecho", "dibujo");
+//        exito = c.borrarLibroAutor();
 //        exito=a.borrarLibroAutor();
 //        libro_autor d= new libro_autor("juan","jose","isbn111","informatica","fisica");
-
-        System.out.println(exito);
+//        System.out.println(exito);
 //        Autor a= new Autor("juan","jose");
 //        Autor a1= new Autor("mario","jose");
 //        Autor a2= new Autor("pepe","jose");
@@ -144,7 +222,6 @@ public class ControladorYuemei {
 //        
 //        exito= a3.actualizar(a1);
 //        
-
 //         Penalizacion p = new Penalizacion("11/12/2016","25/12/2016","e99g");
 //         Penalizacion nuevop = new Penalizacion("01/12/2016","20/12/2016","e99g");
 //         Penalizacion p1 = new Penalizacion("22/12/2016","25/12/2016","e99b");
