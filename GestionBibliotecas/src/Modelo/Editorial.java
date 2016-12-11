@@ -182,7 +182,7 @@ public class Editorial implements BaseDatos<Editorial> {
             pstmt.clearParameters();
             pstmt.setString(1,nombre_edit);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -209,7 +209,8 @@ public class Editorial implements BaseDatos<Editorial> {
             ResultSet resultado = pstmt.executeQuery();
             while(resultado.next()){
                id = resultado.getInt("id_edit");
-            }            
+            }      
+            con.close();
             return id;
 
         } catch (SQLException ex) {
@@ -235,7 +236,7 @@ public class Editorial implements BaseDatos<Editorial> {
                 Editorial ed = new Editorial(nombre);
                 editoriales.add(ed);
             }
-
+              con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos las editoriales");
             System.err.println(ex);

@@ -204,7 +204,7 @@ public class Autor implements BaseDatos<Autor>{
              pstmt.setString(2, apellido);
             
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -231,6 +231,7 @@ public class Autor implements BaseDatos<Autor>{
                   id= resultado.getInt("id_autor");
             
              }
+             con.close();
               return id;
 
         } catch (SQLException ex) {
@@ -283,6 +284,7 @@ public class Autor implements BaseDatos<Autor>{
                 Autor a = new Autor(nombre, apellido);
                 autores.add(a);
             }
+            con.close();
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los autores");

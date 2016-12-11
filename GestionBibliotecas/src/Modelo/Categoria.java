@@ -199,7 +199,7 @@ public class Categoria implements BaseDatos<Categoria> {
             pstmt.setString(1, nombre_cat);
             pstmt.setString(2, nombre_bib);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -229,7 +229,8 @@ public class Categoria implements BaseDatos<Categoria> {
             while(resultado.next()){
                id = resultado.getInt("id_cat");
                 
-            }            
+            }   
+            con.close();
             return id;
 
         } catch (SQLException ex) {
@@ -254,7 +255,7 @@ public class Categoria implements BaseDatos<Categoria> {
                 Categoria c = new Categoria(nombre_bib, nombre_cat);
                 categorias.add(c);
             }
-
+                con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todas las categorias.");
             System.err.println(ex);

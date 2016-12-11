@@ -48,17 +48,93 @@ public class ControladorYuemei {
 //        }
 //
 //    }
+     public static Libro buscarLibro(int id){
+        Libro l = new Libro();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+//            String consulta = "select * from libro where id_libro = ?";
+            String consulta = "select libro.isbn,libro.titulo,libro.fecha_ed, biblioteca.nombre,"+
+                             "categoria.nombre_cat, editorial.nombre_edit"+
+                              " from libro,categoria,biblioteca,editorial"+
+                              "where libro.id_bib=biblioteca.id_bib"+
+                              "and libro.id_cat=categoria.id_cat"+ 
+                              " and libro.id_edit=editorial.id_edit"+
+                               " and id_libro=?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id);            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               l.setId_libro(resultado.getInt("id_libro"));
+                l.setNombre_categoria(resultado.getString("nombre_cat"));
+               l.setNombre_bib(resultado.getString("nombre"));
+               l.setNombre_editorial(resultado.getString("nombre_edit"));
+//               l.setNombre_categoria(ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat());
+//               l.setNombre_bib(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
+//               l.setNombre_editorial(ControladorManolo.buscarEditorial(resultado.getInt("id_edit")).getNombre_edit());
+               
+               l.setIsbn(resultado.getString("isbn"));
+               l.setTitulo(resultado.getString("titulo"));
+               l.setPais(resultado.getString("pais"));
+               l.setIdioma(resultado.getString("idioma"));
+               l.setFecha_edi(resultado.getString("fecha_edi"));               
+            }            
+            return l;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Libro.");
+            System.err.println(ex);
+            return l;
+        }
+    
+    }
+    public static Categoria buscarCategoria(int id) {
+        Categoria c = new Categoria();
+
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+//            String consulta = "select * from categoria where id_cat = ?";
+            String consulta = "select categoria.nombre_cat,biblioteca.nombre from categoria,"
+                    + "biblioteca where categoria.id_bib= biblioteca.id_bib and id_cat= ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id);
+
+            ResultSet resultado = pstmt.executeQuery();
+
+            while (resultado.next()) {
+                c.setId_cat(resultado.getInt("id_cat"));
+                c.setNombre_cat(resultado.getString("nombre_cat"));
+                //  c.setNombre_biblioteca(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
+                c.setNombre_biblioteca(resultado.getString("nombre"));
+            }
+            return c;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Categoria.");
+            System.err.println(ex);
+            return c;
+        }
+
+    }
+
     public static void main(String[] args) {
 
         boolean exito;
-        libro_autor a= new libro_autor("juan","jose","isbn111","informatica","fisica");
-        libro_autor b= new libro_autor("pepe","jose","isbn222","informatica","mate");
-        libro_autor c= new libro_autor("mario","jose","isbn333","derecho","dibujo");
-        
-        exito= c.borrarLibroAutor();
+        libro_autor a = new libro_autor("juan", "jose", "isbn111", "informatica", "fisica");
+        libro_autor b = new libro_autor("pepe", "jose", "isbn222", "informatica", "mate");
+        libro_autor c = new libro_autor("mario", "jose", "isbn333", "derecho", "dibujo");
+
+        exito = c.borrarLibroAutor();
 //        exito=a.borrarLibroAutor();
 //        libro_autor d= new libro_autor("juan","jose","isbn111","informatica","fisica");
-        
+
         System.out.println(exito);
 //        Autor a= new Autor("juan","jose");
 //        Autor a1= new Autor("mario","jose");
@@ -68,11 +144,7 @@ public class ControladorYuemei {
 //        
 //        exito= a3.actualizar(a1);
 //        
-        
-        
-        
-        
-       
+
 //         Penalizacion p = new Penalizacion("11/12/2016","25/12/2016","e99g");
 //         Penalizacion nuevop = new Penalizacion("01/12/2016","20/12/2016","e99g");
 //         Penalizacion p1 = new Penalizacion("22/12/2016","25/12/2016","e99b");
@@ -83,8 +155,6 @@ public class ControladorYuemei {
 //          exito=p2.borrar(); // function
 //             exito=p.actualizar(nuevop);
 //          exito= p1.insertar();
-       
-           
 //        Estudiante a = new Estudiante("e99a", "valen", "petro", "M", "hotmail22", "899","e991", "Turismo");
 //        Estudiante b = new Estudiante("e99b", "valen", "petro", "M", "hotmail22", "899","e9912", "derecho");
 //        Estudiante c = new Estudiante("e99c", "valen", "petro", "M", "hotmail22", "899","e9913", "informatica");
@@ -96,7 +166,6 @@ public class ControladorYuemei {
 ////       exito= d.borrar(); // funciona
 //           exito= a.actualizar(g); // funciona
 ////        e.insertar();
-       
 //        Bibliotecario a = new Bibliotecario("w99", "valen", "petro", "M", "hotmail22", "899", "Turismo");
 //        Bibliotecario b = new Bibliotecario("w10", "valen", "petro", "M", "hotmail22", "899", "derecho");
 //        Bibliotecario c = new Bibliotecario("w11", "valen", "petro", "M", "hotmail22", "899", "Turismo");
@@ -125,7 +194,6 @@ public class ControladorYuemei {
 //         Biblioteca b2= new Biblioteca("derecho","cordoba",telefono,"123");
 //         Biblioteca b3= new Biblioteca("Turismo","servilla",telefono,"123");
 //          Biblioteca nuevob1= new Biblioteca("informa","malaga",telefono,"123");
-
 //         exito=b3.insertar();// funciona
 //         exito=b3.borrar();  // funciona
 //          exito=b1.actualizar(nuevob1);

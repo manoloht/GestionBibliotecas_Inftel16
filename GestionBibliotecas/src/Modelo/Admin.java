@@ -130,7 +130,8 @@ public class Admin extends Usuario {
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setInt(1, id_admin);
-            ResultSet resultado = pstmt.executeQuery();       
+            ResultSet resultado = pstmt.executeQuery(); 
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -159,6 +160,7 @@ public class Admin extends Usuario {
                 Admin a = new Admin(dni, nombre, apellidos, sexo, email, password);
                 admins.add(a);
             }
+            con.close();
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los administradores");

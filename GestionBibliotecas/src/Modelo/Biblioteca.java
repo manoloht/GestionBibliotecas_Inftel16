@@ -260,7 +260,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
 
             pstmt.setString(1, nombre);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -287,6 +287,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
                 id = resultado.getInt("id_bib");
 
             }
+            con.close();
             return id;
 
         } catch (SQLException ex) {
@@ -315,6 +316,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
                 bibliotecas.add(b);
 
             }
+            con.close();
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos las bibliotecas");

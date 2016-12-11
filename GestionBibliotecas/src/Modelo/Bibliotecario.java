@@ -99,11 +99,13 @@ public class Bibliotecario extends Usuario {
                 super.actualizar(b); // actualizar dato personal en tabla usuario
                 pstmt2.executeUpdate(); // actualizar sito que trabajo
                 con.close();
+                 return true;
             } else {
               
                 con.close();
+                 return false;
             }
-            return true;
+           
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el bibliotecario");
@@ -151,7 +153,7 @@ public class Bibliotecario extends Usuario {
             pstmt.clearParameters();
             pstmt.setInt(1, id_usuario);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -181,7 +183,7 @@ public class Bibliotecario extends Usuario {
                 Bibliotecario b = new Bibliotecario(dni, nombre, apellidos, sexo, email, password, nombre_biblioteca);
                 bibliot.add(b);
             }
-
+                con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los bibliotecarios");
             System.err.println(ex);

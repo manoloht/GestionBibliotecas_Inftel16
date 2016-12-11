@@ -220,7 +220,7 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
             pstmt.setString(3, nombre_cat);
             pstmt.setString(4, nombre_bib);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -248,7 +248,7 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
                 Ejemplar ej = new Ejemplar(id_ejem, isbn, nombre_cat, nombre_bib);
                 ejemplares.add(ej);
             }
-
+                con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los ejemplares");
             System.err.println(ex);
