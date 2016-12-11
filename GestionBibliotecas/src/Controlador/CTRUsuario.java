@@ -55,4 +55,58 @@ public class CTRUsuario {
         }
         return listaUsuarios;
     }
+    
+    // METODO PARA COMPROBAR SI EXISTE UN ADMINISTRADOR, DEVOLVER TRUE EN CASO DE EXISTIR, FALSE EN CASO CONTRARIO
+    public static boolean comprobarAdministrador(String dni){
+        if(dni.equals("1")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+     // METODO PARA INSERTAR UN ADMINISTRADOR, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+    public static boolean insertarAdministrador(String dni, String nombre, String apellido, String sexo, String email, String biblioteca){
+        if(dni.equals("2")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+     // METODO PARA COMPROBAR SI EXISTE UN BIBLIOTECARIO, DEVOLVER TRUE EN CASO DE EXISTIR, FALSE EN CASO CONTRARIO
+    public static boolean comprobarBibliotecario(String dni){
+        if(dni.equals("1")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    // METODO PARA INSERTAR UN BIBLIOTECARIO, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+    public static boolean insertarBibliotecario(String dni, String nombre, String apellido, String sexo, String email, String biblioteca){
+        if(dni.equals("2")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+     // METODO PARA COMPROBAR SI EXISTE UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE EXISTIR, FALSE EN CASO CONTRARIO
+    public static boolean comprobarEstudiante(String dni){
+        if(dni.equals("1")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    // METODO PARA INSERTAR UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+    public static boolean insertarEstudiante(String dni, String nombre, String apellido, String sexo, String email, String biblioteca, String numExp){
+        if(dni.equals("estudiante")){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

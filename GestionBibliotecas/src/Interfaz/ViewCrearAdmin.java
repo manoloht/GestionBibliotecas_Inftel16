@@ -5,22 +5,36 @@
  */
 package Interfaz;
 
+import Controlador.CTRBiblioteca;
+import Controlador.CTRUsuario;
+import Modelo.Biblioteca;
+import java.awt.Color;
+import java.util.List;
+import javax.swing.BorderFactory;
+
 /**
  *
- * @author albertocheca
+ * @author alberto carrion leiva
  */
-public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
+public class ViewCrearAdmin extends javax.swing.JFrame {
 
     /**
-     * Creates new form VerUsuarioAdmin
+     * Creates new form ViewCrearAdmin
      */
-    private ViewAlertaBorrar alerta;
-
-    public ViewVerUsuarioAdmin() {
+    public ViewCrearAdmin() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setTitle("Ver Usuario");
+        this.setTitle("Crear Administrador");
+        this.mensaje.setText("");
+ 
+        // CARGAMOS LA LISTA DE BIBLIOTECAS EN EL JCOMBOBOX
+        List<Biblioteca> bib = CTRBiblioteca.getTodasBibliotecas();
+        for(Biblioteca b: bib){
+            this.biblioteca.addItem(b.getNombre());
+        }
+        
+        
     }
 
     /**
@@ -45,14 +59,17 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
         email = new javax.swing.JTextField();
         apellidos = new javax.swing.JTextField();
         sexo = new javax.swing.JComboBox<>();
-        btnEditar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
+        btnCrear = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        biblioteca = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
+        mensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(java.awt.Color.white);
+        jPanel1.setForeground(java.awt.Color.red);
 
         dniEditado.setBackground(new java.awt.Color(211, 211, 211));
 
@@ -73,26 +90,28 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
 
         sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "H" }));
 
-        btnEditar.setBackground(new java.awt.Color(250, 40, 40));
-        btnEditar.setForeground(java.awt.Color.white);
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnCrear.setBackground(new java.awt.Color(250, 40, 40));
+        btnCrear.setForeground(java.awt.Color.white);
+        btnCrear.setText("Crear");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnCrearActionPerformed(evt);
             }
         });
 
-        btnSalir.setText("Salir");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
-        btnBorrar.setText("Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("BIBLIOTECA");
+
+        biblioteca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
+                bibliotecaActionPerformed(evt);
             }
         });
 
@@ -106,15 +125,6 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
                         .addGap(34, 34, 34)
                         .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(dniEditadoLayout.createSequentialGroup()
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel4))
-                                .addGap(88, 88, 88)
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(dniEditadoLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(102, 102, 102)
                                 .addComponent(dni))
@@ -125,14 +135,23 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
                                 .addGap(55, 55, 55)
                                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
-                                    .addComponent(nombre)))))
+                                    .addComponent(nombre)))
+                            .addGroup(dniEditadoLayout.createSequentialGroup()
+                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(45, 45, 45)
+                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(dniEditadoLayout.createSequentialGroup()
-                        .addGap(217, 217, 217)
-                        .addComponent(btnEditar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBorrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalir)))
+                        .addGap(251, 251, 251)
+                        .addComponent(btnCrear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         dniEditadoLayout.setVerticalGroup(
@@ -160,31 +179,40 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditar)
-                    .addComponent(btnSalir)
-                    .addComponent(btnBorrar))
-                .addGap(27, 27, 27))
+                    .addComponent(jLabel8)
+                    .addComponent(biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrear)
+                    .addComponent(btnCancelar))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel7.setText("Ver Usuario");
+        jLabel7.setText("Crear Administrador");
+
+        mensaje.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        mensaje.setForeground(java.awt.Color.red);
+        mensaje.setText("Mensaje");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(310, 310, 310))))
+                    .addComponent(mensaje)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(55, 55, 55))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addGap(254, 254, 254)))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +220,9 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(mensaje)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -211,30 +241,55 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //BOTON PARA CREAR EL ADMINISTRADOR
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
 
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        // TODO add your handling code here:
-        alerta = new ViewAlertaBorrar();
-        alerta.setVisible(true);
-        alerta.pack();
-        alerta.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }//GEN-LAST:event_btnBorrarActionPerformed
+        System.out.println("---->  Comprobando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText() + " " + biblioteca.getSelectedItem().toString());
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Editando Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText());
-    }//GEN-LAST:event_btnEditarActionPerformed
+        // COMPROBAMOS QUE LOS CAMPOS NO SON VACIOS
+        if (dni.getText().equals("") || nombre.getText().equals("") || apellidos.getText().equals("") || email.getText().equals("")) {
+            System.err.println("---->  ERROR: Campos Vacios");
+            mensaje.setText("ERROR: Faltan campos por rellenar");
+            if (dni.getText().equals("")) {
+                dni.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (nombre.getText().equals("")) {
+                nombre.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (apellidos.getText().equals("")) {
+                apellidos.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else {
+                email.setBorder(BorderFactory.createLineBorder(Color.red));
+            }
+        } else {
+            if (CTRUsuario.comprobarAdministrador(dni.getText())) {
+                System.err.println("---->  ERROR: El administrador existe");
+                mensaje.setText("ERROR: El administrador existe");
+            } else {
+                System.out.println("---->  Insertando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText() + " " + biblioteca.getSelectedItem().toString());
+                if (CTRUsuario.insertarAdministrador(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText(), biblioteca.getSelectedItem().toString())) {
+                    System.out.println("---->  Admin insertado con éxito");
+                    mensaje.setText("ÉXITO: El administrador se ha creado correctamente");
+                }else{
+                    System.out.println("---->  Error al insertar el administrador");
+                    mensaje.setText("ERROR: No se pudo crear el administrador");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnCrearActionPerformed
 
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-    }//GEN-LAST:event_btnSalirActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void bibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bibliotecaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bibliotecaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField apellidos;
-    private javax.swing.JButton btnBorrar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnSalir;
+    private javax.swing.JComboBox<String> biblioteca;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCrear;
     public javax.swing.JTextField dni;
     private javax.swing.JPanel dniEditado;
     public javax.swing.JTextField email;
@@ -245,7 +300,9 @@ public class ViewVerUsuarioAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel mensaje;
     public javax.swing.JTextField nombre;
     public javax.swing.JComboBox<String> sexo;
     // End of variables declaration//GEN-END:variables
