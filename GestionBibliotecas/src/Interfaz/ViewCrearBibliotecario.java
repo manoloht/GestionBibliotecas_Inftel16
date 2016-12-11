@@ -5,24 +5,36 @@
  */
 package Interfaz;
 
+import Controlador.CTRBiblioteca;
+import Controlador.CTRUsuario;
+import Modelo.Biblioteca;
+import java.awt.Color;
+import java.util.List;
+import javax.swing.BorderFactory;
+
 /**
  *
- * @author albertocheca
+ * @author alberto carrion leiva
  */
-public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
+public class ViewCrearBibliotecario extends javax.swing.JFrame {
 
     /**
-     * Creates new form VerUsuarioAdmin
+     * Creates new form ViewCrearBibliotecario
      */
-    
-    private String rolCreacion;
-    
-    public ViewCrearUsuarioAdmin() {
-        this.rolCreacion = "Administrador";
+    public ViewCrearBibliotecario() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setTitle("Crear Usuario");
+        this.setTitle("Crear Bibliotecario");
+        this.mensaje.setText("");
+ 
+        // CARGAMOS LA LISTA DE BIBLIOTECAS EN EL JCOMBOBOX
+        List<Biblioteca> bib = CTRBiblioteca.getTodasBibliotecas();
+        for(Biblioteca b: bib){
+            this.biblioteca.addItem(b.getNombre());
+        }
+        
+        
     }
 
     /**
@@ -47,15 +59,17 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
         email = new javax.swing.JTextField();
         apellidos = new javax.swing.JTextField();
         sexo = new javax.swing.JComboBox<>();
-        btnAnadir = new javax.swing.JButton();
+        btnCrear = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        rol = new javax.swing.JComboBox<>();
+        biblioteca = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
+        mensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(java.awt.Color.white);
+        jPanel1.setForeground(java.awt.Color.red);
 
         dniEditado.setBackground(new java.awt.Color(211, 211, 211));
 
@@ -76,12 +90,12 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
 
         sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "H" }));
 
-        btnAnadir.setBackground(new java.awt.Color(250, 40, 40));
-        btnAnadir.setForeground(java.awt.Color.white);
-        btnAnadir.setText("Añadir");
-        btnAnadir.addActionListener(new java.awt.event.ActionListener() {
+        btnCrear.setBackground(new java.awt.Color(250, 40, 40));
+        btnCrear.setForeground(java.awt.Color.white);
+        btnCrear.setText("Crear");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnadirActionPerformed(evt);
+                btnCrearActionPerformed(evt);
             }
         });
 
@@ -93,12 +107,11 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
         });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel8.setText("ROL");
+        jLabel8.setText("BIBLIOTECA");
 
-        rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Bibliotecario", "Estudiante" }));
-        rol.addActionListener(new java.awt.event.ActionListener() {
+        biblioteca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rolActionPerformed(evt);
+                bibliotecaActionPerformed(evt);
             }
         });
 
@@ -128,16 +141,16 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel8))
-                                .addGap(88, 88, 88)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(45, 45, 45)
                                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(dniEditadoLayout.createSequentialGroup()
-                        .addGap(253, 253, 253)
-                        .addComponent(btnAnadir)
-                        .addGap(33, 33, 33)
+                        .addGap(251, 251, 251)
+                        .addComponent(btnCrear)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCancelar)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -169,17 +182,21 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                    .addComponent(biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAnadir)
+                    .addComponent(btnCrear)
                     .addComponent(btnCancelar))
-                .addGap(27, 27, 27))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel7.setText("Crear Usuario");
+        jLabel7.setText("Crear Bibliotecario");
+
+        mensaje.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        mensaje.setForeground(java.awt.Color.red);
+        mensaje.setText("Mensaje");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -188,12 +205,14 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(mensaje)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(55, 55, 55)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
-                        .addGap(297, 297, 297))))
+                        .addGap(264, 264, 264))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,7 +220,9 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(mensaje)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -220,27 +241,55 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    //BOTON PARA EDITAR EL USUARIO
-    private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Añadiendo Usuario: "+dni.getText()+" "+nombre.getText()+" "+apellidos.getText()+" "+sexo.getSelectedItem()+" "+email.getText()+" "+rolCreacion);
-    }//GEN-LAST:event_btnAnadirActionPerformed
+    //BOTON PARA CREAR EL BIBLIOTECARIO
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+
+        System.out.println("---->  Comprobando Bibliotecario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText() + " " + biblioteca.getSelectedItem().toString());
+
+        // COMPROBAMOS QUE LOS CAMPOS NO SON VACIOS
+        if (dni.getText().equals("") || nombre.getText().equals("") || apellidos.getText().equals("") || email.getText().equals("")) {
+            System.err.println("---->  ERROR: Campos Vacios");
+            mensaje.setText("ERROR: Faltan campos por rellenar");
+            if (dni.getText().equals("")) {
+                dni.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (nombre.getText().equals("")) {
+                nombre.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (apellidos.getText().equals("")) {
+                apellidos.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else {
+                email.setBorder(BorderFactory.createLineBorder(Color.red));
+            }
+        } else {
+            if (CTRUsuario.comprobarBibliotecario(dni.getText())) {
+                System.err.println("---->  ERROR: El bibliotecario existe");
+                mensaje.setText("ERROR: El bibliotecario existe");
+            } else {
+                System.out.println("---->  Insertando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText() + " " + biblioteca.getSelectedItem().toString());
+                if (CTRUsuario.insertarBibliotecario(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText(), biblioteca.getSelectedItem().toString())) {
+                    System.out.println("---->  Bibliotecario insertado con éxito");
+                    mensaje.setText("ÉXITO: El bibliotecario se ha creado correctamente");
+                }else{
+                    System.out.println("---->  Error al insertar el bibliotecario");
+                    mensaje.setText("ERROR: No se pudo crear el bibliotecario");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void rolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolActionPerformed
+    private void bibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bibliotecaActionPerformed
         // TODO add your handling code here:
-        rolCreacion = (String) rol.getSelectedItem();
-    }//GEN-LAST:event_rolActionPerformed
+    }//GEN-LAST:event_bibliotecaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField apellidos;
-    private javax.swing.JButton btnAnadir;
+    private javax.swing.JComboBox<String> biblioteca;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCrear;
     public javax.swing.JTextField dni;
     private javax.swing.JPanel dniEditado;
     public javax.swing.JTextField email;
@@ -253,8 +302,8 @@ public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel mensaje;
     public javax.swing.JTextField nombre;
-    private javax.swing.JComboBox<String> rol;
     public javax.swing.JComboBox<String> sexo;
     // End of variables declaration//GEN-END:variables
 }
