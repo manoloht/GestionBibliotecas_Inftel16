@@ -10,9 +10,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -21,38 +27,6 @@ import java.util.Calendar;
  */
 public class ControladorManolo {
     
-    // Ejemplar
- /*   public static int buscarId(String nombre_bib, String nombre_cat, String isbn){
-        int id=0;
-        int id_bib = Biblioteca.buscarId(nombre_bib);
-        int id_cat = Categoria.buscarId(nombre_bib, nombre_cat);
-        
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select id_libro from libro where id_cat = ? and id_bib = ? and isbn like ?";
-
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, id_cat);
-            pstmt.setInt(2, id_bib);
-            pstmt.setString(3, isbn);
-            
-            ResultSet resultado = pstmt.executeQuery();
-System.err.println("Prueba1");
-            while(resultado.next()){
-               id = resultado.getInt("id_libro");
-                System.err.println("Prueba2");
-            }            
-            return id;
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al buscar id Libro.");
-            System.err.println(ex);
-            return -1;
-        }
-    }*/
     
     public static Usuario buscarUsuario(int id){
         Usuario u = new Usuario();
@@ -78,7 +52,8 @@ System.err.println("Prueba1");
                u.setEmail(resultado.getString("email"));
                u.setPassword(resultado.getString("password"));
                u.setId_usuario(resultado.getInt("id_usuario"));
-            }            
+            }
+            con.close();
             return u;
 
         } catch (SQLException ex) {
@@ -112,7 +87,8 @@ System.err.println("Prueba1");
                b.setNombre(resultado.getString("nombre"));
                b.setTelefono(resultado.getInt("telefono"));
                b.setLocalizacion(resultado.getString("localizacion"));
-            }            
+            }
+            con.close();
             return b;
 
         } catch (SQLException ex) {
@@ -144,7 +120,8 @@ System.err.println("Prueba1");
                c.setId_cat(resultado.getInt("id_cat"));
                c.setNombre_cat(resultado.getString("nombre_cat"));
                c.setNombre_biblioteca(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());               
-            }            
+            }
+            con.close();
             return c;
 
         } catch (SQLException ex) {
@@ -175,7 +152,8 @@ System.err.println("Prueba1");
             while(resultado.next()){
                e.setId_edit(resultado.getInt("id_edit"));
                e.setNombre_edit(resultado.getString("nombre_edit"));
-            }            
+            }
+            con.close();
             return e;
 
         } catch (SQLException ex) {
@@ -211,7 +189,8 @@ System.err.println("Prueba1");
                l.setPais(resultado.getString("pais"));
                l.setIdioma(resultado.getString("idioma"));
                l.setFecha_edi(resultado.getString("fecha_edi"));               
-            }            
+            } 
+            con.close();
             return l;
 
         } catch (SQLException ex) {
@@ -247,7 +226,8 @@ System.err.println("Prueba1");
                p.setIsbn(ControladorManolo.buscarLibro(resultado.getInt("id_libro")).getIsbn()); 
                p.setDni(ControladorManolo.buscarUsuario(resultado.getInt("id_Usuario")).getDni()); 
                
-            }            
+            }   
+            con.close();
             return p;
 
         } catch (SQLException ex) {
@@ -283,7 +263,8 @@ System.err.println("Prueba1");
                p.setIsbn(ControladorManolo.buscarLibro(resultado.getInt("id_libro")).getIsbn()); 
                p.setDni(ControladorManolo.buscarUsuario(resultado.getInt("id_Usuario")).getDni()); 
                
-            }            
+            } 
+            con.close();
             return p;
 
         } catch (SQLException ex) {
@@ -294,24 +275,145 @@ System.err.println("Prueba1");
     
     }
     
+    
+    //////////////////////////////
+    // Estudiante - Mostrar prestamos
+    //
+    // List<Prestamo> prestamosByEstudiante(id_usuario)
+    //////////////////////////////
+    public static List<Prestamo> prestamosByEstudiante(int id_usuario){
+        
+        List<Prestamo> prestamos = new ArrayList<>();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from prestamo where id_usuario = ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id_usuario);            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while (resultado.next()) {
+                int id_prestamo = resultado.getInt("id_prestamo");
+                String fecha_ini =resultado.getString("fecha_ini");
+                String fecha_fin =resultado.getString("fecha_fin");
+                String dni = ControladorManolo.buscarUsuario(resultado.getInt("id_Usuario")).getDni();
+                int id_ejem = resultado.getInt("id_ejem");
+                String isbn = ControladorManolo.buscarLibro(resultado.getInt("id_libro")).getIsbn();
+                String nombre_cat = ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+                String nombre_bib = ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                
+                
+                Prestamo p = new Prestamo (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
+                p.setId_prestamo(id_prestamo);
+                prestamos.add(p);
+            }
+
+            con.close();
+            
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener los prestamos por usuario.");
+            System.err.println(ex);
+        }
+                
+        return prestamos;
+    }
+    
+    
+    
+    //////////////////////////////
+    // Estudiante - Mostrar reservaos
+    //
+    // List<Reservado> reservadosByEstudiante(id_usuario)
+    //////////////////////////////
+    public static List<Reservado> reservadosByEstudiante(int id_usuario){
+        
+        List<Reservado> reservados = new ArrayList<>();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from reservado where id_usuario = ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id_usuario);            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while (resultado.next()) {
+                int id_reservado = resultado.getInt("id_reservado");
+                String fecha_ini =resultado.getString("fecha_ini");
+                String fecha_fin =resultado.getString("fecha_fin");
+                String dni = ControladorManolo.buscarUsuario(resultado.getInt("id_Usuario")).getDni();
+                int id_ejem = resultado.getInt("id_ejem");
+                String isbn = ControladorManolo.buscarLibro(resultado.getInt("id_libro")).getIsbn();
+                String nombre_cat = ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+                String nombre_bib = ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                
+                
+                Reservado p = new Reservado (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
+                p.setId_reservado(id_reservado);
+                reservados.add(p);
+            }
+            con.close();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener los reservados por usuario.");
+            System.err.println(ex);
+        }
+        return reservados;
+    }
+    
+    
+    //////////////////////////////
+    // Estudiante - Prestar Libro
+    //
+    // void prestarEjemplar(id_usuario, id_ejemplar)
+    //////////////////////////////
+    public static boolean prestarEjemplar(int id_usuario, int id_ejemplar){
+        /*
+            1 - Comprobar que el estudiante no tiene penalizacion
+            2 - Comprobar que el ejemplar no está prestado
+        */
+        return true;
+    }
+    
+    
+    //////////////////////////////
+    // Estudiante - Reservar Libro
+    //
+    // void reservarEjemplar(id_usuario, id_ejemplar)
+    //////////////////////////////
+    
+    
+    //////////////////////////////
+    // Bibliotecario - Devolver Libro
+    //
+    // void devolverEjemplar(id_usuario, id_ejemplar)
+    //////////////////////////////
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args){
 /*
   **** MODIFICACIONES NECESARIAS ****
         - Todos los actualizar necesitan cambiar la comprobacion de la sentencia if
         - La entidad ejemplar no debe de contemplar el actualizar, solo insertar y borrar
-        - Entidad Editorial faltan getter y setter de id_edit
-        - Borrar => Comprobar y Actualizar en la Clase Ejemplar, no sirven para nada
-        - Crear en todas las clases  public static Clase buscarObjeto(int id); y buscarId(PK)
-            - Biblioteca => cambiar dniAdmin
-            - Categoria ?? Comprobar todo
-            - Libro 
-            - Editorial
-            - Reservado - Comprobado
-            - Prestamo - Comprobado
+            - Borrar => Comprobar y Actualizar en la Clase Ejemplar, no sirven para nada
         
-*/              
+*/    
+
+// ----- Pruebas MAIN ----------
+
+
+
+
+
+
+
+
+
   
-       
+////////////////////////////////////////////////////////////////////////////////
+
  /*     //////////////////////////////////////// USUARIO 
         Usuario u = new Usuario();
         u.setNombre("Pepe");
@@ -450,23 +552,59 @@ System.err.println("Prueba1");
         System.out.println(ControladorManolo.buscarId("Editorial B"));
 
 
+        ///////////////////////////////// PrestamosByEstudiante(id)
+        List<Prestamo> prestamos;       
+        prestamos = ControladorManolo.prestamosByEstudiante(9998);
+        
+        System.out.println(prestamos.size());
+        
+        for(Prestamo p : prestamos){
+            System.out.println(p.toString());
+            System.out.println(p.getId_prestamo());
+        }
+        
+        
+        ///////////////////////////////// ReservadosByEstudiante(id)
+        List<Reservado> reservados;       
+        reservados = ControladorManolo.reservadosByEstudiante(9998);
+        
+        System.out.println(reservados.size());
+        
+        for(Reservado r : reservados){
+            System.out.println(r.toString());
+            System.out.println(r.getId_reservado());
+        }
+
+
  */
  
- // ----- Prestamo ----------
+ 
+ 
+ 
+ ///////////////////////////////// PrestamosByEstudiante(id)
+        List<Prestamo> prestamos;       
+        prestamos = ControladorManolo.prestamosByEstudiante(9998);
         
-               
+        System.out.println(prestamos.size());
         
-
+        for(Prestamo p : prestamos){
+            System.out.println(p.toString());
+            System.out.println(p.getId_prestamo());
+        }
         
-
-        Biblioteca b = ControladorManolo.buscarBiblioteca(1000);
-        System.out.println(b.toString());
-   
-
         
-    }
-    
-    
-    
+        ///////////////////////////////// ReservadosByEstudiante(id)
+        List<Reservado> reservados;       
+        reservados = ControladorManolo.reservadosByEstudiante(9998);
+        
+        System.out.println(reservados.size());
+        
+        for(Reservado r : reservados){
+            System.out.println(r.toString());
+            System.out.println(r.getId_reservado());
+        }
+ 
+        
+    }   
     
 }
