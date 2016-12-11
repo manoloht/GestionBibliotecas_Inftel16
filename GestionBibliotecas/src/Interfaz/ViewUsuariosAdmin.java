@@ -18,8 +18,10 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
 
     private String rolBusqueda;
     private String palabraBusqueda;
-    private ViewVerUsuarioAdmin vistaVerUsuario;
-    private ViewCrearUsuarioAdmin vistaAnadirUsuario;
+    private ViewVerUsuario vistaVerUsuario;
+    private ViewCrearAdmin vistaCrearAdmin;
+    private ViewCrearBibliotecario vistaCrearBibliotecario;
+    private ViewCrearEstudiante vistaCrearEstudiante;
     private final DefaultTableModel modeloTabla;
 
     /**
@@ -67,10 +69,13 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         campoBusqueda = new javax.swing.JTextField();
         btnBuscarUsuario = new javax.swing.JButton();
-        btnCrearUsuario = new javax.swing.JButton();
+        btnCrearAdmin = new javax.swing.JButton();
         clave = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         numResultados = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        btnCrearBibliotecario = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,10 +163,10 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
             }
         });
 
-        btnCrearUsuario.setText("Crear Usuario");
-        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearAdmin.setText("Crear Administrador");
+        btnCrearAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearUsuarioActionPerformed(evt);
+                btnCrearAdminActionPerformed(evt);
             }
         });
 
@@ -177,6 +182,23 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
 
         numResultados.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
+        jLabel7.setText("Añadir Usuarios");
+
+        btnCrearBibliotecario.setText("Crear Bibliotecario");
+        btnCrearBibliotecario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearBibliotecarioActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Crear Estudiante");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -187,17 +209,10 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1247, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(150, 150, 150)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCrearUsuario)
+                            .addComponent(numResultados)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -209,20 +224,40 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnBuscarUsuario))
-                            .addComponent(numResultados))))
-                .addContainerGap(414, Short.MAX_VALUE))
+                                .addComponent(btnBuscarUsuario))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnCrearAdmin)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCrearBibliotecario)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(769, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
+                .addGap(80, 80, 80)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearAdmin)
+                    .addComponent(btnCrearBibliotecario)
+                    .addComponent(jButton1))
+                .addGap(24, 24, 24)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -230,13 +265,11 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                     .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarUsuario))
-                .addGap(28, 28, 28)
-                .addComponent(btnCrearUsuario)
-                .addGap(24, 24, 24)
+                .addGap(39, 39, 39)
                 .addComponent(numResultados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1)
-                .addGap(155, 155, 155))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(238, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,13 +293,13 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
 
 
     private void rolElegidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolElegidoActionPerformed
-        // TODO add your handling code here:
-        rolBusqueda = (String) rolElegido.getSelectedItem();
+
     }//GEN-LAST:event_rolElegidoActionPerformed
 
     // BOTON PARA BUSCAR USUARIOS
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
+        rolBusqueda = (String) rolElegido.getSelectedItem();
         modeloTabla.getDataVector().removeAllElements();
         if (campoBusqueda.getText().equals("")) {
             System.out.println("Buscando Usuarios: ROL:" + rolBusqueda + ", PALABRA_CLAVE: " + palabraBusqueda + ", BUSQUEDA: " + campoBusqueda.getText());
@@ -303,39 +336,81 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
     private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
         // TODO add your handling code here:
         int index = tablaUsuarios.getSelectedRow();
-        vistaVerUsuario = new ViewVerUsuarioAdmin();
-        vistaVerUsuario.setVisible(true);
-        vistaVerUsuario.pack();
-        vistaVerUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
-        String dni = modeloTabla.getValueAt(index, 0).toString();
-        String nombre = modeloTabla.getValueAt(index, 1).toString();
-        String apellidos = modeloTabla.getValueAt(index, 2).toString();
-        String sexo = modeloTabla.getValueAt(index, 3).toString();
-        String email = modeloTabla.getValueAt(index, 4).toString();
-        
-        vistaVerUsuario.dni.setText(dni);
-        vistaVerUsuario.nombre.setText(nombre);
-        vistaVerUsuario.apellidos.setText(apellidos);
-        if (sexo.equals("V")) {
-            vistaVerUsuario.sexo.setSelectedIndex(0);
+
+        if (rolElegido.getSelectedItem().toString().equals("Todos")) {
+            vistaVerUsuario = new ViewVerUsuario();
+            vistaVerUsuario.setVisible(true);
+            vistaVerUsuario.pack();
+            vistaVerUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+            String dni = modeloTabla.getValueAt(index, 0).toString();
+            String nombre = modeloTabla.getValueAt(index, 1).toString();
+            String apellidos = modeloTabla.getValueAt(index, 2).toString();
+            String sexo = modeloTabla.getValueAt(index, 3).toString();
+            String email = modeloTabla.getValueAt(index, 4).toString();
+
+            vistaVerUsuario.dni.setText(dni);
+            vistaVerUsuario.nombre.setText(nombre);
+            vistaVerUsuario.apellidos.setText(apellidos);
+            if (sexo.equals("V")) {
+                vistaVerUsuario.sexo.setSelectedIndex(0);
+            } else {
+                vistaVerUsuario.sexo.setSelectedIndex(1);
+            }
+            vistaVerUsuario.email.setText(email);
+        } else if (rolElegido.getSelectedItem().toString().equals("Administrador")) {
+            vistaVerUsuario = new ViewVerUsuario();
+            vistaVerUsuario.setVisible(true);
+            vistaVerUsuario.pack();
+            vistaVerUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+            String dni = modeloTabla.getValueAt(index, 0).toString();
+            String nombre = modeloTabla.getValueAt(index, 1).toString();
+            String apellidos = modeloTabla.getValueAt(index, 2).toString();
+            String sexo = modeloTabla.getValueAt(index, 3).toString();
+            String email = modeloTabla.getValueAt(index, 4).toString();
+
+            vistaVerUsuario.dni.setText(dni);
+            vistaVerUsuario.nombre.setText(nombre);
+            vistaVerUsuario.apellidos.setText(apellidos);
+            if (sexo.equals("V")) {
+                vistaVerUsuario.sexo.setSelectedIndex(0);
+            } else {
+                vistaVerUsuario.sexo.setSelectedIndex(1);
+            }
+            vistaVerUsuario.email.setText(email);
+        } else if (rolElegido.getSelectedItem().toString().equals("Bibliotecario")) {
+
         } else {
-            vistaVerUsuario.sexo.setSelectedIndex(1);
+
         }
-        vistaVerUsuario.email.setText(email);
     }//GEN-LAST:event_tablaUsuariosMouseClicked
 
-    private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
+    private void btnCrearAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearAdminActionPerformed
 
-        vistaAnadirUsuario = new ViewCrearUsuarioAdmin();
-        vistaAnadirUsuario.setVisible(true);
-        vistaAnadirUsuario.pack();
-        vistaAnadirUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+        vistaCrearAdmin = new ViewCrearAdmin();
+        vistaCrearAdmin.setVisible(true);
+        vistaCrearAdmin.pack();
+        vistaCrearAdmin.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnCrearAdminActionPerformed
 
     private void claveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claveActionPerformed
         palabraBusqueda = (String) clave.getSelectedItem();
     }//GEN-LAST:event_claveActionPerformed
+
+    private void btnCrearBibliotecarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearBibliotecarioActionPerformed
+        vistaCrearBibliotecario = new ViewCrearBibliotecario();
+        vistaCrearBibliotecario.setVisible(true);
+        vistaCrearBibliotecario.pack();
+        vistaCrearBibliotecario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_btnCrearBibliotecarioActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        vistaCrearEstudiante = new ViewCrearEstudiante();
+        vistaCrearEstudiante.setVisible(true);
+        vistaCrearEstudiante.pack();
+        vistaCrearEstudiante.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -375,15 +450,18 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarUsuario;
-    private javax.swing.JButton btnCrearUsuario;
+    private javax.swing.JButton btnCrearAdmin;
+    private javax.swing.JButton btnCrearBibliotecario;
     private javax.swing.JTextField campoBusqueda;
     private javax.swing.JComboBox<String> clave;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
