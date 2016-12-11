@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.MessagingException;
+//import javax.mail.MessagingException;
 /**
  *
  * @author YUEMEI
@@ -33,11 +33,11 @@ public class Mensaje {
         contenido="Hola "+nombre+":"+"informamos que ha creado una cuenta en nuestro sistema."
                 + "Estos son sus datos de acceso:"+"Dirección email:"+toAddress+"Contraseña:"+password;
        
-        try {
-            MailSender.sendMessage(toAddress, subject, contenido);
+       /* try {
+         //   MailSender.sendMessage(toAddress, subject, contenido);
         } catch (MessagingException ex) {
-            Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
-        }
+           // Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
         
     }
     
@@ -76,11 +76,11 @@ public class Mensaje {
         
         contenido="Hola "+nombre+":" + "Estos son sus datos de acceso:"+"Dirección email:"+email+"Contraseña:"+password;
        
-        try {
+        /*try {
             MailSender.sendMessage(email, subject, contenido);
         } catch (MessagingException ex) {
             Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
-        }    
+        }  */  
       
     }
       public static void InformacionPrestamo(Prestamo p){
