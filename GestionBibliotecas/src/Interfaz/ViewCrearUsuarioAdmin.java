@@ -9,18 +9,20 @@ package Interfaz;
  *
  * @author albertocheca
  */
-public class VerUsuarioAdmin extends javax.swing.JFrame {
+public class ViewCrearUsuarioAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form VerUsuarioAdmin
      */
-    private AlertaBorrar alerta;
-
-    public VerUsuarioAdmin() {
+    
+    private String rolCreacion;
+    
+    public ViewCrearUsuarioAdmin() {
+        this.rolCreacion = "Administrador";
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setTitle("Ver Usuario");
+        this.setTitle("Crear Usuario");
     }
 
     /**
@@ -45,9 +47,10 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
         email = new javax.swing.JTextField();
         apellidos = new javax.swing.JTextField();
         sexo = new javax.swing.JComboBox<>();
-        btnEditar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
-        btnBorrar = new javax.swing.JButton();
+        btnAnadir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        rol = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,26 +76,29 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
 
         sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "H" }));
 
-        btnEditar.setBackground(new java.awt.Color(250, 40, 40));
-        btnEditar.setForeground(java.awt.Color.white);
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnAnadir.setBackground(new java.awt.Color(250, 40, 40));
+        btnAnadir.setForeground(java.awt.Color.white);
+        btnAnadir.setText("Añadir");
+        btnAnadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnAnadirActionPerformed(evt);
             }
         });
 
-        btnSalir.setText("Salir");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
-        btnBorrar.setText("Borrar");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("ROL");
+
+        rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Bibliotecario", "Estudiante" }));
+        rol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
+                rolActionPerformed(evt);
             }
         });
 
@@ -106,15 +112,6 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
                         .addGap(34, 34, 34)
                         .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(dniEditadoLayout.createSequentialGroup()
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel4))
-                                .addGap(88, 88, 88)
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(dniEditadoLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(102, 102, 102)
                                 .addComponent(dni))
@@ -125,14 +122,23 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
                                 .addGap(55, 55, 55)
                                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
-                                    .addComponent(nombre)))))
+                                    .addComponent(nombre)))
+                            .addGroup(dniEditadoLayout.createSequentialGroup()
+                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel8))
+                                .addGap(88, 88, 88)
+                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(dniEditadoLayout.createSequentialGroup()
-                        .addGap(217, 217, 217)
-                        .addComponent(btnEditar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBorrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalir)))
+                        .addGap(253, 253, 253)
+                        .addComponent(btnAnadir)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnCancelar)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         dniEditadoLayout.setVerticalGroup(
@@ -160,17 +166,20 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditar)
-                    .addComponent(btnSalir)
-                    .addComponent(btnBorrar))
+                    .addComponent(jLabel8)
+                    .addComponent(rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAnadir)
+                    .addComponent(btnCancelar))
                 .addGap(27, 27, 27))
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel7.setText("Ver Usuario");
+        jLabel7.setText("Crear Usuario");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -184,7 +193,7 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
                         .addGap(55, 55, 55))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
-                        .addGap(310, 310, 310))))
+                        .addGap(297, 297, 297))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +201,7 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -211,30 +220,27 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+    
+    //BOTON PARA EDITAR EL USUARIO
+    private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
         // TODO add your handling code here:
-        alerta = new AlertaBorrar();
-        alerta.setVisible(true);
-        alerta.pack();
-        alerta.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }//GEN-LAST:event_btnBorrarActionPerformed
+        System.out.println("Añadiendo Usuario: "+dni.getText()+" "+nombre.getText()+" "+apellidos.getText()+" "+sexo.getSelectedItem()+" "+email.getText()+" "+rolCreacion);
+    }//GEN-LAST:event_btnAnadirActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Editando Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText());
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-    }//GEN-LAST:event_btnSalirActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void rolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolActionPerformed
+        // TODO add your handling code here:
+        rolCreacion = (String) rol.getSelectedItem();
+    }//GEN-LAST:event_rolActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField apellidos;
-    private javax.swing.JButton btnBorrar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnAnadir;
+    private javax.swing.JButton btnCancelar;
     public javax.swing.JTextField dni;
     private javax.swing.JPanel dniEditado;
     public javax.swing.JTextField email;
@@ -245,8 +251,10 @@ public class VerUsuarioAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     public javax.swing.JTextField nombre;
+    private javax.swing.JComboBox<String> rol;
     public javax.swing.JComboBox<String> sexo;
     // End of variables declaration//GEN-END:variables
 }

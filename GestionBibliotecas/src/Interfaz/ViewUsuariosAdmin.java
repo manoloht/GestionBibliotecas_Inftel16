@@ -6,43 +6,34 @@
 package Interfaz;
 
 import Modelo.Usuario;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import Controlador.CTRUsuario;
 
 /**
  *
- * @author albertocheca
+ * @author alberto carrion leiva
  */
-public class UsuariosAdmin extends javax.swing.JFrame {
+public class ViewUsuariosAdmin extends javax.swing.JFrame {
 
     private String rolBusqueda;
-    private List<Usuario> listaUsuarios;
-    private VerUsuarioAdmin vistaVerUsuario;
-    private CrearUsuarioAdmin vistaAnadirUsuario;
-    private DefaultTableModel modeloTabla;
+    private String palabraBusqueda;
+    private ViewVerUsuarioAdmin vistaVerUsuario;
+    private ViewCrearUsuarioAdmin vistaAnadirUsuario;
+    private final DefaultTableModel modeloTabla;
 
     /**
      * Creates new form UsuariosAdmin
      */
-    public UsuariosAdmin() {
+    public ViewUsuariosAdmin() {
         this.rolBusqueda = "Todos";
+        this.palabraBusqueda = "Dni";
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Usuarios");
         modeloTabla = (DefaultTableModel) tablaUsuarios.getModel();
-        
-        this.listaUsuarios = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            Usuario u = new Usuario("dni" + i, "nombre" + i, "apellido" + i, "V", "email" + i, "pass" + i);
-            listaUsuarios.add(u);
-        }
-        for (int i = 0; i < 30; i++) {
-            Usuario u = new Usuario("dni" + i, "nombre" + i, "apellido" + i, "H", "email" + i, "pass" + i);
-            listaUsuarios.add(u);
-        }
-
-        for (Usuario u : listaUsuarios) {
+        List<Usuario> usuarios = CTRUsuario.getTodosUsuarios();
+        for (Usuario u : usuarios) {
             Object[] fila = new Object[5];
             fila[0] = u.getDni();
             fila[1] = u.getNombre();
@@ -51,7 +42,8 @@ public class UsuariosAdmin extends javax.swing.JFrame {
             fila[4] = u.getEmail();
             modeloTabla.addRow(fila);
         }
-
+        numResultados.setText("Se han encontrado " + usuarios.size() + " resultados con ROL: " + rolBusqueda);
+        System.out.println("---->  EXITO: Se han encontrado " + usuarios.size() + " resultados con ROL: " + rolBusqueda);
     }
 
     /**
@@ -73,13 +65,12 @@ public class UsuariosAdmin extends javax.swing.JFrame {
         rolElegido = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        dniIntroducido = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        nombreIntroducido = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        apellidosIntroducido = new javax.swing.JTextField();
+        campoBusqueda = new javax.swing.JTextField();
         btnBuscarUsuario = new javax.swing.JButton();
         btnCrearUsuario = new javax.swing.JButton();
+        clave = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        numResultados = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,14 +149,7 @@ public class UsuariosAdmin extends javax.swing.JFrame {
         jLabel1.setText("ROL");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("DNI");
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("NOMBRE");
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel7.setText("APELLIDOS");
-        jLabel7.setToolTipText("");
+        jLabel2.setText("PALABRA CLAVE");
 
         btnBuscarUsuario.setText("Buscar");
         btnBuscarUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -181,6 +165,18 @@ public class UsuariosAdmin extends javax.swing.JFrame {
             }
         });
 
+        clave.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dni", "Nombre", "Apellidos", "Email" }));
+        clave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                claveActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
+        jLabel3.setText("Buscar Usuarios");
+
+        numResultados.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -191,71 +187,70 @@ public class UsuariosAdmin extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
+                        .addGap(139, 139, 139)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCrearUsuario)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(74, 74, 74)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dniIntroducido, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(66, 66, 66)
-                                .addComponent(jLabel3)
+                                .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nombreIntroducido, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel7)
+                                .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(apellidosIntroducido, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(78, 78, 78)
                                 .addComponent(btnBuscarUsuario))
-                            .addComponent(btnCrearUsuario)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(405, Short.MAX_VALUE))
+                            .addComponent(numResultados))))
+                .addContainerGap(414, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCrearUsuario)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(dniIntroducido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7)
-                    .addComponent(apellidosIntroducido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nombreIntroducido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarUsuario))
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
+                .addComponent(btnCrearUsuario)
+                .addGap(24, 24, 24)
+                .addComponent(numResultados)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1)
-                .addGap(240, 240, 240))
+                .addGap(155, 155, 155))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -269,54 +264,50 @@ public class UsuariosAdmin extends javax.swing.JFrame {
         rolBusqueda = (String) rolElegido.getSelectedItem();
     }//GEN-LAST:event_rolElegidoActionPerformed
 
-    
-    
-    
-    // BOTON PARA BUSCAR EL USUARIO // ACABAR
+    // BOTON PARA BUSCAR USUARIOS
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Buscando Usuario: " + rolBusqueda + " " + dniIntroducido.getText() + " " + nombreIntroducido.getText() + " " + apellidosIntroducido.getText());
-        
-        modeloTabla = (DefaultTableModel) tablaUsuarios.getModel();
-
-        this.listaUsuarios = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Usuario u = new Usuario("xxxx" + i, "xxxx" + i, "xxxx" + i, "V", "xxxx" + i, "xxxx" + i);
-            listaUsuarios.add(u);
-        }
-        for (int i = 0; i < 10; i++) {
-            Usuario u = new Usuario("xxxx" + i, "xxxx" + i, "xxxx" + i, "H", "xxxx" + i, "xxxx" + i);
-            listaUsuarios.add(u);
-        }
-
         modeloTabla.getDataVector().removeAllElements();
-        for (Usuario u : listaUsuarios) {
-            Object[] fila = new Object[5];
-            fila[0] = u.getDni();
-            fila[1] = u.getNombre();
-            fila[2] = u.getApellidos();
-            fila[3] = u.getSexo();
-            fila[4] = u.getEmail();
-            modeloTabla.addRow(fila);
+        if (campoBusqueda.getText().equals("")) {
+            System.out.println("Buscando Usuarios: ROL:" + rolBusqueda + ", PALABRA_CLAVE: " + palabraBusqueda + ", BUSQUEDA: " + campoBusqueda.getText());
+            List<Usuario> usuarios = CTRUsuario.buscarUsuariosRol(rolBusqueda);
+            for (Usuario u : usuarios) {
+                Object[] fila = new Object[5];
+                fila[0] = u.getDni();
+                fila[1] = u.getNombre();
+                fila[2] = u.getApellidos();
+                fila[3] = u.getSexo();
+                fila[4] = u.getEmail();
+                modeloTabla.addRow(fila);
+            }
+            numResultados.setText("Se han encontrado " + usuarios.size() + " resultados con ROL: " + rolBusqueda);
+            System.out.println("---->  EXITO: Se han encontrado " + usuarios.size() + " resultados");
+        } else {
+            System.out.println("Buscando Usuarios: ROL:" + rolBusqueda + ", PALABRA_CLAVE: " + palabraBusqueda + ", BUSQUEDA: " + campoBusqueda.getText());
+            List<Usuario> usuarios = CTRUsuario.buscarUsuarios(rolBusqueda, palabraBusqueda, campoBusqueda.getText());
+            for (Usuario u : usuarios) {
+                Object[] fila = new Object[5];
+                fila[0] = u.getDni();
+                fila[1] = u.getNombre();
+                fila[2] = u.getApellidos();
+                fila[3] = u.getSexo();
+                fila[4] = u.getEmail();
+                modeloTabla.addRow(fila);
+            }
+            numResultados.setText("Se han encontrado " + usuarios.size() + " resultados con ROL: " + rolBusqueda + ", PALABRA CLAVE: " + palabraBusqueda + ", BÚSQUEDA: " + campoBusqueda.getText());
+            System.out.println("---->  EXITO: Se han encontrado " + usuarios.size() + " resultados con ROL: " + rolBusqueda + ", PALABRA CLAVE: " + palabraBusqueda + ", BÚSQUEDA: " + campoBusqueda.getText());
         }
-        
     }//GEN-LAST:event_btnBuscarUsuarioActionPerformed
 
-    
-    
-    
-    
-    
+
     private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
         // TODO add your handling code here:
         int index = tablaUsuarios.getSelectedRow();
-
-        vistaVerUsuario = new VerUsuarioAdmin();
+        vistaVerUsuario = new ViewVerUsuarioAdmin();
         vistaVerUsuario.setVisible(true);
         vistaVerUsuario.pack();
         vistaVerUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
+        
         String dni = modeloTabla.getValueAt(index, 0).toString();
         String nombre = modeloTabla.getValueAt(index, 1).toString();
         String apellidos = modeloTabla.getValueAt(index, 2).toString();
@@ -326,21 +317,25 @@ public class UsuariosAdmin extends javax.swing.JFrame {
         vistaVerUsuario.dni.setText(dni);
         vistaVerUsuario.nombre.setText(nombre);
         vistaVerUsuario.apellidos.setText(apellidos);
-        if(sexo.equals("V")){
+        if (sexo.equals("V")) {
             vistaVerUsuario.sexo.setSelectedIndex(0);
-        }else{
+        } else {
             vistaVerUsuario.sexo.setSelectedIndex(1);
         }
         vistaVerUsuario.email.setText(email);
     }//GEN-LAST:event_tablaUsuariosMouseClicked
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
-        // TODO add your handling code here:
-        vistaAnadirUsuario = new CrearUsuarioAdmin();
+
+        vistaAnadirUsuario = new ViewCrearUsuarioAdmin();
         vistaAnadirUsuario.setVisible(true);
         vistaAnadirUsuario.pack();
         vistaAnadirUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+
+    private void claveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claveActionPerformed
+        palabraBusqueda = (String) clave.getSelectedItem();
+    }//GEN-LAST:event_claveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -359,40 +354,40 @@ public class UsuariosAdmin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UsuariosAdmin().setVisible(true);
+                new ViewUsuariosAdmin().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField apellidosIntroducido;
     private javax.swing.JButton btnBuscarUsuario;
     private javax.swing.JButton btnCrearUsuario;
-    private javax.swing.JTextField dniIntroducido;
+    private javax.swing.JTextField campoBusqueda;
+    private javax.swing.JComboBox<String> clave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nombreIntroducido;
+    private javax.swing.JLabel numResultados;
     private javax.swing.JComboBox<String> rolElegido;
     private javax.swing.JTable tablaUsuarios;
     // End of variables declaration//GEN-END:variables

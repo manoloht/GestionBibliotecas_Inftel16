@@ -9,12 +9,12 @@ package Interfaz;
  *
  * @author albertocheca
  */
-public class AlertaBorrar extends javax.swing.JFrame {
+public class ViewAlertaBorrar extends javax.swing.JFrame {
 
     /**
      * Creates new form AlertaBorrar
      */
-    public AlertaBorrar() {
+    public ViewAlertaBorrar() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
