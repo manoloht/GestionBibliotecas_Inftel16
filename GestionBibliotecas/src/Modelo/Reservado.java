@@ -184,7 +184,7 @@ public class Reservado implements BaseDatos<Reservado> {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "insert into reservado (id_reservado,fecha_ini,fecha_fin,id_usuario,id_ejem,id_libro,id_cat,id_bib) values (seq_id_prestamo.nextval,?,?,?,?,?,?,?)";
+            String consulta = "insert into reservado (id_reservado,fecha_ini,fecha_fin,id_usuario,id_ejem,id_libro,id_cat,id_bib) values (seq_id_reservado.nextval,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, this.fecha_ini);

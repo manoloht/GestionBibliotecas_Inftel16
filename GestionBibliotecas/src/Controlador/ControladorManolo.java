@@ -54,6 +54,41 @@ System.err.println("Prueba1");
         }
     }*/
     
+    public static Usuario buscarUsuario(int id){
+        Usuario u = new Usuario();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from usuario where id_usuario = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id);
+
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               u.setDni(resultado.getString("dni"));
+               u.setNombre(resultado.getString("nombre"));
+               u.setApellidos(resultado.getString("apellido"));
+               u.setSexo(resultado.getString("sexo"));
+               u.setEmail(resultado.getString("email"));
+               u.setPassword(resultado.getString("password"));
+               u.setId_usuario(resultado.getInt("id_usuario"));
+            }            
+            return u;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Usuario.");
+            System.err.println(ex);
+            return u;
+        }
+    
+    }
+    
     
     public static Biblioteca buscarBiblioteca(int id){
         Biblioteca b = new Biblioteca();
@@ -73,7 +108,7 @@ System.err.println("Prueba1");
 
             while(resultado.next()){
                b.setId_bib(resultado.getInt("id_bib"));
-               b.setDni_admin("id:"+resultado.getInt("id_usuario"));
+               b.setDni_admin(ControladorManolo.buscarUsuario(resultado.getInt("id_usuario")).getDni());               
                b.setNombre(resultado.getString("nombre"));
                b.setTelefono(resultado.getInt("telefono"));
                b.setLocalizacion(resultado.getString("localizacion"));
@@ -188,7 +223,76 @@ System.err.println("Prueba1");
     }
     
     
+    public static Prestamo buscarPrestamo(int id){
+        Prestamo p = new Prestamo();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from prestamo where id_prestamo = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id);            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               p.setId_prestamo(resultado.getInt("id_prestamo"));
+               p.setId_ejem(resultado.getInt("id_ejem"));
+               p.setFecha_ini(resultado.getString("fecha_ini"));
+               p.setFecha_fin(resultado.getString("fecha_fin"));               
+               p.setNombre_cat(ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat());
+               p.setNombre_bib(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
+               p.setIsbn(ControladorManolo.buscarLibro(resultado.getInt("id_libro")).getIsbn()); 
+               p.setDni(ControladorManolo.buscarUsuario(resultado.getInt("id_Usuario")).getDni()); 
+               
+            }            
+            return p;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Prestamo.");
+            System.err.println(ex);
+            return p;
+        }
     
+    }
+    
+    
+    public static Reservado buscarReservado(int id){
+        Reservado p = new Reservado();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from reservado where id_reservado = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id);            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               p.setId_reservado(resultado.getInt("id_reservado"));
+               p.setId_ejem(resultado.getInt("id_ejem"));
+               p.setFecha_ini(resultado.getString("fecha_ini"));
+               p.setFecha_fin(resultado.getString("fecha_fin"));               
+               p.setNombre_cat(ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat());
+               p.setNombre_bib(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
+               p.setIsbn(ControladorManolo.buscarLibro(resultado.getInt("id_libro")).getIsbn()); 
+               p.setDni(ControladorManolo.buscarUsuario(resultado.getInt("id_Usuario")).getDni()); 
+               
+            }            
+            return p;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Reservado.");
+            System.err.println(ex);
+            return p;
+        }
+    
+    }
     
     public static void main(String[] args){
 /*
@@ -328,6 +432,16 @@ System.err.println("Prueba1");
         Libro l = ControladorManolo.buscarLibro(3000);
         System.out.println(l.toString()); 
 
+         Prestamo l = ControladorManolo.buscarPrestamo(16);
+        System.out.println(l.toString()); 
+        
+        Usuario u = ControladorManolo.buscarUsuario(9998);
+        System.out.println(u.toString());
+
+    
+  Reservado r = ControladorManolo.buscarReservado(18);
+        System.out.println(r.toString()); 
+
 
         ///////////////////////////////// Comprobaciones BuscarID
         System.out.println(Biblioteca.buscarId("PruebasManolo"));
@@ -340,15 +454,13 @@ System.err.println("Prueba1");
  
  // ----- Prestamo ----------
         
- 
-
-    
-                
+               
         
 
         
 
-        
+        Biblioteca b = ControladorManolo.buscarBiblioteca(1000);
+        System.out.println(b.toString());
    
 
         
