@@ -5,18 +5,25 @@
  */
 package Interfaz;
 
-import Modelo.Usuario;
+import Controlador.CTRLogin;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 
 /**
  *
- * @author alberto carrion
+ * @author alberto carrion leiva 
  */
-public class Login extends javax.swing.JFrame {
+public class ViewLogin extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
      */
-    public Login() {
+    private ViewRecordarContraseña vistaRecPass;
+    private ViewInicioAdmin vAdmin;
+    private ViewInicioEstudiante vEstudiante;
+    private ViewInicioBibliotecario vBibliotecario;
+
+    public ViewLogin() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -45,6 +52,7 @@ public class Login extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        mensaje = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -64,8 +72,6 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("¿No recuerda su clave?");
 
-        btnRecordarContraseña.setBackground(java.awt.Color.white);
-        btnRecordarContraseña.setForeground(new java.awt.Color(250, 40, 40));
         btnRecordarContraseña.setText("Recordar Contraseña");
         btnRecordarContraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,7 +106,7 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passIntroducido, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
+                        .addGap(123, 123, 123)
                         .addComponent(btnIniciarSesion)))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
@@ -153,6 +159,9 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        mensaje.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        mensaje.setForeground(new java.awt.Color(250, 40, 40));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -160,6 +169,7 @@ public class Login extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(171, 171, 171)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mensaje)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 171, Short.MAX_VALUE))
@@ -169,9 +179,11 @@ public class Login extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(mensaje)
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,30 +201,77 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     //BOTON RECORDAR CONTRASEÑA
-    // emailIntroducido --> variable donde se obtiene el email introducido
-    // passIntroducido --> variable donde se obtiene el pass introducido
 
     private void btnRecordarContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecordarContraseñaActionPerformed
 
-        System.out.println("pulsado boton Recordar Contraseña");
-        System.out.println("email Introducido:"+emailIntroducido.getText());
-
+        vistaRecPass = new ViewRecordarContraseña();
+        vistaRecPass.setVisible(true);
+        vistaRecPass.pack();
+        vistaRecPass.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setVisible(false);
     }//GEN-LAST:event_btnRecordarContraseñaActionPerformed
 
     //BOTON INICIAR SESION
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
 
-        System.out.println("pulsado boton Iniciar Sesion");
-        System.out.println("email Introducido:"+emailIntroducido.getText());
-        
+        System.out.println("-----> Pulsado boton Iniciar Sesion");
+        System.out.println("-----> Comprobando usuario....");
+
         // passIntroducido es de tipo Char[]
-        
         StringBuilder pass = new StringBuilder();
-        for (char x : passIntroducido.getPassword()){
+        for (char x : passIntroducido.getPassword()) {
             pass.append(x);
         }
-        System.out.println("pass Introducido:"+pass.toString());
+
+        //COMPROBAMOS SI LOS CAMPOS VACIOS
+        if (emailIntroducido.getText().equals("") || pass.toString().equals("")) {
+            emailIntroducido.setBorder(BorderFactory.createLineBorder(Color.red));
+            passIntroducido.setBorder(BorderFactory.createLineBorder(Color.red));
+            mensaje.setText("ERROR: Introduzca su email y contraseña");
+            System.err.println("ERROR: El usuario no ha introducido email y contraseña");
+        } else {
+            //COMPROBAMOS QUE EXISTE EL USUARIO
+            if (CTRLogin.comprobarLogin(emailIntroducido.getText(), pass.toString())) {
+                System.out.println("    ** Email Introducido:" + emailIntroducido.getText());
+                System.out.println("    ** Pass Introducido:" + pass.toString());
+                System.out.println("-----> El Usuario Existe");
+
+                //OBTENEMOS QUE TIPO DE USUARIO ES (0 ADMIN, 1 BIBLIOTECARIO, 2 ESTUDIANTE)
+                int tipoUsuario = CTRLogin.getTipoUsuario(emailIntroducido.getText(), pass.toString());
+
+                //INICIAMOS SESION
+                switch (tipoUsuario) {
+                    case 0:
+                        System.out.println("-----> Accediendo a Inicio Admin");
+                        vAdmin = new ViewInicioAdmin();
+                        vAdmin.setVisible(true);
+                        vAdmin.pack();
+                        vAdmin.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        this.setVisible(false);
+                        break;
+                    case 1:
+                        System.out.println("-----> Accediendo a Inicio Bibliotecario");
+                        vBibliotecario = new ViewInicioBibliotecario();
+                        vBibliotecario.setVisible(true);
+                        vBibliotecario.pack();
+                        vBibliotecario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        this.setVisible(false);
+                        break;
+                    case 2:
+                        System.out.println("-----> Accediendo a Inicio Estudiante");
+                        vEstudiante = new ViewInicioEstudiante();
+                        vEstudiante.setVisible(true);
+                        vEstudiante.pack();
+                        vEstudiante.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        this.setVisible(false);
+                        break;
+                }
+            } else {
+                mensaje.setText("ERROR: El usuario no existe");
+                System.err.println("ERROR: El usuario no existe");
+            }
+        }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     /**
@@ -232,20 +291,21 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new ViewLogin().setVisible(true);
             }
         });
     }
@@ -263,6 +323,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel mensaje;
     private javax.swing.JPasswordField passIntroducido;
     // End of variables declaration//GEN-END:variables
 
