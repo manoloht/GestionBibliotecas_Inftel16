@@ -198,7 +198,7 @@ public class Prestamo implements BaseDatos<Prestamo> {
                 Prestamo p = new Prestamo (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
                 prestamos.add(p);
             }
-
+            con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los prestamos.");
             System.err.println(ex);
@@ -225,7 +225,7 @@ public class Prestamo implements BaseDatos<Prestamo> {
             pstmt.setInt(4, id_cat);
             pstmt.setInt(5, id_bib);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {

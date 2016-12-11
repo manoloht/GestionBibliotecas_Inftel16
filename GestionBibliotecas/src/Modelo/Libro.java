@@ -326,7 +326,7 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setInt(3, id_bib);
             
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -358,7 +358,8 @@ public class Libro implements BaseDatos<Libro> {
             while(resultado.next()){
                id = resultado.getInt("id_libro");
 
-            }            
+            } 
+            con.close();
             return id;
 
         } catch (SQLException ex) {
@@ -391,7 +392,7 @@ public class Libro implements BaseDatos<Libro> {
                 Libro l = new Libro(isbn,titulo,fecha_edi,nombre_editorial, nombre_categoria,nombre_bib, pais,idioma);
                 libros.add(l);
             }
-
+            con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los libros.");
             System.err.println(ex);

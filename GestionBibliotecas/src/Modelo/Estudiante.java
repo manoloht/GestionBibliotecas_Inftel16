@@ -212,7 +212,7 @@ public class Estudiante extends Usuario {
             pstmt.setInt(1, id_usuario);
            
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -243,11 +243,12 @@ public class Estudiante extends Usuario {
                 Estudiante e = new Estudiante(dni, nombre, apellidos, sexo, email, password, numExp, nombre_bib);
                 estudiantes.add(e);
             }
-
+            con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los estudiantes");
             System.err.println(ex);
         }
+        
         return estudiantes;
     }
 
@@ -269,7 +270,7 @@ public class Estudiante extends Usuario {
                 Estudiante e = new Estudiante(numExp, dni,  nombre_bib);
                 estudiantes.add(e);
             }
-
+            con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los estudiantes");
             System.err.println(ex);

@@ -226,7 +226,7 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.clearParameters();
             pstmt.setString(1, dni);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -256,7 +256,7 @@ public class Usuario implements BaseDatos<Usuario>{
                 Usuario u = new Usuario(dni, nombre, apellidos, sexo, email, password);
                 usuarios.add(u);
             }
-
+            con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todos los usuarios");
             System.err.println(ex);
@@ -281,7 +281,8 @@ public class Usuario implements BaseDatos<Usuario>{
 
             while(resultado.next()){
                id = resultado.getInt("id_usuario");                             
-            }            
+            }
+            con.close();
             return id;
 
         } catch (SQLException ex) {

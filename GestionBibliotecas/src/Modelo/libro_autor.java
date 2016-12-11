@@ -162,7 +162,7 @@ public class libro_autor {
             pstmt.setInt(4, id_bib);
 
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {

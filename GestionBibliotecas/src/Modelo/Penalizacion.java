@@ -206,7 +206,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             pstmt.clearParameters();
             pstmt.setInt(1, id_estudiante);
             ResultSet resultado = pstmt.executeQuery();
-
+            con.close();
             return resultado.next();
 
         } catch (SQLException ex) {
@@ -234,7 +234,7 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
                 Penalizacion p = new Penalizacion(fecha_inicio, fecha_fin, dni);
                 penalizaciones.add(p);
             }
-
+            con.close();
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al obtener todas las penalizaciones");
             System.err.println(ex);
