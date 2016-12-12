@@ -216,7 +216,7 @@ public class Usuario implements BaseDatos<Usuario>{
     }
 //HECHO COMPROBAR
     private boolean comprobarUsuario(String dni) {
-
+        boolean comprueba;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -226,8 +226,9 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.clearParameters();
             pstmt.setString(1, dni);
             ResultSet resultado = pstmt.executeQuery();
+            comprueba = resultado.next();
             con.close();
-            return resultado.next();
+            return comprueba;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el usuario");
@@ -247,6 +248,7 @@ public class Usuario implements BaseDatos<Usuario>{
             ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
+                int id_usuario = resultado.getInt("id_usuario");
                 String dni = resultado.getString("dni");
                 String nombre = resultado.getString("nombre");
                 String apellidos = resultado.getString("apellido");
@@ -254,6 +256,7 @@ public class Usuario implements BaseDatos<Usuario>{
                 String email = resultado.getString("email");
                 String password = resultado.getString("password");
                 Usuario u = new Usuario(dni, nombre, apellidos, sexo, email, password);
+                u.setId_usuario(id_usuario);
                 usuarios.add(u);
             }
             con.close();

@@ -390,6 +390,11 @@ public class ControladorManolo {
     // void devolverEjemplar(id_usuario, id_ejemplar)
     //////////////////////////////
     
+    
+    
+    
+    
+    
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args){
@@ -398,14 +403,20 @@ public class ControladorManolo {
         - Todos los actualizar necesitan cambiar la comprobacion de la sentencia if
         - La entidad ejemplar no debe de contemplar el actualizar, solo insertar y borrar
             - Borrar => Comprobar y Actualizar en la Clase Ejemplar, no sirven para nada
+        - Insertar Usuario -> Método que compruebe que no existe ese dni en el sistema.
+                El problema es que hay de clave unica el dni.
         
 */    
 
 // ----- Pruebas MAIN ----------
-
-
-
-
+        
+    //System.err.println(CTRLogin.comprobarLogin("estudiante2@gmail.com", "abc123abc"));     
+            
+            //00999999X
+    String rol[]={"estudiante","bibliotecario","admin"};
+    
+    System.out.println(CTRLogin.getTipoUsuario("00555555X", "--"));
+   
 
 
 
@@ -414,7 +425,67 @@ public class ControladorManolo {
   
 ////////////////////////////////////////////////////////////////////////////////
 
- /*     //////////////////////////////////////// USUARIO 
+ /*
+
+
+    // Comprobaciones CTRLogin
+    System.err.println(CTRLogin.comprobarLogin("estudiante2@gmail.com", "abc123abc"));
+
+    // Comprobaciones CTRUsuario
+    
+//System.out.println(CTRUsuario.insertarAdministrador("RR88888A", "Paquito", "El Chocolatero", "H", "paquito@gmail.com", "--"));
+    //System.err.println(CTRUsuario.comprobarAdministrador("RR88888A"));
+    
+    //System.out.println(CTRUsuario.insertarBibliotecario("BBB55555K", "Toñete", "El Romantico", "H", "tonito@gmail.com", "PruebasManolo"));
+    //System.err.println(CTRUsuario.comprobarBibliotecario("BBB55555K"));
+    
+    //System.out.println(CTRUsuario.insertarEstudiante("JJJ4444V", "Maria", "La Cantaora", "M", "maripepi@gmail.com", "PruebasManolo", "Exp1111A"));
+    //System.err.println(CTRUsuario.comprobarEstudiante("JJJ4444V"));
+   //Estudiante e = new Estudiante("JJJ4444V", "Maria", "La Cantaora", "M", "maripepi@gmail.com","asdfasdf","Exp1111A", "PruebasManolo");
+   //Estudiante e2 = new Estudiante("GGG2222W", "Ramona", "Pechugona", "M", "lapechu@gmail.com","asdfasdf","Exp2222A", "PruebasManolo");
+   
+   //System.err.println(e.insertar());
+   //System.err.println(e2.insertar());
+
+
+
+// DEVOLVER LISTA DE USUARIOS POR ROL
+    // rol PUEDE SER Todos, Administrador, Biliotecario, Estudiante);
+ 
+        String rol = "bibliotecario";
+        
+        List<Usuario> usuarios = new ArrayList<>();       
+        usuarios = CTRUsuario.buscarUsuariosRol(rol);
+        
+        System.out.println(usuarios.size());
+        
+        for(Usuario u : usuarios){
+            System.out.println(u.toString());
+        }
+
+
+
+// DEVOLVER LISTA DE USUARIOS POR ROL, PALABRA CLAVE Y VALOR PALABRA CLAVE 
+    // rol PUEDE SER Todos, Administrador, Biliotecario, Estudiante);
+    // palabra_clave PUEDE SER Dni, Nombre, Apellidos, Email
+    // valor PUEDE SER cualquiera que introduzca el usuario
+
+        String rol = "todos";
+        String palabra_clave = "seXo";
+        String valor_pal_clave = "H";
+        
+        List<Usuario> usuarios = new ArrayList<>();       
+        usuarios = CTRUsuario.buscarUsuarios(rol, palabra_clave, valor_pal_clave);
+        
+        System.out.println(usuarios.size());
+        
+        for(Usuario u : usuarios){
+            System.out.println(u.toString());
+        }
+
+
+
+     //////////////////////////////////////// USUARIO 
         Usuario u = new Usuario();
         u.setNombre("Pepe");
         u.setApellidos("de los rios");
@@ -580,30 +651,7 @@ public class ControladorManolo {
  
  
  
- 
- ///////////////////////////////// PrestamosByEstudiante(id)
-        List<Prestamo> prestamos;       
-        prestamos = ControladorManolo.prestamosByEstudiante(9998);
-        
-        System.out.println(prestamos.size());
-        
-        for(Prestamo p : prestamos){
-            System.out.println(p.toString());
-            System.out.println(p.getId_prestamo());
-        }
-        
-        
-        ///////////////////////////////// ReservadosByEstudiante(id)
-        List<Reservado> reservados;       
-        reservados = ControladorManolo.reservadosByEstudiante(9998);
-        
-        System.out.println(reservados.size());
-        
-        for(Reservado r : reservados){
-            System.out.println(r.toString());
-            System.out.println(r.getId_reservado());
-        }
- 
+
         
     }   
     

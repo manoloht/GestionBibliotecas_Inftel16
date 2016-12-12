@@ -114,7 +114,7 @@ public class Estudiante extends Usuario {
             int id_estudiante = Usuario.buscarId(super.getDni());
                // buscar id de biblioteca que pertenece el estudiante para insertar en tabla estudiante
             int id_bib = Biblioteca.buscarId(this.nombre_biblioteca);          
-            
+
             String consulta2 = "insert into estudiante (numexp,id_bib,id_usuario) values (?,?,?)";
             PreparedStatement pstmt2 = con.prepareStatement(consulta2);
             pstmt2.clearParameters();
@@ -201,7 +201,7 @@ public class Estudiante extends Usuario {
     }
 
     private boolean comprobarEstudiante(int id_usuario) {
-
+        boolean comprobar;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -212,8 +212,9 @@ public class Estudiante extends Usuario {
             pstmt.setInt(1, id_usuario);
            
             ResultSet resultado = pstmt.executeQuery();
+            comprobar = resultado.next();
             con.close();
-            return resultado.next();
+            return comprobar;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el estudiante");

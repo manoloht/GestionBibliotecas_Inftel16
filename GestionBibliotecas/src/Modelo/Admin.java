@@ -122,7 +122,7 @@ public class Admin extends Usuario {
     }
 
     public static boolean comprobarAdmin(int id_admin) {
-
+        boolean comprobar;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -131,8 +131,9 @@ public class Admin extends Usuario {
             pstmt.clearParameters();
             pstmt.setInt(1, id_admin);
             ResultSet resultado = pstmt.executeQuery(); 
+            comprobar = resultado.next();
             con.close();
-            return resultado.next();
+            return comprobar;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el administrador");

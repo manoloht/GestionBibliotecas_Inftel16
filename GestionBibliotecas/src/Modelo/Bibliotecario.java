@@ -143,7 +143,7 @@ public class Bibliotecario extends Usuario {
     }
 
     private boolean comprobarBibliotecario(int id_usuario) {
-
+        boolean comprobar;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -153,8 +153,9 @@ public class Bibliotecario extends Usuario {
             pstmt.clearParameters();
             pstmt.setInt(1, id_usuario);
             ResultSet resultado = pstmt.executeQuery();
+            comprobar = resultado.next();
             con.close();
-            return resultado.next();
+            return comprobar;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el bibliotecario");
