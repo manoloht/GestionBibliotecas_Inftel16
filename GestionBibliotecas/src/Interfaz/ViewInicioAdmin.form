@@ -135,7 +135,7 @@
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="1454" max="32767" attributes="0"/>
+                  <EmptySpace pref="1449" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -214,7 +214,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="28" green="28" red="fa" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Inicio Administrador"/>
+            <Property name="text" type="java.lang.String" value="Bienvenido de Nuevo"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="numResultados">

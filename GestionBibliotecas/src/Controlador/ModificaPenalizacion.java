@@ -6,7 +6,7 @@
 package Controlador;
 
 import Configuracion.Conexion;
-import Controlador.SenderEmail.MailSender;
+//import Controlador.SenderEmail.MailSender;
 import Controlador.SenderEmail.prueba;
 import Modelo.*;
 
@@ -30,7 +30,7 @@ import javax.mail.MessagingException;
  *
  * @author YUEMEI
  */
-public class ModificaPenalizacion {
+/*public class ModificaPenalizacion {
 
     public static Calendar ToCalendar(String fecha) throws ParseException {
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -220,3 +220,4 @@ public class ModificaPenalizacion {
         
      }
 }
+*/

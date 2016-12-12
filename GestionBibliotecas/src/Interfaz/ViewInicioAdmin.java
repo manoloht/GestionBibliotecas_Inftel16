@@ -91,7 +91,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe Print", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel6.setText("Inicio Administrador");
+        jLabel6.setText("Bienvenido de Nuevo");
 
         numResultados.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -110,7 +110,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(jLabel6)))
-                .addContainerGap(1454, Short.MAX_VALUE))
+                .addContainerGap(1449, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
