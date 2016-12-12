@@ -102,82 +102,8 @@ public class ControladorYuemei {
 //        }
 //
 //    }
-    public static Calendar ToCalendar( String fecha) throws ParseException{
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaDate = df.parse(fecha);
-        Calendar fecha_fin = Calendar.getInstance();
-        fecha_fin.clear();
-        fecha_fin.setTime(fechaDate);
-        
-        return fecha_fin;     
-        
-    }
+   
     
-    public  static String CalcularFechaPenalizada(Calendar fecha_fin, Calendar hoy) throws ParseException {
-        
-        // transformar a milsegundos
-        long sl = fecha_fin.getTimeInMillis();
-        long el = hoy.getTimeInMillis();
-         // calcular diferencia;
-        long ei = el - sl;
-        int dia_retraso = (int) (ei / (1000 * 60 * 60 * 24));
-        int dia_penaliza=2*dia_retraso;
-        //CalcularFechaPenalizada
-        Calendar Fecha_penalizada = (Calendar) hoy.clone();
-        Fecha_penalizada.add(Calendar.DATE, dia_penaliza);
-        String Fecha = (new SimpleDateFormat("dd/MM/yyyy")).format(Fecha_penalizada.getTime());
-        return Fecha;
-    }
-    
-         
-    public  static void InsertarPenalizacion() throws ParseException{
-        Calendar hoy = Calendar.getInstance();
-        hoy.clear();              
-        hoy.setTime(new Date()); // establece feche de hoy;
-        String Fecha_penalizada;     
-        int dia_retraso;
-        int dia_penaliza;
-        Penalizacion p=new Penalizacion();
-       
-        
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-            String consulta = "select id_usuario,fecha_fin from prestamo";
-            Statement stmt = con.createStatement();
-            ResultSet resultado = stmt.executeQuery(consulta);
-
-            while (resultado.next()) {
-             
-                String fecha =resultado.getString("fecha_fin");               
-                int id_usuario = resultado.getInt("id_usuario");  
-                
-                Calendar fecha_fin=ToCalendar(fecha); // transforma String a Calendar
-                if (hoy.after(fecha_fin)){ // cuando existe retraso
-                Fecha_penalizada=CalcularFechaPenalizada(fecha_fin,hoy); // calcula fecha penalizada
-                p.setId_estudiante(id_usuario);
-                p.setfecha_inicio(fecha);
-                p.setfecha_fin(Fecha_penalizada);
-                
-                
-                p.insertar();
-                
-                
-                
-                }
-               
-                              
-               
-            }
-            con.close();
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al obtener todos los prestamos.");
-            System.err.println(ex);
-        }
-      
-        
-        
-    }
     public static void main(String[] args) throws ParseException {
 
         String fecha = "09/12/2016";
@@ -196,13 +122,13 @@ public class ControladorYuemei {
 //        hoy.setTime(new Date());
 
         boolean pasado;
-        pasado = hoy.after(fecha_finn);
-        System.out.println("ha pasado fecha_fin?" + pasado);
+//        pasado = hoy.after(fecha_finn);
+//        System.out.println("ha pasado fecha_fin?" + pasado);
 
         int dia_retraso;
-        dia_retraso = CalcularDiaRetraso(fecha,hoy);
+//        dia_retraso = CalcularDiaRetraso(fecha,hoy);
         
-        System.out.println("dia_retraso:" + dia_retraso);
+//        System.out.println("dia_retraso:" + dia_retraso);
 //        
 //       SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd" );  
 
