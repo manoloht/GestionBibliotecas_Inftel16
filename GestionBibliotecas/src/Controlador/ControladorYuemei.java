@@ -26,106 +26,52 @@ import java.util.logging.Logger;
  * @author Manuel
  */
 public class ControladorYuemei {
+    
+    public static void CrearLibro(String isbn, String titulo, String fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma,String nombre_autor,String apellido_autor){
+//        boolean insertarlibro,insertarEjemplar,insertarautor,insertarlibroautor;
+        Libro libro=new Libro(isbn, titulo,fecha_edi,  nombre_editorial, nombre_categoria,  nombre_bib,  pais,  idioma);
+        Ejemplar ejem=new Ejemplar(isbn,nombre_categoria,  nombre_bib);
+        Autor autor=new Autor(nombre_autor, apellido_autor);
+        libro_autor libaut=new libro_autor( nombre_autor, apellido_autor,  isbn,  nombre_bib,  nombre_categoria);
+        if(libro.insertar()){
+       
+        autor.insertar();
+        libaut.InsertarLibroAutor(); 
+        
+        ejem.insertar();
+        
+    }else{
+            ejem.insertar();
+        }
+        
+    }
+    
 
-//     public static Libro buscarLibro(int id){
-//        Libro l = new Libro();
-//        
-//        try {
-//            Conexion conexion = new Conexion();
-//            Connection con = conexion.getConnection();
-//
-////            String consulta = "select * from libro where id_libro = ?";
-//            String consulta = "select libro.isbn,libro.titulo,libro.fecha_ed, biblioteca.nombre,"+
-//                             "categoria.nombre_cat, editorial.nombre_edit"+
-//                              " from libro,categoria,biblioteca,editorial"+
-//                              "where libro.id_bib=biblioteca.id_bib"+
-//                              "and libro.id_cat=categoria.id_cat"+ 
-//                              " and libro.id_edit=editorial.id_edit"+
-//                               " and id_libro=?";
-//            PreparedStatement pstmt = con.prepareStatement(consulta);
-//            pstmt.clearParameters();
-//            pstmt.setInt(1, id);            
-//            ResultSet resultado = pstmt.executeQuery();
-//
-//            while(resultado.next()){
-//               l.setId_libro(resultado.getInt("id_libro"));
-//                l.setNombre_categoria(resultado.getString("nombre_cat"));
-//               l.setNombre_bib(resultado.getString("nombre"));
-//               l.setNombre_editorial(resultado.getString("nombre_edit"));
-////               l.setNombre_categoria(ControladorManolo.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat());
-////               l.setNombre_bib(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
-////               l.setNombre_editorial(ControladorManolo.buscarEditorial(resultado.getInt("id_edit")).getNombre_edit());
-//               
-//               l.setIsbn(resultado.getString("isbn"));
-//               l.setTitulo(resultado.getString("titulo"));
-//               l.setPais(resultado.getString("pais"));
-//               l.setIdioma(resultado.getString("idioma"));
-//               l.setFecha_edi(resultado.getString("fecha_edi"));               
-//            }            
-//            return l;
-//
-//        } catch (SQLException ex) {
-//            System.err.println("Excepcion SQL: Error al buscar Objeto Libro.");
-//            System.err.println(ex);
-//            return l;
-//        }
-//    
-//    }
-//    public static Categoria buscarCategoria(int id) {
-//        Categoria c = new Categoria();
-//
-//        try {
-//            Conexion conexion = new Conexion();
-//            Connection con = conexion.getConnection();
-////            String consulta = "select * from categoria where id_cat = ?";
-//            String consulta = "select categoria.nombre_cat,biblioteca.nombre from categoria,"
-//                    + "biblioteca where categoria.id_bib= biblioteca.id_bib and id_cat= ?";
-//
-//            PreparedStatement pstmt = con.prepareStatement(consulta);
-//            pstmt.clearParameters();
-//            pstmt.setInt(1, id);
-//
-//            ResultSet resultado = pstmt.executeQuery();
-//
-//            while (resultado.next()) {
-//                c.setId_cat(resultado.getInt("id_cat"));
-//                c.setNombre_cat(resultado.getString("nombre_cat"));
-//                //  c.setNombre_biblioteca(ControladorManolo.buscarBiblioteca(resultado.getInt("id_bib")).getNombre());
-//                c.setNombre_biblioteca(resultado.getString("nombre"));
-//            }
-//            return c;
-//
-//        } catch (SQLException ex) {
-//            System.err.println("Excepcion SQL: Error al buscar Objeto Categoria.");
-//            System.err.println(ex);
-//            return c;
-//        }
-//
-//    }
-   
     
     public static void main(String[] args) throws ParseException {
 
-        String fecha = "09/12/2016";
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date fecha_fin = df.parse(fecha);
-
-        System.out.println("fecha_fin es：" + fecha_fin);
-        System.out.println("现在时间是：" + new Date());
-
-        Calendar fecha_finn = Calendar.getInstance();
-        fecha_finn.clear();
-        fecha_finn.setTime(fecha_fin);
+        String isbn="isbn666";
+        String titulo="Fisica";
+        String fecha_edi="1998";
+        String editorial="Editorial A ";
+        String categoria="CategoriaA";
+        String biblioteca="PruebasManolo";
+        String pais="chino";
+        String idioma="chino";        
+        String nombre_autor="juan";
+        String nombre_apellido="jose";
+     
+        ControladorYuemei.CrearLibro(isbn, titulo, fecha_edi,editorial,categoria, biblioteca, pais, idioma, nombre_autor, nombre_apellido);
 
 //        Calendar hoy = Calendar.getInstance();
 //        hoy.clear();
 //        hoy.setTime(new Date());
 
-        boolean pasado;
+//        boolean pasado;
 //        pasado = hoy.after(fecha_finn);
 //        System.out.println("ha pasado fecha_fin?" + pasado);
 
-        int dia_retraso;
+//        int dia_retraso;
 //        dia_retraso = CalcularDiaRetraso(fecha,hoy);
         
 //        System.out.println("dia_retraso:" + dia_retraso);

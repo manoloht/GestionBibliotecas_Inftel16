@@ -148,7 +148,7 @@ public class libro_autor {
     }
 
     public static boolean comprobarLibroAutor(int id_autor, int id_libro, int id_cat, int id_bib) {
-
+            boolean comprobar;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -162,8 +162,9 @@ public class libro_autor {
             pstmt.setInt(4, id_bib);
 
             ResultSet resultado = pstmt.executeQuery();
+            comprobar=resultado.next(); 
             con.close();
-            return resultado.next();
+            return comprobar;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el libro. ");

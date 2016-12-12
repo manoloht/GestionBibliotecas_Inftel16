@@ -31,6 +31,12 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
         this.id_ejem = id_ejem;
     }
 
+    public Ejemplar(String isbn, String nombre_cat, String nombre_bib) {
+        this.isbn = isbn;
+        this.nombre_cat = nombre_cat;
+        this.nombre_bib = nombre_bib;
+    }
+
     public Ejemplar(int id_ejem, String isbn, String nombre_cat, String nombre_bib) {
         this.id_ejem = id_ejem;  // constructor clave
         this.isbn = isbn;

@@ -193,6 +193,7 @@ public class Autor implements BaseDatos<Autor>{
 
    // @Override //ACABAR
     public static boolean comprobarAutor(String nombre,String apellido) {
+        boolean comprobar;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -204,8 +205,9 @@ public class Autor implements BaseDatos<Autor>{
              pstmt.setString(2, apellido);
             
             ResultSet resultado = pstmt.executeQuery();
+            comprobar=resultado.next();
             con.close();
-            return resultado.next();
+            return comprobar;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el autor.");
