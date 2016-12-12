@@ -434,4 +434,65 @@ public class CTRUsuario {
         Usuario u = new Usuario(dni);
         return u.borrar();
     }
+    
+        
+       
+     
+    
+    //////////////////////////////
+    // Estudiante - Buscar libros
+    //
+    // List<Libro> buscarLibros(String biblioteca, String categoria, String palabra_clave, String palabra_valor)
+    //////////////////////////////
+    public static List<Libro> buscarLibros(String biblioteca, String palabra_clave, String palabra_valor)
+    {
+       List<Libro> libros = new ArrayList<>();
+      
+        int id_bib = Biblioteca.buscarId(biblioteca);
+        String cad_biblioteca = "";
+
+       if(!(biblioteca.equals("Todas") || biblioteca.equals("todas") || biblioteca.equals("TODAS"))){
+           cad_biblioteca= " id_bib = " + id_bib + " and ";
+           
+       } 
+       
+       String consulta = "select * from libro where  "+cad_biblioteca+" "+ palabra_clave +" like '"+ palabra_valor +"'";
+
+       try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                String isbn = resultado.getString("isbn");
+                String titulo = resultado.getString("titulo");
+                String fecha_edi = resultado.getString("fecha_edi");
+                String pais = resultado.getString("pais");
+                String idioma = resultado.getString("idioma");
+                
+                String nombre_editorial = Util.buscarEditorial(resultado.getInt("id_edit")).getNombre_edit();
+                String nombre_categoria = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();
+
+                Libro l = new Libro(isbn, titulo, fecha_edi, nombre_editorial, nombre_categoria, nombre_bib, pais, idioma);
+                l.setId_libro(resultado.getInt("id_libro"));
+ 
+                libros.add(l); 
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los libros.");
+            System.err.println(ex);
+        }
+        return libros;
+    }
+    
+    
+    
+    
+    
+    
+    
 }
