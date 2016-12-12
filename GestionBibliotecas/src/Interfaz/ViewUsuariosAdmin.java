@@ -19,10 +19,17 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
     private String rolBusqueda;
     private String palabraBusqueda;
     private ViewVerUsuario vistaVerUsuario;
+    private ViewVerAdmin vistaVerAdmin;
+    private ViewVerBibliotecario vistaVerBibliotecario;
+    private ViewVerEstudiante vistaVerEstudiante;
     private ViewCrearAdmin vistaCrearAdmin;
     private ViewCrearBibliotecario vistaCrearBibliotecario;
     private ViewCrearEstudiante vistaCrearEstudiante;
     private final DefaultTableModel modeloTabla;
+    private ViewUsuariosAdmin vistaUsuariosAdmin;
+    private ViewLogin vistaLogin;
+    private ViewBibliotecasAdmin vistaBibliotecasAdmin;
+    private ViewMiPerfil vistaMiPerfil;
 
     /**
      * Creates new form UsuariosAdmin
@@ -76,6 +83,13 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btnCrearBibliotecario = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        MenuMiPerfil = new javax.swing.JMenuItem();
+        MenuSalir = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        MenuGestionUsuarios = new javax.swing.JMenuItem();
+        MenuGestionBibliotecas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,14 +116,14 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jLabel6.setFont(new java.awt.Font("Segoe Print", 1, 48)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe Print", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(250, 40, 40));
         jLabel6.setText("Usuarios");
 
@@ -212,43 +226,41 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                         .addGap(150, 150, 150)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(numResultados)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(74, 74, 74)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnBuscarUsuario))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
+                                .addGap(1, 1, 1)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rolElegido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(74, 74, 74)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnBuscarUsuario))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnCrearAdmin)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCrearBibliotecario)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton1))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(769, Short.MAX_VALUE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))))
+                .addContainerGap(768, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -265,20 +277,61 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                     .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarUsuario))
-                .addGap(39, 39, 39)
+                .addGap(45, 45, 45)
                 .addComponent(numResultados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(308, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("Inicio");
+
+        MenuMiPerfil.setText("Mi Perfil");
+        MenuMiPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuMiPerfilActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuMiPerfil);
+
+        MenuSalir.setText("Salir");
+        MenuSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuSalirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuSalir);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Gestionar");
+
+        MenuGestionUsuarios.setText("Usuarios");
+        MenuGestionUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuGestionUsuariosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(MenuGestionUsuarios);
+
+        MenuGestionBibliotecas.setText("Bibliotecas");
+        MenuGestionBibliotecas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuGestionBibliotecasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(MenuGestionBibliotecas);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -359,10 +412,10 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
             }
             vistaVerUsuario.email.setText(email);
         } else if (rolBusqueda.equals("Administrador")) {
-            vistaVerUsuario = new ViewVerUsuario();
-            vistaVerUsuario.setVisible(true);
-            vistaVerUsuario.pack();
-            vistaVerUsuario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            vistaVerAdmin = new ViewVerAdmin();
+            vistaVerAdmin.setVisible(true);
+            vistaVerAdmin.pack();
+            vistaVerAdmin.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
             String dni = modeloTabla.getValueAt(index, 0).toString();
             String nombre = modeloTabla.getValueAt(index, 1).toString();
@@ -370,19 +423,59 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
             String sexo = modeloTabla.getValueAt(index, 3).toString();
             String email = modeloTabla.getValueAt(index, 4).toString();
 
-            vistaVerUsuario.dni.setText(dni);
-            vistaVerUsuario.nombre.setText(nombre);
-            vistaVerUsuario.apellidos.setText(apellidos);
+            vistaVerAdmin.dni.setText(dni);
+            vistaVerAdmin.nombre.setText(nombre);
+            vistaVerAdmin.apellidos.setText(apellidos);
             if (sexo.equals("H")) {
-                vistaVerUsuario.sexo.setSelectedIndex(0);
+                vistaVerAdmin.sexo.setSelectedIndex(0);
             } else {
-                vistaVerUsuario.sexo.setSelectedIndex(1);
+                vistaVerAdmin.sexo.setSelectedIndex(1);
             }
-            vistaVerUsuario.email.setText(email);
+            vistaVerAdmin.email.setText(email);
         } else if (rolBusqueda.equals("Bibliotecario")) {
+            vistaVerBibliotecario = new ViewVerBibliotecario();
+            vistaVerBibliotecario.setVisible(true);
+            vistaVerBibliotecario.pack();
+            vistaVerBibliotecario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+            String dni = modeloTabla.getValueAt(index, 0).toString();
+            String nombre = modeloTabla.getValueAt(index, 1).toString();
+            String apellidos = modeloTabla.getValueAt(index, 2).toString();
+            String sexo = modeloTabla.getValueAt(index, 3).toString();
+            String email = modeloTabla.getValueAt(index, 4).toString();
+
+            vistaVerBibliotecario.dni.setText(dni);
+            vistaVerBibliotecario.nombre.setText(nombre);
+            vistaVerBibliotecario.apellidos.setText(apellidos);
+            if (sexo.equals("H")) {
+                vistaVerBibliotecario.sexo.setSelectedIndex(0);
+            } else {
+                vistaVerBibliotecario.sexo.setSelectedIndex(1);
+            }
+            vistaVerBibliotecario.email.setText(email);
+            vistaVerBibliotecario.biblioteca.addItem(CTRUsuario.obtenerBiblioteca(dni));
         } else {
+            vistaVerEstudiante = new ViewVerEstudiante();
+            vistaVerEstudiante.setVisible(true);
+            vistaVerEstudiante.pack();
+            vistaVerEstudiante.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+            String dni = modeloTabla.getValueAt(index, 0).toString();
+            String nombre = modeloTabla.getValueAt(index, 1).toString();
+            String apellidos = modeloTabla.getValueAt(index, 2).toString();
+            String sexo = modeloTabla.getValueAt(index, 3).toString();
+            String email = modeloTabla.getValueAt(index, 4).toString();
+
+            vistaVerEstudiante.dni.setText(dni);
+            vistaVerEstudiante.nombre.setText(nombre);
+            vistaVerEstudiante.apellidos.setText(apellidos);
+            if (sexo.equals("H")) {
+                vistaVerEstudiante.sexo.setSelectedIndex(0);
+            } else {
+                vistaVerEstudiante.sexo.setSelectedIndex(1);
+            }
+            vistaVerEstudiante.email.setText(email);
+            vistaVerEstudiante.biblioteca.addItem(CTRUsuario.obtenerBiblioteca(dni));
         }
     }//GEN-LAST:event_tablaUsuariosMouseClicked
 
@@ -412,43 +505,37 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
         vistaCrearEstudiante.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewUsuariosAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void MenuGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuGestionUsuariosActionPerformed
+        vistaUsuariosAdmin = new ViewUsuariosAdmin();
+        vistaUsuariosAdmin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_MenuGestionUsuariosActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewUsuariosAdmin().setVisible(true);
-            }
-        });
-    }
+    private void MenuGestionBibliotecasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuGestionBibliotecasActionPerformed
+        vistaBibliotecasAdmin = new ViewBibliotecasAdmin();
+        vistaBibliotecasAdmin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_MenuGestionBibliotecasActionPerformed
+
+    private void MenuMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuMiPerfilActionPerformed
+        vistaMiPerfil = new ViewMiPerfil();
+        vistaMiPerfil.mensaje.setText("");
+        vistaMiPerfil.setVisible(true); 
+        vistaMiPerfil.pack();
+        vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_MenuMiPerfilActionPerformed
+
+    private void MenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSalirActionPerformed
+        vistaLogin = new ViewLogin();
+        vistaLogin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_MenuSalirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuGestionBibliotecas;
+    private javax.swing.JMenuItem MenuGestionUsuarios;
+    private javax.swing.JMenuItem MenuMiPerfil;
+    private javax.swing.JMenuItem MenuSalir;
     private javax.swing.JButton btnBuscarUsuario;
     private javax.swing.JButton btnCrearAdmin;
     private javax.swing.JButton btnCrearBibliotecario;
@@ -462,6 +549,9 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

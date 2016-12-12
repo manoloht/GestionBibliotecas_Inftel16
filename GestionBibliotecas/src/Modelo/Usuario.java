@@ -215,7 +215,7 @@ public class Usuario implements BaseDatos<Usuario>{
         }
     }
 //HECHO COMPROBAR
-    private boolean comprobarUsuario(String dni) {
+    public boolean comprobarUsuario(String dni) {
         boolean comprueba;
         try {
             Conexion conexion = new Conexion();

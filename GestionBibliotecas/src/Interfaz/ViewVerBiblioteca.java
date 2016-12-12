@@ -5,7 +5,7 @@
  */
 package Interfaz;
 
-import Controlador.CTRUsuario;
+import Controlador.CTRBiblioteca;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 
@@ -13,18 +13,18 @@ import javax.swing.BorderFactory;
  *
  * @author albertocheca
  */
-public class ViewVerUsuario extends javax.swing.JFrame {
+public class ViewVerBiblioteca extends javax.swing.JFrame {
 
     /**
      * Creates new form VerUsuarioAdmin
      */
     private ViewAlertaBorrarUsuario alerta;
 
-    public ViewVerUsuario() {
+    public ViewVerBiblioteca() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setTitle("Ver Usuario");
+        this.setTitle("Ver Biblioteca");
         this.mensaje.setText("");
     }
 
@@ -39,20 +39,14 @@ public class ViewVerUsuario extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         dniEditado = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         nombre = new javax.swing.JTextField();
-        dni = new javax.swing.JTextField();
-        email = new javax.swing.JTextField();
-        apellidos = new javax.swing.JTextField();
-        sexo = new javax.swing.JComboBox<>();
         btnEditar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
+        adminSel = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         mensaje = new javax.swing.JLabel();
 
@@ -62,22 +56,11 @@ public class ViewVerUsuario extends javax.swing.JFrame {
 
         dniEditado.setBackground(new java.awt.Color(211, 211, 211));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("DNI");
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("NOMBRE");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("APELLIDOS");
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("SEXO");
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("EMAIL");
-
-        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H", "M" }));
+        jLabel3.setText("ADMIN");
 
         btnEditar.setBackground(new java.awt.Color(250, 40, 40));
         btnEditar.setForeground(java.awt.Color.white);
@@ -107,76 +90,50 @@ public class ViewVerUsuario extends javax.swing.JFrame {
         dniEditadoLayout.setHorizontalGroup(
             dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dniEditadoLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dniEditadoLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(dniEditadoLayout.createSequentialGroup()
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel4))
-                                .addGap(88, 88, 88)
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(dniEditadoLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(102, 102, 102)
-                                .addComponent(dni))
-                            .addGroup(dniEditadoLayout.createSequentialGroup()
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(55, 55, 55)
-                                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
-                                    .addComponent(nombre)))))
+                        .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(55, 55, 55)
+                        .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(adminSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(dniEditadoLayout.createSequentialGroup()
-                        .addGap(217, 217, 217)
+                        .addGap(190, 190, 190)
                         .addComponent(btnEditar)
-                        .addGap(18, 18, 18)
+                        .addGap(34, 34, 34)
                         .addComponent(btnBorrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalir)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                        .addGap(39, 39, 39)
+                        .addComponent(btnSalir))
+                    .addComponent(jLabel6))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         dniEditadoLayout.setVerticalGroup(
             dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dniEditadoLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                    .addComponent(adminSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
-                    .addComponent(btnSalir)
-                    .addComponent(btnBorrar))
-                .addGap(27, 27, 27))
+                    .addComponent(btnBorrar)
+                    .addComponent(btnSalir))
+                .addGap(48, 48, 48)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel7.setText("Ver Usuario");
+        jLabel7.setText("Ver Biblioteca");
 
         mensaje.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         mensaje.setForeground(java.awt.Color.red);
@@ -202,10 +159,10 @@ public class ViewVerUsuario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mensaje)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -216,7 +173,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -225,7 +182,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         // TODO add your handling code here:
-        alerta = new ViewAlertaBorrarUsuario(dni.getText());
+        alerta = new ViewAlertaBorrarUsuario(nombre.getText());
         alerta.setVisible(true);
         alerta.pack();
         alerta.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -233,32 +190,24 @@ public class ViewVerUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Editando Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText());
-        if (dni.getText().equals("") || nombre.getText().equals("") || apellidos.getText().equals("") || email.getText().equals("")) {
+
+      System.out.println("Editando Biblioteca: " + nombre.getText() + " "+ adminSel.getSelectedItem().toString());
+        if (nombre.getText().equals("")) {
             System.err.println("---->  ERROR: Campos Vacios");
             mensaje.setText("ERROR: Faltan campos por rellenar");
-            if (dni.getText().equals("")) {
-                dni.setBorder(BorderFactory.createLineBorder(Color.red));
-            } else if (nombre.getText().equals("")) {
-                nombre.setBorder(BorderFactory.createLineBorder(Color.red));
-            } else if (apellidos.getText().equals("")) {
-                apellidos.setBorder(BorderFactory.createLineBorder(Color.red));
-            } else if(email.getText().equals("")){
-                email.setBorder(BorderFactory.createLineBorder(Color.red));
-            }
+            nombre.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
-            if (CTRUsuario.comprobarUsuario(dni.getText())) {
-                System.err.println("---->  ERROR: El usuario existe");
-                mensaje.setText("ERROR: El usuario existe");
+            if (CTRBiblioteca.comprobarBiblioteca(nombre.getText())) {
+                System.err.println("---->  ERROR: La biblioteca existe");
+                mensaje.setText("ERROR: La biblioteca existe");
             } else {
-                System.out.println("---->  Editanto Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
-                if (CTRUsuario.editarUsuario(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())){
-                    System.out.println("---->  Usuario editado con éxito");
-                    mensaje.setText("ÉXITO: El usuario se ha editado correctamente");
+                System.out.println("Editando Biblioteca: " + nombre.getText() + " "+ adminSel.getSelectedItem().toString());
+                if (CTRBiblioteca.crearBiblioteca(nombre.getText(), adminSel.getSelectedItem().toString())){
+                    System.out.println("---->  Biblioteca editada con éxito");
+                    mensaje.setText("ÉXITO: La biblioteca se ha editado correctamente");
                 }else{
-                    System.out.println("---->  Error al editar el usuario");
-                    mensaje.setText("ERROR: No se pudo editar el usuario");
+                    System.out.println("---->  Error al editar la biblioteca");
+                    mensaje.setText("ERROR: No se pudo editar la biblioteca");
                 }
             }
         }
@@ -270,23 +219,17 @@ public class ViewVerUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JTextField apellidos;
+    public javax.swing.JComboBox<String> adminSel;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnSalir;
-    public javax.swing.JTextField dni;
     private javax.swing.JPanel dniEditado;
-    public javax.swing.JTextField email;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel mensaje;
     public javax.swing.JTextField nombre;
-    public javax.swing.JComboBox<String> sexo;
     // End of variables declaration//GEN-END:variables
 }
