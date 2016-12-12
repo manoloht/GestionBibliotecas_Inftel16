@@ -247,7 +247,6 @@ public class ViewLogin extends javax.swing.JFrame {
                         vAdmin = new ViewInicioAdmin();
                         vAdmin.setVisible(true);
                         vAdmin.pack();
-                        vAdmin.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                         this.setVisible(false);
                         break;
                     case 1:
@@ -255,7 +254,6 @@ public class ViewLogin extends javax.swing.JFrame {
                         vBibliotecario = new ViewInicioBibliotecario();
                         vBibliotecario.setVisible(true);
                         vBibliotecario.pack();
-                        vBibliotecario.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                         this.setVisible(false);
                         break;
                     case 2:
@@ -263,7 +261,6 @@ public class ViewLogin extends javax.swing.JFrame {
                         vEstudiante = new ViewInicioEstudiante();
                         vEstudiante.setVisible(true);
                         vEstudiante.pack();
-                        vEstudiante.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                         this.setVisible(false);
                         break;
                 }

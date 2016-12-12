@@ -12,19 +12,17 @@ package Interfaz;
 public class ViewInicioAdmin extends javax.swing.JFrame {
 
     /**
-     * Creates new form BibliotecasAdmin
+     * Creates new form InicioAdmin
      */
-    
     private ViewUsuariosAdmin vistaUsuariosAdmin;
     private ViewLogin vistaLogin;
     private ViewBibliotecasAdmin vistaBibliotecasAdmin;
     private ViewMiPerfil vistaMiPerfil;
-    
+
     public ViewInicioAdmin() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Inicio Admin");
-        
     }
 
     /**
@@ -190,7 +188,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         vistaLogin = new ViewLogin();
         vistaLogin.setVisible(true);
         this.setVisible(false);
-        
+
     }//GEN-LAST:event_MenuSalirActionPerformed
 
     private void MenuGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuGestionUsuariosActionPerformed
@@ -208,7 +206,8 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
 
     private void MenuMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuMiPerfilActionPerformed
         vistaMiPerfil = new ViewMiPerfil();
-        vistaMiPerfil.setVisible(true); 
+        vistaMiPerfil.mensaje.setText("");
+        vistaMiPerfil.setVisible(true);
         vistaMiPerfil.pack();
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_MenuMiPerfilActionPerformed

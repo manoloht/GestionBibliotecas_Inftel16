@@ -519,7 +519,10 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
 
     private void MenuMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuMiPerfilActionPerformed
         vistaMiPerfil = new ViewMiPerfil();
-        vistaMiPerfil.setVisible(true);
+        vistaMiPerfil.mensaje.setText("");
+        vistaMiPerfil.setVisible(true); 
+        vistaMiPerfil.pack();
+        vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
     private void MenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSalirActionPerformed
