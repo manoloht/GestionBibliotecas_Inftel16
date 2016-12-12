@@ -306,7 +306,7 @@ public class Libro implements BaseDatos<Libro> {
     private boolean comprobarLibro(String isbn, String nombre_categoria, String nombre_bib) {
         int id_cat = Categoria.buscarId(nombre_bib, nombre_categoria);
         int id_bib = Biblioteca.buscarId(nombre_bib);
-
+        boolean comprobar;
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -319,8 +319,9 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setInt(3, id_bib);
 
             ResultSet resultado = pstmt.executeQuery();
+            comprobar=resultado.next();
             con.close();
-            return resultado.next();
+            return comprobar;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al comprobar el libro. ");
