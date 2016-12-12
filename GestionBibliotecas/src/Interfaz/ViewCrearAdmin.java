@@ -27,14 +27,6 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Crear Administrador");
         this.mensaje.setText("");
- 
-        // CARGAMOS LA LISTA DE BIBLIOTECAS EN EL JCOMBOBOX
-        List<Biblioteca> bib = CTRBiblioteca.getTodasBibliotecas();
-        for(Biblioteca b: bib){
-            this.biblioteca.addItem(b.getNombre());
-        }
-        
-        
     }
 
     /**
@@ -61,8 +53,6 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
         sexo = new javax.swing.JComboBox<>();
         btnCrear = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        biblioteca = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         mensaje = new javax.swing.JLabel();
 
@@ -88,7 +78,7 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("EMAIL");
 
-        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "H" }));
+        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H", "M" }));
 
         btnCrear.setBackground(new java.awt.Color(250, 40, 40));
         btnCrear.setForeground(java.awt.Color.white);
@@ -103,15 +93,6 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel8.setText("BIBLIOTECA");
-
-        biblioteca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bibliotecaActionPerformed(evt);
             }
         });
 
@@ -140,15 +121,13 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
                                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(45, 45, 45)
+                                    .addComponent(jLabel4))
+                                .addGap(88, 88, 88)
                                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(dniEditadoLayout.createSequentialGroup()
-                        .addGap(251, 251, 251)
+                        .addGap(250, 250, 250)
                         .addComponent(btnCrear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCancelar)))
@@ -179,15 +158,11 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(biblioteca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addGroup(dniEditadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrear)
                     .addComponent(btnCancelar))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
@@ -222,7 +197,7 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
                 .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mensaje)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -235,7 +210,7 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 23, Short.MAX_VALUE))
         );
 
         pack();
@@ -244,7 +219,7 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
     //BOTON PARA CREAR EL ADMINISTRADOR
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
 
-        System.out.println("---->  Comprobando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText() + " " + biblioteca.getSelectedItem().toString());
+        System.out.println("---->  Comprobando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText());
 
         // COMPROBAMOS QUE LOS CAMPOS NO SON VACIOS
         if (dni.getText().equals("") || nombre.getText().equals("") || apellidos.getText().equals("") || email.getText().equals("")) {
@@ -264,8 +239,8 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
                 System.err.println("---->  ERROR: El administrador existe");
                 mensaje.setText("ERROR: El administrador existe");
             } else {
-                System.out.println("---->  Insertando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText() + " " + biblioteca.getSelectedItem().toString());
-                if (CTRUsuario.insertarAdministrador(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText(), biblioteca.getSelectedItem().toString())) {
+                System.out.println("---->  Insertando Admin: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
+                if (CTRUsuario.insertarAdministrador(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())) {
                     System.out.println("---->  Admin insertado con éxito");
                     mensaje.setText("ÉXITO: El administrador se ha creado correctamente");
                 }else{
@@ -281,13 +256,8 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void bibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bibliotecaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bibliotecaActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField apellidos;
-    private javax.swing.JComboBox<String> biblioteca;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCrear;
     public javax.swing.JTextField dni;
@@ -300,7 +270,6 @@ public class ViewCrearAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel mensaje;
     public javax.swing.JTextField nombre;

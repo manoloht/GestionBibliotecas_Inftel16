@@ -15,12 +15,7 @@ import java.util.List;
  */
 public class CTRBiblioteca {
     public static List<Biblioteca> getTodasBibliotecas(){
-        List<Biblioteca> bibliotecas;
-        bibliotecas = new ArrayList<>();
-        for(int i = 0; i< 30; i++){
-            Biblioteca b = new Biblioteca("alberto "+i);
-            bibliotecas.add(b);
-        }
+        List<Biblioteca> bibliotecas = Biblioteca.getTodosBibliotecas();     
         return bibliotecas;
     }
 }
