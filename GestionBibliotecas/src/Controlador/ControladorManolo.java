@@ -75,14 +75,15 @@ public class ControladorManolo {
 
 // ----- Pruebas MAIN ----------
         
-    //System.err.println(CTRLogin.comprobarLogin("estudiante2@gmail.com", "abc123abc"));     
-            
-            //00999999X
-    String rol[]={"estudiante","bibliotecario","admin"};
+    List<Libro> libros = new ArrayList<>();
+    libros = CTRUsuario.buscarLibros("PruebasManolo3", "isbn", "isbn111");
     
-    System.out.println(CTRLogin.getTipoUsuario("00555555X", "--"));
-   
-
+       
+        System.out.println(libros.size());
+        
+        for(Libro u : libros){
+            System.out.println(u.toString());
+        }
 
 
 
