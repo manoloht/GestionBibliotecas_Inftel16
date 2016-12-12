@@ -71,7 +71,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("EMAIL");
 
-        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "H" }));
+        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H", "M" }));
 
         btnEditar.setBackground(new java.awt.Color(250, 40, 40));
         btnEditar.setForeground(java.awt.Color.white);
