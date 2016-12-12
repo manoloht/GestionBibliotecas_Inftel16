@@ -22,6 +22,11 @@ public class Categoria implements BaseDatos<Categoria> {
 
     public Categoria() {
     }
+    
+      public Categoria(String nombre_bib) {
+          this.nombre_bib = nombre_bib;
+    }
+
 
     public Categoria(String nombre_bib, String nombre_cat) {
         this.nombre_bib = nombre_bib;
@@ -262,4 +267,31 @@ public class Categoria implements BaseDatos<Categoria> {
         }
         return categorias;
     }
+    
+     public static List<Categoria> getTodosCategorias(String nombre_bib) {
+        List<Categoria> categorias = new ArrayList<>();
+        // 
+
+        try {
+            int id_bib = Biblioteca.buscarId(nombre_bib);
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select nombre_cat from categoria where id_bib like ?";
+            PreparedStatement ptmt = con.prepareStatement(consulta);
+            ptmt.setInt(1, id_bib);
+            ResultSet resultado = ptmt.executeQuery();
+
+            while (resultado.next()) {
+                String nombre_cat = resultado.getString("nombre_cat");
+                Categoria c = new Categoria(nombre_cat);
+                categorias.add(c);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todas las categorias por nombre de biblioteca.");
+            System.err.println(ex);
+        }
+        return categorias;
+    }
+
 }

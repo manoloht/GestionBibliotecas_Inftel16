@@ -284,94 +284,31 @@ public class Util {
     
     }
     
-    
-    //////////////////////////////
-    // Estudiante - Mostrar prestamos
-    //
-    // List<Prestamo> prestamosByEstudiante(id_usuario)
-    //////////////////////////////
-    public static List<Prestamo> prestamosByEstudiante(int id_usuario){
-        
-        List<Prestamo> prestamos = new ArrayList<>();
-        
-        try {
+     public static Penalizacion buscarPenalizacion(int id){
+          Penalizacion penaliza=new Penalizacion();
+           try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            String consulta = "select * from prestamo where id_usuario = ? ";
+
+            String consulta = "select * from penalizacion where id_usuario = ?";
+
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, id_usuario);            
+            pstmt.setInt(1, id);            
             ResultSet resultado = pstmt.executeQuery();
-
-            while (resultado.next()) {
-                int id_prestamo = resultado.getInt("id_prestamo");
-                String fecha_ini =resultado.getString("fecha_ini");
-                String fecha_fin =resultado.getString("fecha_fin");
-                String dni = Util.buscarUsuario(resultado.getInt("id_Usuario")).getDni();
-                int id_ejem = resultado.getInt("id_ejem");
-                String isbn = Util.buscarLibro(resultado.getInt("id_libro")).getIsbn();
-                String nombre_cat = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
-                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                
-                
-                Prestamo p = new Prestamo (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
-                p.setId_prestamo(id_prestamo);
-                prestamos.add(p);
-            }
-
-            con.close();
-            
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al obtener los prestamos por usuario.");
+             while(resultado.next()){
+                 String fecha_inicio=resultado.getString("fecha_inicio");
+                 penaliza.setfecha_inicio(fecha_inicio);
+                 String fecha_fin=resultado.getString("fecha_fin");
+                 penaliza.setfecha_fin(fecha_fin);                
+                 
+             }
+                 con.close();
+                 return penaliza;
+           } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Reservado.");
             System.err.println(ex);
-        }
-                
-        return prestamos;
-    }
-    
-    
-    
-    //////////////////////////////
-    // Estudiante - Mostrar reservaos
-    //
-    // List<Reservado> reservadosByEstudiante(id_usuario)
-    //////////////////////////////
-    public static List<Reservado> reservadosByEstudiante(int id_usuario){
-        
-        List<Reservado> reservados = new ArrayList<>();
-        
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-            String consulta = "select * from reservado where id_usuario = ? ";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, id_usuario);            
-            ResultSet resultado = pstmt.executeQuery();
-
-            while (resultado.next()) {
-                int id_reservado = resultado.getInt("id_reservado");
-                String fecha_ini =resultado.getString("fecha_ini");
-                String fecha_fin =resultado.getString("fecha_fin");
-                String dni = Util.buscarUsuario(resultado.getInt("id_Usuario")).getDni();
-                int id_ejem = resultado.getInt("id_ejem");
-                String isbn = Util.buscarLibro(resultado.getInt("id_libro")).getIsbn();
-                String nombre_cat = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
-                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                
-                
-                Reservado p = new Reservado (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
-                p.setId_reservado(id_reservado);
-                reservados.add(p);
-            }
-            con.close();
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al obtener los reservados por usuario.");
-            System.err.println(ex);
-        }
-        return reservados;
-    }
-    
-
-    
-    
+            return penaliza;
+        }   
+}
 }
