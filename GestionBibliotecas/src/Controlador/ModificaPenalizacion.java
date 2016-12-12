@@ -213,10 +213,10 @@ public class ModificaPenalizacion {
     
 
      
-  public static void main(String[] args){
-//       InsertarPenalizacion();
-//       BorrarPenalizacion();
-         AvisoPenalizacion();
+  public static void main(String[] args) throws ParseException{
+       InsertarPenalizacion();
+       BorrarPenalizacion();
+        AvisoPenalizacion();
         
      }
 }
