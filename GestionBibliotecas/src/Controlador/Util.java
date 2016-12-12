@@ -284,10 +284,31 @@ public class Util {
     
     }
     
-    
+     public static Penalizacion buscarPenalizacion(int id){
+          Penalizacion penaliza=new Penalizacion();
+           try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
 
-    
+            String consulta = "select * from penalizacion where id_usuario = ?";
 
-    
-    
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id);            
+            ResultSet resultado = pstmt.executeQuery();
+             while(resultado.next()){
+                 String fecha_inicio=resultado.getString("fecha_inicio");
+                 penaliza.setfecha_inicio(fecha_inicio);
+                 String fecha_fin=resultado.getString("fecha_fin");
+                 penaliza.setfecha_fin(fecha_fin);                
+                 
+             }
+                 con.close();
+                 return penaliza;
+           } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Reservado.");
+            System.err.println(ex);
+            return penaliza;
+        }   
+}
 }

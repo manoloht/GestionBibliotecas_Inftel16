@@ -6,7 +6,11 @@
 package Controlador;
 
 import Configuracion.Conexion;
-import Modelo.Penalizacion;
+import Controlador.SenderEmail.MailSender;
+import Controlador.SenderEmail.prueba;
+import Modelo.*;
+
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
+
 
 /**
  *
@@ -160,8 +168,8 @@ public class ModificaPenalizacion {
 
     }
 
-    public static TreeSet<Integer> ListDePenalizacion_que_NODevolveLibro() {
-        TreeSet<Integer> conjunto = new TreeSet<>();
+    public static TreeSet<Integer> ListDePenalizacion_que_NODevolveLibro() {// devolve list id_usuario que esta penalizada y 
+        TreeSet<Integer> conjunto = new TreeSet<>();                      //   pendiente de devolve libro
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -182,15 +190,33 @@ public class ModificaPenalizacion {
         return conjunto;
     }
 
-    public static void main(String[] args) throws ParseException {
+    public static void AvisoPenalizacion(){
+        String Asunto="¡Aviso de penalizacion!";
+          TreeSet<Integer> conjunto = ListDePenalizacion_que_NODevolveLibro();
+          System.out.println("lista de estudiante existe penalizacion y pendiente de devulver libro");
+            for(Integer id:conjunto){
+               Usuario u=Util.buscarUsuario(id);
+               Penalizacion p=Util.buscarPenalizacion(id);
+               String fecha_inicio=p.getfecha_inicio();
+               String fecha_fin=p.getfecha_fin();
+               String nombre=u.getNombre();
+               String email=u.getEmail();
+               String contenido="Hola "+nombre+":\n"+"Le informamos que usted está pendiente de devolver libros prestados. Queda penalizado desde el dia "
+                + fecha_inicio+" hasta el "+fecha_fin;
+                try {
+             MailSender.sendMessage(email,Asunto,contenido);
+         } catch (MessagingException ex) { 
+             Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);
+         }
+               System.out.println(contenido);
+     }}
+    
 
+     
+  public static void main(String[] args){
 //       InsertarPenalizacion();
 //       BorrarPenalizacion();
-        TreeSet<Integer> conjunto = new TreeSet<Integer>();
-        conjunto = ListDePenalizacion_que_NODevolveLibro();
-        System.out.println("existe penalizacion y no devolver libro con id de usuario: " + conjunto);
-        for(Integer id:conjunto){
-            
-        }
-    }
+         AvisoPenalizacion();
+        
+     }
 }
