@@ -161,7 +161,8 @@ public class Usuario implements BaseDatos<Usuario>{
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-            String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
+//            String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ?, password = ? where dni like ?";
+            String consulta = "update usuario set dni = ?, nombre = ?, apellido = ?, sexo = ?, email = ? where dni like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
             pstmt.setString(1, u.getDni());
@@ -169,8 +170,8 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.setString(3, u.getApellidos());
             pstmt.setString(4, u.getSexo());
             pstmt.setString(5, u.getEmail());
-            pstmt.setString(6, u.getPassword());
-            pstmt.setString(7, this.dni);
+//            pstmt.setString(6, u.getPassword());       // no permite actualizar contraseña!!!!!!     
+            pstmt.setString(6, this.dni);
 
             if (comprobarUsuario(this.dni)) {
                 pstmt.executeUpdate();

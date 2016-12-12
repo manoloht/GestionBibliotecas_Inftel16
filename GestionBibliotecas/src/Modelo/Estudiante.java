@@ -20,6 +20,11 @@ public class Estudiante extends Usuario {
     private List<Prestamo> prestamos;
     private List<Reservado> reservas;
 
+    public Estudiante(String dni) {
+        super(dni);
+    }
+
+    
     public Estudiante(String dni, String numExp) {
         super(dni);
         this.numExp = numExp;
