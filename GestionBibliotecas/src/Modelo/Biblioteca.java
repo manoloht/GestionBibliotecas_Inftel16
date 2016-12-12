@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import Controlador.*;
 
 /**
  *
@@ -123,7 +124,7 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
     }
 
     public void setId_bib(int id_biblioteca) {
-        this.id_bib = id_bib;
+        this.id_bib = id_biblioteca;
     }
 
     @Override
@@ -308,13 +309,15 @@ public class Biblioteca implements BaseDatos<Biblioteca> {
             ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
+                int id_bib = resultado.getInt("id_bib");
                 String nombre = resultado.getString("nombre");
                 int telefono = resultado.getInt("telefono");
                 String localizacion = resultado.getString("localizacion");
-                String dni_admin = resultado.getString("dni_admin");
+                String dni_admin = (Util.buscarBiblioteca(id_bib)).getDni_admin();
                 Biblioteca b = new Biblioteca(nombre, localizacion, telefono, dni_admin);
+                b.setId_bib(id_bib);
                 bibliotecas.add(b);
-
+                
             }
             con.close();
 
