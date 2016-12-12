@@ -5,17 +5,23 @@
  */
 package Interfaz;
 
+import Controlador.CTRUsuario;
+
 /**
  *
- * @author albertocheca
+ * @author alberto carrion leiva
  */
-public class ViewAlertaBorrar extends javax.swing.JFrame {
+public class ViewAlertaBorrarUsuario extends javax.swing.JFrame {
 
     /**
-     * Creates new form AlertaBorrar
+     * Creates new form AlertaBorrarUsuario
      */
-    public ViewAlertaBorrar() {
+    public String par;
+    ViewExitoBorrar vistaExitoBorrar;
+
+    public ViewAlertaBorrarUsuario(String par) {
         initComponents();
+        this.par = par;
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Alerta");
@@ -102,11 +108,20 @@ public class ViewAlertaBorrar extends javax.swing.JFrame {
 
     private void btnSIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSIActionPerformed
         // TODO add your handling code here:
+        System.out.println("----> Borrando Usuario: " + this.par);
+        if (CTRUsuario.borrarUsuario(this.par)) {
+            System.out.println("----> Usuario Borrado.");
+            vistaExitoBorrar = new ViewExitoBorrar();
+            vistaExitoBorrar.setVisible(true);
+            vistaExitoBorrar.pack();
+            vistaExitoBorrar.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_btnSIActionPerformed
 
     private void btnNOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNOActionPerformed
         // TODO add your handling code here:
+        System.out.println("----> Se ha cancelado el borrar objeto.");
         this.setVisible(false);
     }//GEN-LAST:event_btnNOActionPerformed
 
