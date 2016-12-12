@@ -9,19 +9,19 @@ package Interfaz;
  *
  * @author alberto carrion leiva
  */
-public class ViewInicioEstudiante extends javax.swing.JFrame {
+public class ViewBuscarLibros extends javax.swing.JFrame {
 
     /**
      * Creates new form ViewInicioEstudiante
      */
-    private ViewBuscarLibros vistaBuscarLibros;
     private ViewLogin vistaLogin;
     private ViewMiPerfil vistaMiPerfil;
+    private ViewInicioEstudiante vistaInicio;
 
-    public ViewInicioEstudiante() {
+    public ViewBuscarLibros() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
-        this.setTitle("Inicio Estudiante");
+        this.setTitle("Buscar Libros");
     }
 
     /**
@@ -96,7 +96,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe Print", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel6.setText("Mis Prestamos y Reservas");
+        jLabel6.setText("Buscar Libros");
 
         numResultados.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -277,9 +277,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuSalirActionPerformed
 
     private void MenuBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBuscarLibroActionPerformed
-        vistaBuscarLibros = new ViewBuscarLibros();
-        vistaBuscarLibros.setVisible(true);
-        this.setVisible(false);
+
     }//GEN-LAST:event_MenuBuscarLibroActionPerformed
 
     private void MenuMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuMiPerfilActionPerformed
@@ -291,7 +289,10 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
     private void MenuInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuInicioActionPerformed
-
+        vistaInicio = new ViewInicioEstudiante();
+        vistaInicio.setVisible(true);
+        vistaMiPerfil.pack();
+        this.setVisible(false);
     }//GEN-LAST:event_MenuInicioActionPerformed
 
     public static void main(String args[]) {
@@ -322,7 +323,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewInicioEstudiante().setVisible(true);
+                new ViewBuscarLibros().setVisible(true);
             }
         });
     }
