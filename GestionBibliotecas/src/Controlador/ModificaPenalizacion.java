@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TreeSet;
 
 /**
  *
@@ -34,21 +35,29 @@ public class ModificaPenalizacion {
 
     }
 
-    public static String CalcularFechaPenalizada(Calendar fecha_fin, Calendar hoy) throws ParseException {
+    public static String ToString(Calendar fecha) throws ParseException {
+        String Fecha = (new SimpleDateFormat("dd/MM/yyyy")).format(fecha.getTime());
+
+        return Fecha;
+
+    }
+
+    public static int CalcularIntervaloDeDia(Calendar fecha_menor, Calendar fecha_mayor) throws ParseException {
 
         // transformar a milsegundos
-        long sl = fecha_fin.getTimeInMillis();
-        long el = hoy.getTimeInMillis();
+        long sl = fecha_menor.getTimeInMillis();
+        long el = fecha_mayor.getTimeInMillis();
         // calcular diferencia;
         long ei = el - sl;
-        int dia_retraso = (int) (ei / (1000 * 60 * 60 * 24));
-        System.out.println("dia_retraso: "+dia_retraso);
-        int dia_penaliza = 2 * dia_retraso;
-//        System.out.println("dia_penaliza: "+dia_penaliza);
-        //CalcularFechaPenalizada
-        Calendar Fecha_penalizada = (Calendar) hoy.clone();
-        Fecha_penalizada.add(Calendar.DATE, dia_penaliza);
-        String Fecha = (new SimpleDateFormat("dd/MM/yyyy")).format(Fecha_penalizada.getTime());
+        int dia_diferencia = (int) (ei / (1000 * 60 * 60 * 24));
+        return dia_diferencia;
+    }
+
+    public static String SumaDia(Calendar fecha_para_sumar, int dia) throws ParseException {
+
+        Calendar fecha_resul = (Calendar) fecha_para_sumar.clone(); // si no hace clone, se modifiaca valor fecha_para_sumar que esto pasa por referencia
+        fecha_resul.add(Calendar.DATE, dia);
+        String Fecha = (new SimpleDateFormat("dd/MM/yyyy")).format(fecha_resul.getTime());
         return Fecha;
     }
 
@@ -57,11 +66,10 @@ public class ModificaPenalizacion {
         hoy.clear();
         hoy.setTime(new Date()); // establece feche de hoy;
         String fecha_hoy = (new SimpleDateFormat("dd/MM/yyyy")).format(hoy.getTime());
-        System.out.println("fecha_hoy" + fecha_hoy);
+//////////////////        System.out.println("fecha_hoy" + fecha_hoy);
         String Fecha_penalizada;
-      
-        Penalizacion p = new Penalizacion();
 
+        Penalizacion p = new Penalizacion();
 
         try {
             Conexion conexion = new Conexion();
@@ -74,20 +82,24 @@ public class ModificaPenalizacion {
 
                 String fecha_fin_devolucion = resultado.getString("fecha_fin");  // resultado de tabla prestamo
                 int id_usuario = resultado.getInt("id_usuario");
-                System.out.println("id_usuario:" + id_usuario + "fecha_fin:" + fecha_fin_devolucion);
-
+////////////                System.out.println("id_usuario:" + id_usuario + "fecha_fin_devolucion:" + fecha_fin_devolucion);
 
                 Calendar fecha_fin_devolve = ToCalendar(fecha_fin_devolucion); // transforma String a Calendar
 
-                if (hoy.after(fecha_fin_devolve)) { // cuando existe retraso
-                    System.out.println("existe retraso");
+                if (hoy.after(fecha_fin_devolve)) { // cuando existe retraso en tabla prestamo
+//////////////                    System.out.println("existe retraso");
+                    String fecha_ini_penalizacion = SumaDia(fecha_fin_devolve, 1); // es siguiente dia de fecha_fin_devolve
+//////////////                    System.out.println("fecha_ini_penalizacion: "+fecha_ini_penalizacion);
                     p.setId_estudiante(id_usuario);
-                    p.setfecha_inicio(fecha_hoy); // establece hoy como fecha inicio de penalizacion
+                    p.setfecha_inicio(fecha_ini_penalizacion); // establece fecha inicio de penalizacion
+                    // calcula dia_penaliza segun tabla prestamo "hoy - fecha_fin_devolve"
+                    int dia_retraso = CalcularIntervaloDeDia(fecha_fin_devolve, hoy);
+////////////////                    System.out.println("dia retraso calculado por tabla prestamo: "+dia_retraso+"dias");
+                    int dia_penaliza = dia_retraso * 2;//  dos dia penaliza por cada dia retraso             
+////////////////                    System.out.println("dia penalizada calculado por tabla prestamo: "+dia_penaliza+"dias");                
+                    Fecha_penalizada = SumaDia(fecha_fin_devolve, dia_penaliza);
+////////////////                    System.out.println("Fecha_penalizada calculado por tabla prestamo:" + Fecha_penalizada);
 
-                    Fecha_penalizada = CalcularFechaPenalizada(fecha_fin_devolve, hoy); // calcula fecha penalizada     
-                    System.out.println("Fecha_penalizada" + Fecha_penalizada);
-
-                    p.setfecha_fin(Fecha_penalizada); // establece fecha fin de penalizacion
                     // comprobar si existe penalizacion
                     String consulta2 = "select * from penalizacion where id_usuario like ?";
                     PreparedStatement pstmt = con.prepareStatement(consulta2);
@@ -96,18 +108,35 @@ public class ModificaPenalizacion {
                     ResultSet resultado2 = pstmt.executeQuery();
 
                     if (resultado2.next()) {
-//                        System.out.println("existe penalizacion, va a actualizar");
+//////////////                        System.out.println("existe penalizacion, va a actualizar");
+                        String antiguo_fecha_ini_penalizacion = resultado2.getString("fecha_inicio");
+//////////////                         System.out.println("ya existe penalizacion con fecha inicio a: "+antiguo_fecha_ini_penalizacion);
+                        String antiguo_fecha_penalizacion = resultado2.getString("fecha_fin");
+////////////////                        System.out.println("ya existe penalizacion con fecha fin a: "+antiguo_fecha_penalizacion);
+                        Calendar inicio = ToCalendar(antiguo_fecha_ini_penalizacion);
+                        Calendar fin = ToCalendar(antiguo_fecha_penalizacion);
+                        // dia penalizada en tabla penalizacion
+                        int dia_penalizada_antiguo = CalcularIntervaloDeDia(inicio, fin);
+////////////////                        System.out.println("ya existe penalizacion con dia penalizacion igual a: "+dia_penalizada_antiguo+"dias");
+                        // dia penalizacion acumulada
+                        int total_dia_penalizada = dia_penaliza + dia_penalizada_antiguo;
+////////////////                        System.out.println("el nuevo dia penalizacion acumalada es : "+total_dia_penalizada);
+
+                        String nuevo_Fecha_Fin_Penaliza = SumaDia(inicio, total_dia_penalizada);
+////////////////                         System.out.println("el nuevo fecha penalizacion acumalada es : "+nuevo_Fecha_Fin_Penaliza);
+                        // actualizar penalizacion
                         String consulta3 = "update penalizacion set  fecha_fin = ? where id_usuario like ?";// solo actualiza fecha_fin
                         PreparedStatement pstmt3 = con.prepareStatement(consulta3);
                         pstmt3.clearParameters();
-                        pstmt3.setString(1,Fecha_penalizada );
+                        pstmt3.setString(1, nuevo_Fecha_Fin_Penaliza);
                         pstmt3.setInt(2, id_usuario);
                         pstmt3.executeUpdate();   // si ya existe penalizacion, actualizar
-                     
+
                     } else {
-//                        System.out.println("no existe penalizacion, va a insertar");
+//////////////////                        System.out.println("no existe penalizacion, va a insertar");                  
+                        p.setfecha_fin(Fecha_penalizada); // establece fecha fin de penalizacion
                         p.insertar(); // si no existe penalizacion, insertar
-                       
+
                     }
                 }
             }
@@ -124,15 +153,44 @@ public class ModificaPenalizacion {
         hoy.clear();
         hoy.setTime(new Date()); // establece feche de hoy;
         String fecha_hoy = (new SimpleDateFormat("dd/MM/yyyy")).format(hoy.getTime());
-        System.out.println("fecha_hoy "+fecha_hoy);
+        System.out.println("fecha_hoy " + fecha_hoy);
         Penalizacion p = new Penalizacion();
         p.setfecha_fin(fecha_hoy);
         p.borrar(); // borra todas las penalizacion que la fecha fin sea hoy en tabla de penalizacion
 
     }
 
+    public static TreeSet<Integer> ListDePenalizacion_que_NODevolveLibro() {
+        TreeSet<Integer> conjunto = new TreeSet<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select prestamo.id_usuario from prestamo,penalizacion where prestamo.id_usuario=penalizacion.id_usuario";
+            Statement stmt = con.createStatement();//          
+            ResultSet resultado = stmt.executeQuery(consulta);
+            while (resultado.next()) {
+                int id_usuario = resultado.getInt("id_usuario");
+                conjunto.add(id_usuario);
+            }
+
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al AvisoPenalizacionNODevolveLibro");
+            System.err.println(ex);
+
+        }
+        return conjunto;
+    }
+
     public static void main(String[] args) throws ParseException {
-        InsertarPenalizacion();
-        BorrarPenalizacion();
+
+//       InsertarPenalizacion();
+//       BorrarPenalizacion();
+        TreeSet<Integer> conjunto = new TreeSet<Integer>();
+        conjunto = ListDePenalizacion_que_NODevolveLibro();
+        System.out.println("existe penalizacion y no devolver libro con id de usuario: " + conjunto);
+        for(Integer id:conjunto){
+            
+        }
     }
 }
