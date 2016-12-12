@@ -7,6 +7,7 @@ package Modelo;
 
 import java.util.*;
 import Configuracion.*;
+import Controlador.Util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,12 +15,12 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-
 /**
  *
  * @author YUEMEI
  */
 public class Libro implements BaseDatos<Libro> {
+
     int id_libro;
     private String isbn;  //clave
     private String titulo;
@@ -31,7 +32,6 @@ public class Libro implements BaseDatos<Libro> {
     private String idioma;
     private List<Ejemplar> ejemplares;
     private List<Autor> autores;
-    
 
     public Libro() {
     }
@@ -42,8 +42,6 @@ public class Libro implements BaseDatos<Libro> {
         this.nombre_bib = nombre_bib;
     }
 
-    
-    
     public Libro(String isbn, String titulo, String fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma) {
         this.isbn = isbn;
         this.titulo = titulo;
@@ -161,7 +159,6 @@ public class Libro implements BaseDatos<Libro> {
         return "Libro{" + "id_libro=" + id_libro + ", isbn=" + isbn + ", titulo=" + titulo + ", fecha_edi=" + fecha_edi + ", nombre_editorial=" + nombre_editorial + ", nombre_categoria=" + nombre_categoria + ", nombre_bib=" + nombre_bib + ", pais=" + pais + ", idioma=" + idioma + ", ejemplares=" + ejemplares + ", autores=" + autores + '}';
     }
 
-   
     @Override
     public int hashCode() {
         int hash = 5;
@@ -195,10 +192,9 @@ public class Libro implements BaseDatos<Libro> {
         return true;
     }
 
-   
-    @Override 
+    @Override
     public boolean insertar() {
-        
+
         int id_cat = Categoria.buscarId(this.getNombre_bib(), this.getNombre_categoria());
         int id_bib = Biblioteca.buscarId(this.getNombre_bib());
         int id_edit = Editorial.buscarId(this.getNombre_editorial());
@@ -219,7 +215,7 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setString(7, this.pais);
             pstmt.setString(8, this.idioma);
 
-             if (!comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib)) {
+            if (!comprobarLibro(this.isbn, this.nombre_categoria, this.nombre_bib)) {
 
                 pstmt.executeUpdate();
                 con.close();
@@ -240,27 +236,26 @@ public class Libro implements BaseDatos<Libro> {
     @Override //ACABAR
     public boolean actualizar(Libro lib) {
         int id_cat = Categoria.buscarId(nombre_bib, nombre_categoria);
-        int id_bib = Biblioteca.buscarId(nombre_bib); 
-        
+        int id_bib = Biblioteca.buscarId(nombre_bib);
+
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
-           String consulta = "update libro set isbn = ?, titulo = ?, fecha_edi= ?, pais = ?,idioma = ? where isbn like ? and id_cat = ? and id_bib = ?";          
+            String consulta = "update libro set isbn = ?, titulo = ?, fecha_edi= ?, pais = ?,idioma = ? where isbn like ? and id_cat = ? and id_bib = ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();         
+            pstmt.clearParameters();
             pstmt.setString(1, lib.isbn);
             pstmt.setString(2, lib.titulo);
             pstmt.setString(3, lib.fecha_edi);
             pstmt.setString(4, lib.pais);
             pstmt.setString(5, lib.idioma);
-            
+
             pstmt.setString(6, this.getIsbn());
             pstmt.setInt(7, id_cat);
             pstmt.setInt(8, id_bib);
 
-            
-  if (comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib) && !comprobarLibro(lib.isbn,lib.nombre_categoria,lib.nombre_bib)) {
+            if (comprobarLibro(this.isbn, this.nombre_categoria, this.nombre_bib) && !comprobarLibro(lib.isbn, lib.nombre_categoria, lib.nombre_bib)) {
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -276,11 +271,11 @@ public class Libro implements BaseDatos<Libro> {
         }
     }
 
-    @Override 
-    public boolean borrar() {        
+    @Override
+    public boolean borrar() {
         int id_cat = Categoria.buscarId(nombre_bib, nombre_categoria);
-        int id_bib = Biblioteca.buscarId(nombre_bib); 
-        
+        int id_bib = Biblioteca.buscarId(nombre_bib);
+
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -292,7 +287,7 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setInt(2, id_cat);
             pstmt.setInt(3, id_bib);
 
-             if (comprobarLibro(this.isbn,this.nombre_categoria,this.nombre_bib)) {
+            if (comprobarLibro(this.isbn, this.nombre_categoria, this.nombre_bib)) {
                 pstmt.executeUpdate();
                 con.close();
                 return true;
@@ -308,12 +303,10 @@ public class Libro implements BaseDatos<Libro> {
         }
     }
 
-
     private boolean comprobarLibro(String isbn, String nombre_categoria, String nombre_bib) {
         int id_cat = Categoria.buscarId(nombre_bib, nombre_categoria);
-        int id_bib = Biblioteca.buscarId(nombre_bib);       
-        
-        
+        int id_bib = Biblioteca.buscarId(nombre_bib);
+
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -324,7 +317,7 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setString(1, isbn);
             pstmt.setInt(2, id_cat);
             pstmt.setInt(3, id_bib);
-            
+
             ResultSet resultado = pstmt.executeQuery();
             con.close();
             return resultado.next();
@@ -336,11 +329,11 @@ public class Libro implements BaseDatos<Libro> {
         }
     }
 
-    public static int buscarId(String nombre_bib, String nombre_cat, String isbn){
-        int id=0;
+    public static int buscarId(String nombre_bib, String nombre_cat, String isbn) {
+        int id = 0;
         int id_bib = Biblioteca.buscarId(nombre_bib);
         int id_cat = Categoria.buscarId(nombre_bib, nombre_cat);
-        
+
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -352,13 +345,13 @@ public class Libro implements BaseDatos<Libro> {
             pstmt.setInt(1, id_cat);
             pstmt.setInt(2, id_bib);
             pstmt.setString(3, isbn);
-            
+
             ResultSet resultado = pstmt.executeQuery();
 
-            while(resultado.next()){
-               id = resultado.getInt("id_libro");
+            while (resultado.next()) {
+                id = resultado.getInt("id_libro");
 
-            } 
+            }
             con.close();
             return id;
 
@@ -368,10 +361,10 @@ public class Libro implements BaseDatos<Libro> {
             return -1;
         }
     }
-    
+
     // ACABAR
-    public static List<Libro> getTodosLibros(){
-         List<Libro> libros = new ArrayList<>();
+    public static List<Libro> getTodosLibros() {
+        List<Libro> libros = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
@@ -380,16 +373,16 @@ public class Libro implements BaseDatos<Libro> {
             ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
-                String isbn= resultado.getString("isbn");
-                String titulo= resultado.getString("titulo");
-                String fecha_edi= resultado.getString("fecha_edi");
-                String nombre_editorial= resultado.getString("nombre_edit");
-                String nombre_categoria= resultado.getString("nombre_cat");
-                String nombre_bib= resultado.getString("nombre_bib");
-                String pais= resultado.getString("pais");
-                String idioma= resultado.getString("idioma");
-                
-                Libro l = new Libro(isbn,titulo,fecha_edi,nombre_editorial, nombre_categoria,nombre_bib, pais,idioma);
+                String isbn = resultado.getString("isbn");
+                String titulo = resultado.getString("titulo");
+                String fecha_edi = resultado.getString("fecha_edi");
+                String nombre_editorial = resultado.getString("nombre_edit");
+                String nombre_categoria = resultado.getString("nombre_cat");
+                String nombre_bib = resultado.getString("nombre_bib");
+                String pais = resultado.getString("pais");
+                String idioma = resultado.getString("idioma");
+
+                Libro l = new Libro(isbn, titulo, fecha_edi, nombre_editorial, nombre_categoria, nombre_bib, pais, idioma);
                 libros.add(l);
             }
             con.close();
@@ -399,27 +392,43 @@ public class Libro implements BaseDatos<Libro> {
         }
         return libros;
     }
-          public static void main(String[] args) {
-       
-        boolean exito=false;
-        
-//        Libro x = new Libro("1000X","gravedad","11/11/1988","SUR","fisica","Cordoba","España","español");
-//        exito=x.insertar();
-//          exito=x.borrar();
-        Libro y = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Cordoba","España","español");
-////       exito=y.insertar();
-        Libro z = new Libro("3442558X","teoria de calor","13/11/1988","NORTE","fisica","Biblioteca Fisica","España","inglesespañol");
-          exito=z.actualizar(y); //
-//          exito=y.actualizar(z); 
-//        exito=z.borrar();
-//        System.out.println(exito);
-        
-          System.out.println(exito);
+
+    public static List<Libro> getTodosLibros(String nombre_bib, String nombre_cat) {
         List<Libro> libros = new ArrayList<>();
-        libros=Libro.getTodosLibros();  // exito
-        System.out.println(libros);
-        
+        try {
+            int id_bib = Biblioteca.buscarId(nombre_bib);
+            int id_cat = Categoria.buscarId(nombre_bib, nombre_cat);
+
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from libro where id_bib = ? and id_cat = ? ";
+
+            PreparedStatement ptmt = con.prepareStatement(consulta);
+            ptmt.clearParameters();
+
+            ptmt.setInt(1, id_bib);
+            ptmt.setInt(2, id_cat);
+            ResultSet resultado = ptmt.executeQuery();
+            while (resultado.next()) {
+                String isbn = resultado.getString("isbn");
+                String titulo = resultado.getString("titulo");
+                String fecha_edi = resultado.getString("fecha_edi");
+                String pais = resultado.getString("pais");
+                String idioma = resultado.getString("idioma");
+
+                String nombre_editorial = Util.buscarEditorial(resultado.getInt("id_edit")).getNombre_edit();
+
+                Libro l = new Libro(isbn, titulo, fecha_edi, nombre_editorial, nombre_cat, nombre_bib, pais, idioma);
+                l.setId_libro(resultado.getInt("id_libro"));
+                libros.add(l);
+
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los libros por biblioteca y categoria.");
+            System.err.println(ex);
+        }
+        return libros;
     }
 
-   
 }
