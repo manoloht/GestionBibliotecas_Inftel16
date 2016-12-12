@@ -281,9 +281,38 @@ public class CTRUsuario {
             return false;
         }
     }
+    
+    public static boolean comprobarUsuario(String dni){
+        return false;
+    }
+    
+    // METODO PARA EDITAR UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+    public static boolean editarEstudiante(String dni, String nombre, String apellido, String sexo, String email, String biblioteca, String numExp){
+        return true;
+    }
+    
+    // METODO PARA EDITAR UN USUARIO, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+    public static boolean editarUsuario(String dni, String nombre, String apellido, String sexo, String email){
+        return true;
+    }
+
+
+    public static String obtenerBiblioteca(String dni) {
+        return "Probando";
+    }
+
+    public static boolean borrarUsuario(String dni) {
+        return true;
+    }
+    
+    public static boolean editarAdministrador(String dni, String nombre, String apellido, String sexo, String email){
+        return true;
+    }
+    
+    public static boolean editarBibliotecario(String dni, String nombre, String apellido, String sexo, String email, String nombre_bib){
+        return true;
+    }
 }
-
-
 
 /* Copia de lo que había antes
 public class CTRUsuario {

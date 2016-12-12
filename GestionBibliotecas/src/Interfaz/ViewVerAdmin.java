@@ -11,20 +11,20 @@ import javax.swing.BorderFactory;
 
 /**
  *
- * @author albertocheca
+ * @author alberto carrion leiva
  */
-public class ViewVerUsuario extends javax.swing.JFrame {
+public class ViewVerAdmin extends javax.swing.JFrame {
 
     /**
-     * Creates new form VerUsuarioAdmin
+     * Creates new form VewVerAdmin
      */
     private ViewAlertaBorrarUsuario alerta;
 
-    public ViewVerUsuario() {
+    public ViewVerAdmin() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setTitle("Ver Usuario");
+        this.setTitle("Ver Administrador");
         this.mensaje.setText("");
     }
 
@@ -176,7 +176,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(250, 40, 40));
-        jLabel7.setText("Ver Usuario");
+        jLabel7.setText("Ver Administrador");
 
         mensaje.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         mensaje.setForeground(java.awt.Color.red);
@@ -187,7 +187,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
+                .addGap(85, 85, 85)
                 .addComponent(jLabel7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -205,7 +205,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
                 .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(mensaje)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -216,7 +216,9 @@ public class ViewVerUsuario extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -229,12 +231,11 @@ public class ViewVerUsuario extends javax.swing.JFrame {
         alerta.setVisible(true);
         alerta.pack();
         alerta.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
-        System.out.println("Editando Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText());
+        System.out.println("Editando Aministrador: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem() + " " + email.getText());
         if (dni.getText().equals("") || nombre.getText().equals("") || apellidos.getText().equals("") || email.getText().equals("")) {
             System.err.println("---->  ERROR: Campos Vacios");
             mensaje.setText("ERROR: Faltan campos por rellenar");
@@ -248,17 +249,17 @@ public class ViewVerUsuario extends javax.swing.JFrame {
                 email.setBorder(BorderFactory.createLineBorder(Color.red));
             }
         } else {
-            if (CTRUsuario.comprobarUsuario(dni.getText())) {
-                System.err.println("---->  ERROR: El usuario existe");
-                mensaje.setText("ERROR: El usuario existe");
+            if (CTRUsuario.comprobarAdministrador(dni.getText())) {
+                System.err.println("---->  ERROR: El administrador existe");
+                mensaje.setText("ERROR: El administrador existe");
             } else {
-                System.out.println("---->  Editanto Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
-                if (CTRUsuario.editarUsuario(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())){
-                    System.out.println("---->  Usuario editado con éxito");
-                    mensaje.setText("ÉXITO: El usuario se ha editado correctamente");
+                System.out.println("---->  Editanto Administrador: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
+                if (CTRUsuario.editarAdministrador(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())){
+                    System.out.println("---->  Administrador editado con éxito");
+                    mensaje.setText("ÉXITO: El administrador se ha editado correctamente");
                 }else{
-                    System.out.println("---->  Error al editar el usuario");
-                    mensaje.setText("ERROR: No se pudo editar el usuario");
+                    System.out.println("---->  Error al editar el administrador");
+                    mensaje.setText("ERROR: No se pudo editar el administrador");
                 }
             }
         }
@@ -285,7 +286,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel mensaje;
+    public javax.swing.JLabel mensaje;
     public javax.swing.JTextField nombre;
     public javax.swing.JComboBox<String> sexo;
     // End of variables declaration//GEN-END:variables
