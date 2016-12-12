@@ -200,7 +200,7 @@ public class CTRUsuario {
     }
     
      // METODO PARA INSERTAR UN ADMINISTRADOR, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
-    public static boolean insertarAdministrador(String dni, String nombre, String apellido, String sexo, String email, String biblioteca){
+    public static boolean insertarAdministrador(String dni, String nombre, String apellido, String sexo, String email){
         
         String password = Util.getCadenaAleatoria(8);
         Usuario u = new Admin(dni, nombre, apellido, sexo, email, password);

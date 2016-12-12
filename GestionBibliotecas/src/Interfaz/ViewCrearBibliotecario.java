@@ -88,7 +88,7 @@ public class ViewCrearBibliotecario extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("EMAIL");
 
-        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "H" }));
+        sexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H", "M" }));
 
         btnCrear.setBackground(new java.awt.Color(250, 40, 40));
         btnCrear.setForeground(java.awt.Color.white);
@@ -205,11 +205,11 @@ public class ViewCrearBibliotecario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(mensaje)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(55, 55, 55)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mensaje)
+                            .addComponent(dniEditado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(55, 55, 55))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(264, 264, 264))))

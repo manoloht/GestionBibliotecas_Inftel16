@@ -337,7 +337,7 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         int index = tablaUsuarios.getSelectedRow();
 
-        if (rolElegido.getSelectedItem().toString().equals("Todos")) {
+        if (rolBusqueda.equals("Todos")) {
             vistaVerUsuario = new ViewVerUsuario();
             vistaVerUsuario.setVisible(true);
             vistaVerUsuario.pack();
@@ -352,13 +352,13 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
             vistaVerUsuario.dni.setText(dni);
             vistaVerUsuario.nombre.setText(nombre);
             vistaVerUsuario.apellidos.setText(apellidos);
-            if (sexo.equals("V")) {
+            if (sexo.equals("H")) {
                 vistaVerUsuario.sexo.setSelectedIndex(0);
             } else {
                 vistaVerUsuario.sexo.setSelectedIndex(1);
             }
             vistaVerUsuario.email.setText(email);
-        } else if (rolElegido.getSelectedItem().toString().equals("Administrador")) {
+        } else if (rolBusqueda.equals("Administrador")) {
             vistaVerUsuario = new ViewVerUsuario();
             vistaVerUsuario.setVisible(true);
             vistaVerUsuario.pack();
@@ -373,13 +373,13 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
             vistaVerUsuario.dni.setText(dni);
             vistaVerUsuario.nombre.setText(nombre);
             vistaVerUsuario.apellidos.setText(apellidos);
-            if (sexo.equals("V")) {
+            if (sexo.equals("H")) {
                 vistaVerUsuario.sexo.setSelectedIndex(0);
             } else {
                 vistaVerUsuario.sexo.setSelectedIndex(1);
             }
             vistaVerUsuario.email.setText(email);
-        } else if (rolElegido.getSelectedItem().toString().equals("Bibliotecario")) {
+        } else if (rolBusqueda.equals("Bibliotecario")) {
 
         } else {
 
