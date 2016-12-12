@@ -413,21 +413,7 @@ public class CTRUsuario {
     
 
     
-    
-    
-    //////////////////////////////
-    // Estudiante - Buscar libros
-    //
-    // List<Libro> buscarLibros(String biblioteca, String categoria, String palabra_clave, String palabra_valor)
-    //////////////////////////////
-    public static List<Libro> buscarLibros(String biblioteca, String categoria, String palabra_clave, String palabra_valor)
-    {
-        List<Libro> libros = new ArrayList<>();
-    
-    
-    
-        return libros;
-    }
+   
     
     
     
