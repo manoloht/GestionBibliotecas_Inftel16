@@ -18,6 +18,7 @@ import java.util.*;
  * @author Juan
  */
 public class Penalizacion implements BaseDatos<Penalizacion> {
+
     private int id_estudiante;
     private String fecha_inicio;
     private String fecha_fin;
@@ -27,9 +28,9 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
 
     }
 
-    public Penalizacion(int id_estudiante, String fecha_fin) {
+    public Penalizacion(int id_estudiante) {
         this.id_estudiante = id_estudiante;
-        this.fecha_fin = fecha_fin;
+
     }
 
     public Penalizacion(String fecha_inicio, String fecha_fin, String dni) {
@@ -75,12 +76,6 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         return "Penalizacion{" + "id_estudiante=" + id_estudiante + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", dni=" + dni + '}';
     }
 
-   
-
-   
-
-    
-
     @Override
     public int hashCode() {
         int hash = 5;
@@ -116,24 +111,19 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            id_estudiante=Estudiante.buscarId(this.dni);
-            
+//            id_estudiante = Estudiante.buscarId(this.dni);
+
             String consulta = "insert into penalizacion (id_usuario,fecha_inicio, fecha_fin) values (?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, id_estudiante);
+            pstmt.setInt(1, this.id_estudiante);
             pstmt.setString(2, this.fecha_inicio);
             pstmt.setString(3, this.fecha_fin);
-          
-
-            if (!comprobarPenalizacion( id_estudiante)) {  // no existe penalizacion, un estudiante solo permite una penalizacion
-                pstmt.executeUpdate();
-                con.close();
-                return true;
-            } else {
-                con.close();
-                return false;
-            }
+//            if (!comprobarPenalizacion( id_estudiante)) {  // no existe penalizacion, un estudiante solo permite una penalizacion   
+            int num = pstmt.executeUpdate();
+            con.close();
+            return num == 1;
+//          
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al insertar penalizado");
@@ -141,30 +131,24 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
             return false;
         }
     }
- 
+
     @Override // ACABAR--->HECHO
     public boolean actualizar(Penalizacion p) {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            id_estudiante=Estudiante.buscarId(this.dni);
-            String consulta = "update penalizacion set fecha_inicio = ?, fecha_fin = ? where id_usuario like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            
-            pstmt.setString(1,  p.getfecha_inicio());
-            pstmt.setString(2,  p.getfecha_fin());
-            pstmt.setInt(3, id_estudiante);
-           
+//            id_estudiante = Estudiante.buscarId(this.dni);
+            String consulta3 = "update penalizacion set  fecha_fin = ? where id_usuario like ?";// solo actualiza fecha_fin
+            PreparedStatement pstmt3 = con.prepareStatement(consulta3);
+            pstmt3.clearParameters();         
+            pstmt3.setString(1, p.getfecha_fin());
+            pstmt3.setInt(2, this.id_estudiante);
 
-            if (comprobarPenalizacion(id_estudiante)) {  // existe penalizacion para este estudiante
-                pstmt.executeUpdate();
-                con.close();
-                return true;
-            } else {
-                con.close();
-                return false;
-            }
+//            if (comprobarPenalizacion(id_estudiante)) {  // existe penalizacion para este estudiante
+            int num = pstmt3.executeUpdate();
+            con.close();
+            return num == 1;
+
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar la penalizaion");
@@ -178,21 +162,17 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            id_estudiante=Estudiante.buscarId(this.dni);
-            System.out.println(id_estudiante);
-            String consulta = "delete from penalizacion where id_usuario like ?";
+//            id_estudiante = Estudiante.buscarId(this.dni);
+//            System.out.println(id_estudiante);
+            String consulta = "delete from penalizacion where fecha_fin like ?";
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setInt(1, id_estudiante);
-                    
-            if (comprobarPenalizacion(id_estudiante)) {  // existe la penalizacion
-                pstmt.executeUpdate();
+            pstmt.setString(1, this.fecha_fin); 
+
+//            if (comprobarPenalizacion(id_estudiante)) {  // existe la penalizacion
+            int num= pstmt.executeUpdate();
                 con.close();
-                return true;
-            } else {
-                con.close();
-                return false;
-            }
+            return num == 1;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al borrar la penalizacion");
@@ -201,24 +181,25 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
         }
     }
 
-    private boolean comprobarPenalizacion(int id_estudiante) {
-        try {
-            Conexion conexion = new Conexion();
-            Connection con = conexion.getConnection();
-
-            String consulta = "select * from penalizacion where id_usuario like ?";
-            PreparedStatement pstmt = con.prepareStatement(consulta);
-            pstmt.clearParameters();
-            pstmt.setInt(1, id_estudiante);
-            ResultSet resultado = pstmt.executeQuery();
-            con.close();
-            return resultado.next();
-
-        } catch (SQLException ex) {
-            System.err.println("Excepcion SQL: Error al comprobar la penalizacion");
-            System.err.println(ex);
-            return false;
-        }
+    public static boolean comprobarPenalizacion(int id_estudiante) {
+////        try {
+////            Conexion conexion = new Conexion();
+////            Connection con = conexion.getConnection();
+//
+//            String consulta = "select * from penalizacion where id_usuario like ?";
+//            PreparedStatement pstmt = con.prepareStatement(consulta);
+//            pstmt.clearParameters();
+//            pstmt.setInt(1, id_estudiante);
+//            ResultSet resultado = pstmt.executeQuery();
+////            con.close();
+//            return resultado.next();
+////
+////        } catch (SQLException ex) {
+////            System.err.println("Excepcion SQL: Error al comprobar la penalizacion");
+////            System.err.println(ex);
+////            return false;
+////        }
+              return true;
     }
 
     // ACABAR-----> HECHO
