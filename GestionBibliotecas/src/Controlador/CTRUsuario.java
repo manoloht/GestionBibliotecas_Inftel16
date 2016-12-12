@@ -408,8 +408,26 @@ public class CTRUsuario {
             System.err.println(ex);
             return b;
         }
+         
     }
-    
+     public static boolean comprobarUsuario(String dni) {
+        Usuario u = new Usuario();
+        if (u.comprobarUsuario(dni)) {
+            return true;
+        } else {
+            return false;
+        }
+     }
+        public static boolean borrarUsuario(String dni) {
+        Usuario u = new Usuario(dni);
+        // int id_usuario = Usuario.buscarId(dni);
+
+        if (u.borrar()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 
     
