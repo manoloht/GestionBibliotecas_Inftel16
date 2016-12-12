@@ -26,58 +26,105 @@ import java.util.logging.Logger;
  * @author Manuel
  */
 public class ControladorYuemei {
-    
-    public static void CrearLibro(String isbn, String titulo, String fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma,String nombre_autor,String apellido_autor){
+
+    // METODO PARA EDITAR UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+    public static boolean editarEstudiante(String dni, String dni_nuevo, String nombre, String apellido, String sexo, String email, String biblioteca, String numExp) {
+        boolean exito;
+        Estudiante u1 = new Estudiante(dni);
+        Estudiante u2 = new Estudiante(dni_nuevo);
+        u2.setNombre(nombre);
+        u2.setApellidos(apellido);
+        u2.setSexo(sexo);
+        u2.setEmail(email);
+        u2.setNombre_biblioteca(biblioteca);
+        u2.setNumExp(numExp);
+        exito = u1.actualizar(u2);
+
+        return exito;
+    }
+    // METODO PARA EDITAR UN USUARIO, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+
+    public static boolean editarUsuario(String dni, String dni_nuevo, String nombre, String apellido, String sexo, String email) {
+        boolean exito;
+        Usuario u1 = new Usuario(dni);
+        Usuario u2 = new Usuario(dni_nuevo);
+        u2.setApellidos(apellido);
+        u2.setNombre(nombre);
+        u2.setEmail(email);
+        u2.setSexo(sexo);
+        exito = u1.actualizar(u2);
+        return true;
+    }
+
+    public static boolean editarAdministrador(String dni, String dni_nuevo, String nombre, String apellido, String sexo, String email) {
+        boolean exito;
+        Admin u1 = new Admin(dni);
+        Admin u2 = new Admin(dni_nuevo);
+        u2.setApellidos(apellido);
+        u2.setNombre(nombre);
+        u2.setEmail(email);
+        u2.setSexo(sexo);
+        exito = u1.actualizar(u2);
+        return exito;
+    }
+
+    public static boolean editarBibliotecario(String dni, String dni_nuevo, String nombre, String apellido, String sexo, String email, String nombre_bib) {
+        boolean exito;
+        Bibliotecario u1 = new Bibliotecario(dni);
+        Bibliotecario u2 = new Bibliotecario(dni_nuevo);
+        u2.setApellidos(apellido);
+        u2.setNombre(nombre);
+        u2.setEmail(email);
+        u2.setSexo(sexo);
+        exito = u1.actualizar(u2);
+        return exito;
+    }
+
+    public static void CrearLibro(String isbn, String titulo, String fecha_edi, String nombre_editorial, String nombre_categoria, String nombre_bib, String pais, String idioma, String nombre_autor, String apellido_autor) {
 //        boolean insertarlibro,insertarEjemplar,insertarautor,insertarlibroautor;
-        Libro libro=new Libro(isbn, titulo,fecha_edi,  nombre_editorial, nombre_categoria,  nombre_bib,  pais,  idioma);
-        Ejemplar ejem=new Ejemplar(isbn,nombre_categoria,  nombre_bib);
-        Autor autor=new Autor(nombre_autor, apellido_autor);
-        libro_autor libaut=new libro_autor( nombre_autor, apellido_autor,  isbn,  nombre_bib,  nombre_categoria);
-        if(libro.insertar()){
-       
-        autor.insertar();
-        libaut.InsertarLibroAutor(); 
-        
-        ejem.insertar();
-        
-    }else{
+        Libro libro = new Libro(isbn, titulo, fecha_edi, nombre_editorial, nombre_categoria, nombre_bib, pais, idioma);
+        Ejemplar ejem = new Ejemplar(isbn, nombre_categoria, nombre_bib);
+        Autor autor = new Autor(nombre_autor, apellido_autor);
+        libro_autor libaut = new libro_autor(nombre_autor, apellido_autor, isbn, nombre_bib, nombre_categoria);
+        if (libro.insertar()) {
+
+            autor.insertar();
+            libaut.InsertarLibroAutor();
+
+            ejem.insertar();
+
+        } else {
             ejem.insertar();
         }
-        
-    }
-    
 
-    
+    }
+
     public static void main(String[] args) throws ParseException {
 
-        String isbn="isbn666";
-        String titulo="Fisica";
-        String fecha_edi="1998";
-        String editorial="Editorial A ";
-        String categoria="CategoriaA";
-        String biblioteca="PruebasManolo";
-        String pais="chino";
-        String idioma="chino";        
-        String nombre_autor="juan";
-        String nombre_apellido="jose";
-     
-        ControladorYuemei.CrearLibro(isbn, titulo, fecha_edi,editorial,categoria, biblioteca, pais, idioma, nombre_autor, nombre_apellido);
+        String isbn = "isbn666";
+        String titulo = "Fisica";
+        String fecha_edi = "1998";
+        String editorial = "Editorial A ";
+        String categoria = "CategoriaA";
+        String biblioteca = "PruebasManolo";
+        String pais = "chino";
+        String idioma = "chino";
+        String nombre_autor = "juan";
+        String nombre_apellido = "jose";
+
+        ControladorYuemei.CrearLibro(isbn, titulo, fecha_edi, editorial, categoria, biblioteca, pais, idioma, nombre_autor, nombre_apellido);
 
 //        Calendar hoy = Calendar.getInstance();
 //        hoy.clear();
 //        hoy.setTime(new Date());
-
 //        boolean pasado;
 //        pasado = hoy.after(fecha_finn);
 //        System.out.println("ha pasado fecha_fin?" + pasado);
-
 //        int dia_retraso;
 //        dia_retraso = CalcularDiaRetraso(fecha,hoy);
-        
 //        System.out.println("dia_retraso:" + dia_retraso);
 //        
 //       SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd" );  
-
 //        boolean exito;
 //        libro_autor a = new libro_autor("juan", "jose", "isbn111", "informatica", "fisica");
 //        libro_autor b = new libro_autor("pepe", "jose", "isbn222", "informatica", "mate");
