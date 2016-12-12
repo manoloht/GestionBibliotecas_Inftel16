@@ -281,108 +281,158 @@ public class CTRUsuario {
             return false;
         }
     }
-}
 
+        //////////////////////////////
+    // Estudiante - Mostrar prestamos
+    //
+    // List<Prestamo> prestamosByEstudiante(id_usuario)
+    //////////////////////////////
+    public static List<Prestamo> prestamosByEstudiante(int id_usuario){
+        
+        List<Prestamo> prestamos = new ArrayList<>();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from prestamo where id_usuario = ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id_usuario);            
+            ResultSet resultado = pstmt.executeQuery();
 
-
-/* Copia de lo que había antes
-public class CTRUsuario {
-
-    // DEVOLVER LISTA DE USUARIOS POR ROL, PALABRA CLAVE Y VALOR PALABRA CLAVE 
-    // rol PUEDE SER Todos, Administrador, Biliotecario, Estudiante);
-    // palabra_clave PUEDE SER Dni, Nombre, Apellidos, Email
-    // valor PUEDE SER cualquiera que introduzca el usuario
-    public static List<Usuario> buscarUsuarios(String rol, String palabra_clave, String valor_pal_clave) {
-        List<Usuario> listaUsuarios = new ArrayList<>();
-        if (rol.equals("rol")) {
-            for (int i = 0; i < 76; i++) {
-                Usuario u = new Usuario(rol + i, palabra_clave + i, valor_pal_clave + i, "V", "email" + i, "pass" + i);
-                listaUsuarios.add(u);
+            while (resultado.next()) {
+                int id_prestamo = resultado.getInt("id_prestamo");
+                String fecha_ini =resultado.getString("fecha_ini");
+                String fecha_fin =resultado.getString("fecha_fin");
+                String dni = Util.buscarUsuario(resultado.getInt("id_Usuario")).getDni();
+                int id_ejem = resultado.getInt("id_ejem");
+                String isbn = Util.buscarLibro(resultado.getInt("id_libro")).getIsbn();
+                String nombre_cat = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                
+                
+                Prestamo p = new Prestamo (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
+                p.setId_prestamo(id_prestamo);
+                prestamos.add(p);
             }
-        }
 
-        for (int i = 0; i < 45; i++) {
-            Usuario u = new Usuario(rol + i, palabra_clave + i, valor_pal_clave + i, "H", "email" + i, "pass" + i);
-            listaUsuarios.add(u);
-        }
-        return listaUsuarios;
-    }
-
-    // DEVOLVER LISTA DE USUARIOS POR ROL
-    // rol PUEDE SER Todos, Administrador, Biliotecario, Estudiante);
-    public static List<Usuario> buscarUsuariosRol(String rol) {
-        List<Usuario> listaUsuarios = new ArrayList<>();
-        if (rol.equals("Todos")) {
-            listaUsuarios = CTRUsuario.getTodosUsuarios();
-        } else{
+            con.close();
             
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener los prestamos por usuario.");
+            System.err.println(ex);
         }
-        return listaUsuarios;
+                
+        return prestamos;
+    }
+    
+    
+    
+    //////////////////////////////
+    // Estudiante - Mostrar reservaos
+    //
+    // List<Reservado> reservadosByEstudiante(id_usuario)
+    //////////////////////////////
+    public static List<Reservado> reservadosByEstudiante(int id_usuario){
+        
+        List<Reservado> reservados = new ArrayList<>();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from reservado where id_usuario = ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id_usuario);            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while (resultado.next()) {
+                int id_reservado = resultado.getInt("id_reservado");
+                String fecha_ini =resultado.getString("fecha_ini");
+                String fecha_fin =resultado.getString("fecha_fin");
+                String dni = Util.buscarUsuario(resultado.getInt("id_Usuario")).getDni();
+                int id_ejem = resultado.getInt("id_ejem");
+                String isbn = Util.buscarLibro(resultado.getInt("id_libro")).getIsbn();
+                String nombre_cat = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                
+                
+                Reservado p = new Reservado (fecha_ini,fecha_fin,id_ejem,isbn,dni,nombre_cat,nombre_bib);
+                p.setId_reservado(id_reservado);
+                reservados.add(p);
+            }
+            con.close();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener los reservados por usuario.");
+            System.err.println(ex);
+        }
+        return reservados;
     }
 
-    // OBTENER TODOS LOS USUARIOS DE LA TABLA USUARIOS
-    public static List<Usuario> getTodosUsuarios() {
-        List<Usuario> listaUsuarios = new ArrayList<>();
-        for (int i = 0; i < 800; i++) {
-            Usuario u = new Usuario("usuario" + i, "usuario" + i, "usuario" + i, "V", "usuario" + i, "usuario" + i);
-            listaUsuarios.add(u);
-        }
-        return listaUsuarios;
-    }
+
     
-    // METODO PARA COMPROBAR SI EXISTE UN ADMINISTRADOR, DEVOLVER TRUE EN CASO DE EXISTIR, FALSE EN CASO CONTRARIO
-    public static boolean comprobarAdministrador(String dni){
-        if(dni.equals("1")){
-            return true;
-        }else{
-            return false;
-        }
-    }
     
-     // METODO PARA INSERTAR UN ADMINISTRADOR, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
-    public static boolean insertarAdministrador(String dni, String nombre, String apellido, String sexo, String email, String biblioteca){
-        if(dni.equals("2")){
-            return true;
-        }else{
-            return false;
-        }
-    }
     
-     // METODO PARA COMPROBAR SI EXISTE UN BIBLIOTECARIO, DEVOLVER TRUE EN CASO DE EXISTIR, FALSE EN CASO CONTRARIO
-    public static boolean comprobarBibliotecario(String dni){
-        if(dni.equals("1")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    
-    // METODO PARA INSERTAR UN BIBLIOTECARIO, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
-    public static boolean insertarBibliotecario(String dni, String nombre, String apellido, String sexo, String email, String biblioteca){
-        if(dni.equals("2")){
-            return true;
-        }else{
-            return false;
+    //////////////////////////////
+    // Biblioteca - Devuelve la biblioteca para un usuario por su dni
+    //
+    // Biblioteca bibliotecaByUsuario(String dni)
+    //////////////////////////////
+    public static Biblioteca bibliotecaByUsuario(String dni)
+    {
+        /* select * from biblioteca b where  EXISTS (select id_bib from estudiante e where b.id_bib = e.id_bib and id_usuario = 9990) or
+	EXISTS (select id_bib from bibliotecario e where b.id_bib = e.id_bib and id_usuario = 9990) */
+        
+        int id_usuario = Usuario.buscarId(dni);
+        Biblioteca b = new Biblioteca();
+        Usuario u = Util.buscarUsuario(id_usuario);
+ 
+         try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from biblioteca b where  EXISTS (select id_bib from estudiante e where b.id_bib = e.id_bib and id_usuario = "+ id_usuario +") or EXISTS (select id_bib from bibliotecario e where b.id_bib = e.id_bib and id_usuario = "+ id_usuario +")";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while(resultado.next()){
+               b.setId_bib(resultado.getInt("id_bib"));
+               b.setDni_admin(Util.buscarUsuario(resultado.getInt("id_usuario")).getDni());               
+               b.setNombre(resultado.getString("nombre"));
+               b.setTelefono(resultado.getInt("telefono"));
+               b.setLocalizacion(resultado.getString("localizacion"));
+            }
+            con.close();
+            return b;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Biblioteca.");
+            System.err.println(ex);
+            return b;
         }
     }
     
-     // METODO PARA COMPROBAR SI EXISTE UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE EXISTIR, FALSE EN CASO CONTRARIO
-    public static boolean comprobarEstudiante(String dni){
-        if(dni.equals("1")){
-            return true;
-        }else{
-            return false;
-        }
+    
+
+    
+    
+    
+    //////////////////////////////
+    // Estudiante - Buscar libros
+    //
+    // List<Libro> buscarLibros(String biblioteca, String categoria, String palabra_clave, String palabra_valor)
+    //////////////////////////////
+    public static List<Libro> buscarLibros(String biblioteca, String categoria, String palabra_clave, String palabra_valor)
+    {
+        List<Libro> libros = new ArrayList<>();
+    
+    
+    
+        return libros;
     }
     
-    // METODO PARA INSERTAR UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
-    public static boolean insertarEstudiante(String dni, String nombre, String apellido, String sexo, String email, String biblioteca, String numExp){
-        if(dni.equals("estudiante")){
-            return true;
-        }else{
-            return false;
-        }
-    }
+    
+    
+    
 }
 
-*/
+
+
