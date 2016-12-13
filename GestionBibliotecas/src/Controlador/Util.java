@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Random;
 
@@ -381,4 +382,29 @@ public class Util {
             return penaliza;
         }   
 }
+     
+     
+      static String getFechaInicio(){
+        Calendar hoy = Calendar.getInstance();
+        hoy.clear();
+        hoy.setTime(new java.util.Date()); // establece feche de hoy;
+        String fecha_hoy = (new SimpleDateFormat("dd/MM/yyyy")).format(hoy.getTime());
+    
+        return fecha_hoy;    
+    }
+    
+    
+        static String getFechaFin(){
+        Calendar hoy = Calendar.getInstance();
+        hoy.clear();
+        hoy.setTime(new java.util.Date()); // establece feche de hoy;
+        Calendar fecha = (Calendar) hoy.clone();
+        fecha.add(Calendar.DATE, 7);
+        String fecha_fin = (new SimpleDateFormat("dd/MM/yyyy")).format(fecha.getTime());
+    
+        return fecha_fin;
+    
+        }
+     
+     
 }

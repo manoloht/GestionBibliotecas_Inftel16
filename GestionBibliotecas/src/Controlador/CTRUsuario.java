@@ -491,7 +491,92 @@ public class CTRUsuario {
     
     
     
-    
+       
+    //////////////////////////////
+    // Estudiante - Prestar Libro
+    //
+    // int prestarCrear(int id_usuario, int isbn)
+    // Devuelve:
+    //      -1 => Si el usuario está penalizado
+    //      0  => Si no hay ejemplares disponibles
+    //      1 => Si se ha hecho el préstamo
+    //////////////////////////////
+    public static int crearPrestamo(int id_usuario, String isbn, String nombre_bib,String nombre_cat ){
+        int comprueba_prestamo = 0;
+        int id_libro = Libro.buscarId(nombre_bib, nombre_cat, isbn);
+        int id_bib = Biblioteca.buscarId(nombre_bib);
+        int id_cat = Categoria.buscarId(nombre_bib, nombre_cat);
+        
+        if(Penalizacion.comprobarPenalizacion(id_usuario)){
+            return  -1;
+        }
+        
+        List<Ejemplar> ejemplares = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from ejemplar where id_libro = "+id_libro+" and id_cat ="+id_cat+"and id_bib="+id_bib;
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                int id_ejem = resultado.getInt("id_ejem");
+                Ejemplar ej = new Ejemplar();
+                ej.setId_ejem(id_ejem);
+                ejemplares.add(ej);
+            }
+                con.close();
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los ejemplares");
+            System.err.println(ex);
+        }
+        
+        for(Ejemplar e : ejemplares){
+            try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from prestamo where id_ejem = ? ";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, e.getId_ejem());
+            ResultSet resultado = pstmt.executeQuery();
+            if(resultado.next()){
+                con.close();
+                return 0;
+            }else {
+                try {
+                    consulta = "select * from reservado where id_ejem = ? ";
+                    pstmt = con.prepareStatement(consulta);
+                    pstmt.clearParameters();
+                    pstmt.setInt(1, e.getId_ejem());
+                    resultado = pstmt.executeQuery();
+                    if (resultado.next()) {
+                        con.close();
+                        return 0;
+                    } else {
+                        con.close();
+                        Prestamo.insertarPrestamo(Util.getFechaInicio(), Util.getFechaFin(), id_usuario, e.getId_ejem(), id_libro, id_cat, id_bib);
+                        return 1;
+                    }
+
+                } catch (SQLException ex) {
+                    System.err.println("Excepcion SQL: Error al comprobar el prestamo");
+                    System.err.println(ex);
+                    return -1;
+                }
+                
+            }        
+            
+            } catch (SQLException ex) {
+                System.err.println("Excepcion SQL: Error al comprobar el prestamo");
+                System.err.println(ex);
+                return -1;
+            }
+        }
+        
+        return comprueba_prestamo;
+    }
     
     
     
