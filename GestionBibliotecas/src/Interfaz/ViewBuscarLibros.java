@@ -5,6 +5,10 @@
  */
 package Interfaz;
 
+import Controlador.CTRBiblioteca;
+import Modelo.Biblioteca;
+import java.util.List;
+
 /**
  *
  * @author alberto carrion leiva
@@ -22,6 +26,11 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Buscar Libros");
+
+        List<Biblioteca> bibliotecas = CTRBiblioteca.getTodasBibliotecas();
+        for (Biblioteca b : bibliotecas) {
+            this.bibliotecaSel.addItem(b.getNombre());
+        }
     }
 
     /**
@@ -44,13 +53,17 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         numResultados = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaLibros = new javax.swing.JTable();
+        bibliotecaSel = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        campoBusqueda = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        palabraClave = new javax.swing.JComboBox<>();
+        numRes = new javax.swing.JLabel();
         jMenuBar3 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
-        MenuInicio = new javax.swing.JMenuItem();
+        MenuIni = new javax.swing.JMenuItem();
         MenuMiPerfil = new javax.swing.JMenuItem();
         MenuSalir = new javax.swing.JMenuItem();
         Libros = new javax.swing.JMenu();
@@ -101,24 +114,21 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         numResultados.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-        jLabel1.setText("Mis Prestamos");
+        jLabel1.setText("Buscar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Titulo Libro", "ISBN", "Fecha Inicio", "Fecha Fin"
+                "ISBN", "Titulo", "Categoria", "Autor", "Editorial"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -129,65 +139,61 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaLibros);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-        jLabel2.setText("Mis Reservas");
+        bibliotecaSel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas" }));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Titulo Libro", "ISBN", "Fecha Reserva"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("BIBLIOTECA");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("PALABRA CLAVE");
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+
+        palabraClave.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Titulo", "ISBN", "Editorial" }));
+
+        numRes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        numRes.setText("MENSAJE");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1651, 1651, 1651))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(numRes)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel6)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(699, 699, 699)
-                .addComponent(numResultados)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(bibliotecaSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(59, 59, 59)
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(palabraClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(57, 57, 57)
+                                        .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnBuscar))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(699, 699, 699)
+                        .addComponent(numResultados)))
+                .addContainerGap(970, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,25 +205,31 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jLabel2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(bibliotecaSel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(campoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar)
+                    .addComponent(palabraClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(numRes)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(276, 276, 276)
                 .addComponent(numResultados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(196, 196, 196))
+                .addGap(411, 411, 411))
         );
 
         Inicio.setText("Inicio");
 
-        MenuInicio.setText("Reservas y Prestamos");
-        MenuInicio.addActionListener(new java.awt.event.ActionListener() {
+        MenuIni.setText("Reservas y Prestamos");
+        MenuIni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuInicioActionPerformed(evt);
+                MenuIniActionPerformed(evt);
             }
         });
-        Inicio.add(MenuInicio);
+        Inicio.add(MenuIni);
 
         MenuMiPerfil.setText("Mi Perfil");
         MenuMiPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -261,9 +273,7 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -273,7 +283,6 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         vistaLogin = new ViewLogin();
         vistaLogin.setVisible(true);
         this.setVisible(false);
-
     }//GEN-LAST:event_MenuSalirActionPerformed
 
     private void MenuBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBuscarLibroActionPerformed
@@ -288,55 +297,33 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
-    private void MenuInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuInicioActionPerformed
+    private void MenuIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuIniActionPerformed
         vistaInicio = new ViewInicioEstudiante();
         vistaInicio.setVisible(true);
-        vistaMiPerfil.pack();
+        vistaInicio.pack();
         this.setVisible(false);
-    }//GEN-LAST:event_MenuInicioActionPerformed
+    }//GEN-LAST:event_MenuIniActionPerformed
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewBuscarLibros().setVisible(true);
-            }
-        });
-    }
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String nombre_biblioteca = bibliotecaSel.getSelectedItem().toString();
+        String palabra_clave = palabraClave.getSelectedItem().toString();
+        String campo_busqueda = campoBusqueda.getText();
+        System.out.println("Buscando Libro: " + nombre_biblioteca + " ," + palabra_clave + " ," + campo_busqueda);
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
     private javax.swing.JMenu Libros;
     private javax.swing.JMenuItem MenuBuscarLibro;
-    private javax.swing.JMenuItem MenuInicio;
+    private javax.swing.JMenuItem MenuIni;
     private javax.swing.JMenuItem MenuMiPerfil;
     private javax.swing.JMenuItem MenuSalir;
+    private javax.swing.JComboBox<String> bibliotecaSel;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JTextField campoBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -347,9 +334,9 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JLabel numRes;
     private javax.swing.JLabel numResultados;
+    private javax.swing.JComboBox<String> palabraClave;
+    private javax.swing.JTable tablaLibros;
     // End of variables declaration//GEN-END:variables
 }
