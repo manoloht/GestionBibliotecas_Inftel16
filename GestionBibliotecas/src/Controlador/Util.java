@@ -105,7 +105,7 @@ public class Util {
             System.err.println(ex);
             return u;
         }
-    
+     }
 
     public static Usuario buscarUsuarioEmail(String email){
         Usuario u = new Usuario();
