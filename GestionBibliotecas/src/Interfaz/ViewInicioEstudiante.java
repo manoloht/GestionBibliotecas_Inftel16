@@ -5,6 +5,13 @@
  */
 package Interfaz;
 
+import Controlador.CTRPrestamos;
+import Controlador.CTRReservas;
+import Modelo.Prestamo;
+import Modelo.Reservado;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author alberto carrion leiva
@@ -17,9 +24,37 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     private ViewBuscarLibros vistaBuscarLibros;
     private ViewLogin vistaLogin;
     private ViewMiPerfil vistaMiPerfil;
+    private ViewVerReserva vistaVerReserva;
+    private final DefaultTableModel modeloTablaPrestamos;
+    private final DefaultTableModel modeloTablaReservas;
 
     public ViewInicioEstudiante() {
         initComponents();
+        modeloTablaPrestamos = (DefaultTableModel) tablaPrestamos.getModel();
+        modeloTablaReservas = (DefaultTableModel) tablaReservas.getModel();
+
+        //Iniciamos las tablas
+        List<Prestamo> prestamos = CTRPrestamos.getPrestamosEstudiante("dni");
+        for (Prestamo m : prestamos) {
+            Object[] fila = new Object[4];
+            fila[0] = m.getId_ejem();
+            fila[1] = m.getIsbn();
+            fila[2] = m.getFecha_ini();
+            fila[3] = m.getFecha_fin();
+            modeloTablaPrestamos.addRow(fila);
+        }
+        numPrestamos.setText("Tiene " + prestamos.size() + " libros en posesión.");
+
+        List<Reservado> reservas = CTRReservas.getReservasEstudiante("dni");
+        for (Reservado m : reservas) {
+            Object[] fila = new Object[3];
+            fila[0] = m.getIsbn();
+            fila[1] = m.getFecha_ini();
+            fila[2] = m.getFecha_fin();
+            modeloTablaReservas.addRow(fila);
+        }
+        numReservas.setText("Tiene " + prestamos.size() + " libros reservados.");
+
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Inicio Estudiante");
     }
@@ -44,10 +79,12 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         numResultados = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPrestamos = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaReservas = new javax.swing.JTable();
+        numPrestamos = new javax.swing.JLabel();
+        numReservas = new javax.swing.JLabel();
         jMenuBar3 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         MenuInicio = new javax.swing.JMenuItem();
@@ -103,12 +140,9 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
         jLabel1.setText("Mis Prestamos");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPrestamos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Titulo Libro", "ISBN", "Fecha Inicio", "Fecha Fin"
@@ -129,17 +163,14 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaPrestamos);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
         jLabel2.setText("Mis Reservas");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Titulo Libro", "ISBN", "Fecha Reserva"
@@ -160,7 +191,18 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        tablaReservas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaReservasMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaReservas);
+
+        numPrestamos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        numPrestamos.setText("Mensaje");
+
+        numReservas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        numReservas.setText("Mensaje");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -181,7 +223,9 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel6)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(numPrestamos)
+                                    .addComponent(numReservas))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -199,14 +243,18 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
+                .addComponent(numPrestamos)
+                .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addGap(53, 53, 53)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(numResultados)
+                .addGap(18, 18, 18)
+                .addComponent(numReservas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(196, 196, 196))
+                .addGap(164, 164, 164))
         );
 
         Inicio.setText("Inicio");
@@ -279,6 +327,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     private void MenuBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBuscarLibroActionPerformed
         vistaBuscarLibros = new ViewBuscarLibros();
         vistaBuscarLibros.setVisible(true);
+        vistaBuscarLibros.pack();
         this.setVisible(false);
     }//GEN-LAST:event_MenuBuscarLibroActionPerformed
 
@@ -293,6 +342,21 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     private void MenuInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuInicioActionPerformed
 
     }//GEN-LAST:event_MenuInicioActionPerformed
+
+    private void tablaReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaReservasMouseClicked
+        int index = tablaReservas.getSelectedRow();
+        vistaVerReserva = new ViewVerReserva();
+        vistaVerReserva.setVisible(true);
+        vistaVerReserva.pack();
+        vistaVerReserva.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        String titulo = modeloTablaReservas.getValueAt(index, 0).toString();
+        String isbn = modeloTablaReservas.getValueAt(index, 1).toString();
+        String fecha_reserva = modeloTablaReservas.getValueAt(index, 2).toString();
+        
+        vistaVerReserva.titulo.setText(titulo);
+        vistaVerReserva.isbn.setText(isbn);
+        vistaVerReserva.fechaReserva.setText(fecha_reserva);
+    }//GEN-LAST:event_tablaReservasMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -347,8 +411,10 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JLabel numPrestamos;
+    private javax.swing.JLabel numReservas;
     private javax.swing.JLabel numResultados;
+    private javax.swing.JTable tablaPrestamos;
+    private javax.swing.JTable tablaReservas;
     // End of variables declaration//GEN-END:variables
 }

@@ -74,7 +74,7 @@ public class ControladorManolo {
 */    
 
 // ----- Pruebas MAIN ----------
-        
+ /*       
     List<Libro> libros = new ArrayList<>();
     libros = CTRUsuario.buscarLibros("PruebasManolo3", "isbn", "isbn111");
     
@@ -85,8 +85,11 @@ public class ControladorManolo {
             System.out.println(u.toString());
         }
 
+*/        
 
-
+Session session = new Session(1234);
+Session.setId_usuario(555);
+System.err.println(Session.getId_usuario());
 
   
 ////////////////////////////////////////////////////////////////////////////////
