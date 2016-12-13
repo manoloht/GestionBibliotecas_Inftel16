@@ -7,6 +7,7 @@ package Modelo;
 
 import java.util.*;
 import Configuracion.*;
+import Controlador.Util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -238,20 +239,51 @@ public class Ejemplar implements BaseDatos<Ejemplar> {
     
 
     public static List<Ejemplar> getTodosEjemplares() {
-         List<Ejemplar> ejemplares = new ArrayList<>();
+        List<Ejemplar> ejemplares = new ArrayList<>();
         try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
-            String consulta = "select * from usuario";
+            String consulta = "select * from ejemplar";
             Statement stmt = con.createStatement();
             ResultSet resultado = stmt.executeQuery(consulta);
 
             while (resultado.next()) {
                 int id_ejem = resultado.getInt("id_ejem");
-                String isbn = resultado.getString("isbn");
-                String nombre_cat = resultado.getString("nombre_cat");
-                String nombre_bib = resultado.getString("nombre_bib");                
-                Ejemplar ej = new Ejemplar(id_ejem, isbn, nombre_cat, nombre_bib);
+//                String isbn = Util.buscarLibro(resultado.getInt("id_libro")).getIsbn();
+//                String nombre_cat = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+//                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                 
+//                
+//                Ejemplar ej = new Ejemplar(id_ejem, isbn, nombre_cat, nombre_bib);
+                Ejemplar ej = new Ejemplar();
+                ej.setId_ejem(id_ejem);
+                ejemplares.add(ej);
+            }
+                con.close();
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al obtener todos los ejemplares");
+            System.err.println(ex);
+        }
+        return ejemplares;
+    }
+    
+    public static List<Ejemplar> getTodosEjemplares(int isbn) {
+        List<Ejemplar> ejemplares = new ArrayList<>();
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+            String consulta = "select * from ejemplar where isbn ";
+            Statement stmt = con.createStatement();
+            ResultSet resultado = stmt.executeQuery(consulta);
+
+            while (resultado.next()) {
+                int id_ejem = resultado.getInt("id_ejem");
+//                String isbn = Util.buscarLibro(resultado.getInt("id_libro")).getIsbn();
+//                String nombre_cat = Util.buscarCategoria(resultado.getInt("id_cat")).getNombre_cat();
+//                String nombre_bib = Util.buscarBiblioteca(resultado.getInt("id_bib")).getNombre();                 
+//                
+//                Ejemplar ej = new Ejemplar(id_ejem, isbn, nombre_cat, nombre_bib);
+                Ejemplar ej = new Ejemplar();
+                ej.setId_ejem(id_ejem);
                 ejemplares.add(ej);
             }
                 con.close();

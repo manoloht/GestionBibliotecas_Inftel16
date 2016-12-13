@@ -6,11 +6,16 @@
 package Controlador;
 
 import Configuracion.Conexion;
+import Controlador.SenderEmail.MailSender;
+import Modelo.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 
 /**
  *
@@ -86,13 +91,19 @@ public class CTRLogin {
 }
     
     // FUNCION PARA ENVIAR EMAIL DE RECORDAR CONTRASEÑA, DEVOLVER TRUE EN CASO DE ENVIARLO, FALSE EN OTRO CASO
-    public static boolean enviarMensaje(String email) {
-        if( email.equals("0")){
+    public static boolean enviarMensaje(String email)  {
+            String Asunto="¡Recordar contraseña!";    
+            Usuario u=Util.buscarUsuario(email);
+            String password=u.getPassword();
+            String nombre=u.getNombre();
+            String contenido="Hola "+nombre+":\n" + "Estos son sus datos de acceso:"+"Dirección email:"+email+"Contraseña:"+password;
+            
+        try {
+            MailSender.sendMessage(email, Asunto,contenido);
             return true;
-        }else if  (email.equals("1")){
-            return true;
-        }else {
+        } catch (MessagingException ex) {
+            Logger.getLogger(CTRLogin.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    }
-}
+ 
+}}

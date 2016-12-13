@@ -274,6 +274,36 @@ public class Prestamo implements BaseDatos<Prestamo> {
             return false;
         }
     }
+    
+    public static boolean insertarPrestamo(String fecha_ini, String fecha_fin, int id_usuario, int id_ejem, int id_libro, int id_cat, int id_bib) {
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "insert into prestamo (id_prestamo,fecha_ini,fecha_fin,id_usuario,id_ejem,id_libro,id_cat,id_bib) "
+                    + "values (seq_id_prestamo.nextval,?,?,?,?,?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, fecha_ini);
+            pstmt.setString(2, fecha_fin);
+            pstmt.setInt(3, id_usuario);
+            pstmt.setInt(4, id_ejem);
+            pstmt.setInt(5, id_libro);
+            pstmt.setInt(6, id_cat);
+            pstmt.setInt(7, id_bib);
+
+            pstmt.executeUpdate();
+            con.close();
+            return true;
+            
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al insertar el prestamo.");
+            System.err.println(ex);
+            return false;
+        }
+    }
 
     @Override 
     public boolean actualizar(Prestamo p) {

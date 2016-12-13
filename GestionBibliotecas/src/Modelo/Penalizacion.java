@@ -182,24 +182,25 @@ public class Penalizacion implements BaseDatos<Penalizacion> {
     }
 
     public static boolean comprobarPenalizacion(int id_estudiante) {
-////        try {
-////            Conexion conexion = new Conexion();
-////            Connection con = conexion.getConnection();
-//
-//            String consulta = "select * from penalizacion where id_usuario like ?";
-//            PreparedStatement pstmt = con.prepareStatement(consulta);
-//            pstmt.clearParameters();
-//            pstmt.setInt(1, id_estudiante);
-//            ResultSet resultado = pstmt.executeQuery();
-////            con.close();
-//            return resultado.next();
-////
-////        } catch (SQLException ex) {
-////            System.err.println("Excepcion SQL: Error al comprobar la penalizacion");
-////            System.err.println(ex);
-////            return false;
-////        }
-              return true;
+        boolean comprobar;
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from penalizacion where id_usuario like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setInt(1, id_estudiante);
+            ResultSet resultado = pstmt.executeQuery();
+            comprobar = resultado.next();
+            con.close();
+            return comprobar;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al comprobar la penalizacion");
+            System.err.println(ex);
+            return false;
+        }
     }
 
     // ACABAR-----> HECHO
