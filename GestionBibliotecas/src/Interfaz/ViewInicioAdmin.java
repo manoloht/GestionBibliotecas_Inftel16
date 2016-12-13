@@ -5,9 +5,11 @@
  */
 package Interfaz;
 
+import Controlador.ModificaPenalizacion;
 import Controlador.Session;
 import Controlador.Util;
 import Modelo.Usuario;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,12 +24,19 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
     private ViewLogin vistaLogin;
     private ViewBibliotecasAdmin vistaBibliotecasAdmin;
     private ViewMiPerfil vistaMiPerfil;
+    private final DefaultTableModel modeloTablaLog;
 
     public ViewInicioAdmin() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
+        modeloTablaLog = (DefaultTableModel) tablaLog.getModel();
         this.setTitle("Inicio Admin");
         this.bienvenida.setText("NOMBRE: " + Session.getNombre() + " , APELLIDOS: " + Session.getApellidos() + ", ROL: ADMINISTRADOR");
+        for(String s: ModificaPenalizacion.InformePenalizacion()){
+            Object[]a = new Object[1];
+            a[0] = s;
+            modeloTablaLog.addColumn(a);
+        }
     }
 
     /**
@@ -49,6 +58,8 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         numResultados = new javax.swing.JLabel();
         bienvenida = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaLog = new javax.swing.JTable();
         jMenuBar3 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         MenuMiPerfil = new javax.swing.JMenuItem();
@@ -104,6 +115,31 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         bienvenida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         bienvenida.setText("BIENVENIDA");
 
+        tablaLog.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mensaje"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaLog);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -120,8 +156,9 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(bienvenida)
-                            .addComponent(jLabel6))))
-                .addContainerGap(1449, Short.MAX_VALUE))
+                            .addComponent(jLabel6)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(1374, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +169,9 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bienvenida)
-                .addGap(229, 229, 229)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(174, 174, 174)
                 .addComponent(numResultados)
                 .addContainerGap(593, Short.MAX_VALUE))
         );
@@ -255,6 +294,8 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel numResultados;
+    private javax.swing.JTable tablaLog;
     // End of variables declaration//GEN-END:variables
 }
