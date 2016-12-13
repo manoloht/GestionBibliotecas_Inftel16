@@ -6,8 +6,11 @@
 package Interfaz;
 
 import Controlador.CTRBiblioteca;
+import Controlador.CTRUsuario;
 import Modelo.Biblioteca;
+import Modelo.Libro;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,11 +24,15 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
     private ViewLogin vistaLogin;
     private ViewMiPerfil vistaMiPerfil;
     private ViewInicioEstudiante vistaInicio;
+    private DefaultTableModel modeloTabla;
+    private ViewVerLibro vistaVerLibro;
 
     public ViewBuscarLibros() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Buscar Libros");
+        numRes.setText("");
+        modeloTabla = (DefaultTableModel) tablaLibros.getModel();
 
         List<Biblioteca> bibliotecas = CTRBiblioteca.getTodasBibliotecas();
         for (Biblioteca b : bibliotecas) {
@@ -121,14 +128,14 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ISBN", "Titulo", "Categoria", "Autor", "Editorial"
+                "ISBN", "Titulo", "Categoria", "Editorial"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -137,6 +144,11 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaLibros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaLibrosMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tablaLibros);
@@ -305,11 +317,49 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuIniActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
         String nombre_biblioteca = bibliotecaSel.getSelectedItem().toString();
         String palabra_clave = palabraClave.getSelectedItem().toString();
         String campo_busqueda = campoBusqueda.getText();
-        System.out.println("Buscando Libro: " + nombre_biblioteca + " ," + palabra_clave + " ," + campo_busqueda);
+        System.out.println("Buscando Libros: " + nombre_biblioteca + " ," + palabra_clave + " ," + campo_busqueda);
+
+        List<Libro> libros = CTRUsuario.buscarLibros(nombre_biblioteca, palabra_clave, campo_busqueda);
+        for (Libro l : libros) {
+            Object[] fila = new Object[4];
+            fila[0] = l.getIsbn();
+            fila[1] = l.getNombre_bib();
+            fila[2] = l.getNombre_categoria();
+            fila[3] = l.getNombre_editorial();
+            modeloTabla.addRow(fila);
+        }
+        numRes.setText("Se han encontrado " + libros.size() + " resultados");
+        System.out.println("Se han encontrado " + libros.size() + " resultados");
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void tablaLibrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaLibrosMouseClicked
+        int index = tablaLibros.getSelectedRow();
+        vistaVerLibro = new ViewVerLibro();
+        vistaVerLibro.setVisible(true);
+        vistaVerLibro.pack();
+        vistaVerLibro.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        String isbn = modeloTabla.getValueAt(index, 0).toString();
+        String titulo = modeloTabla.getValueAt(index, 1).toString();
+        String categoria = modeloTabla.getValueAt(index, 2).toString();
+        String editorial = modeloTabla.getValueAt(index, 3).toString();
+        
+        vistaVerLibro.titulo.setText(titulo);
+        vistaVerLibro.titulo.setEnabled(false);
+        
+        vistaVerLibro.isbn.setText(isbn);
+        vistaVerLibro.isbn.setEnabled(false);
+        
+        vistaVerLibro.categoria.setText(categoria);
+        vistaVerLibro.categoria.setEnabled(false);
+        
+        vistaVerLibro.Editorial.setText(editorial);
+        vistaVerLibro.Editorial.setEnabled(false);
+    }//GEN-LAST:event_tablaLibrosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
