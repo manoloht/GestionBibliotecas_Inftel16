@@ -6,12 +6,15 @@
 package Interfaz;
 
 import Controlador.CTRLogin;
+import Controlador.Session;
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import Controlador.Util;
+import Modelo.Usuario;
 
 /**
  *
- * @author alberto carrion leiva 
+ * @author alberto carrion leiva
  */
 public class ViewLogin extends javax.swing.JFrame {
 
@@ -231,16 +234,27 @@ public class ViewLogin extends javax.swing.JFrame {
             mensaje.setText("ERROR: Introduzca su email y contraseña");
             System.err.println("ERROR: El usuario no ha introducido email y contraseña");
         } else {
+            System.out.println("    ** Email Introducido:" + emailIntroducido.getText());
+            System.out.println("    ** Pass Introducido:" + pass.toString());
             //COMPROBAMOS QUE EXISTE EL USUARIO
             if (CTRLogin.comprobarLogin(emailIntroducido.getText(), pass.toString())) {
                 System.out.println("    ** Email Introducido:" + emailIntroducido.getText());
                 System.out.println("    ** Pass Introducido:" + pass.toString());
                 System.out.println("-----> El Usuario Existe");
 
-                //OBTENEMOS QUE TIPO DE USUARIO ES (0 ADMIN, 1 BIBLIOTECARIO, 2 ESTUDIANTE)
+                // CARGAMOS LOS DATOS EN EL SESSION
+                Usuario u = Util.buscarUsuarioEmail(emailIntroducido.getText());
+                Session.setNombre(u.getNombre());
+                Session.setApellidos(u.getApellidos());
+                Session.setDni(u.getDni());
+                Session.setSexo(u.getSexo());
+                Session.setEmail(u.getEmail());
+                Session.setPassword(u.getPassword());
+                
+                // OBTENEMOS QUE TIPO DE USUARIO ES (0 ADMIN, 1 BIBLIOTECARIO, 2 ESTUDIANTE)
                 int tipoUsuario = CTRLogin.getTipoUsuario(emailIntroducido.getText(), pass.toString());
 
-                //INICIAMOS SESION
+                // INICIAMOS SESION
                 switch (tipoUsuario) {
                     case 0:
                         System.out.println("-----> Accediendo a Inicio Admin");
@@ -271,41 +285,6 @@ public class ViewLogin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewLogin().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;

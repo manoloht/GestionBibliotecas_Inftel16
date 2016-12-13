@@ -5,6 +5,10 @@
  */
 package Interfaz;
 
+import Controlador.Session;
+import Controlador.Util;
+import Modelo.Usuario;
+
 /**
  *
  * @author alberto carrion leiva
@@ -23,6 +27,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Inicio Admin");
+        this.bienvenida.setText("NOMBRE: " + Session.getNombre() + " , APELLIDOS: " + Session.getApellidos() + ", ROL: ADMINISTRADOR");
     }
 
     /**
@@ -43,6 +48,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         numResultados = new javax.swing.JLabel();
+        bienvenida = new javax.swing.JLabel();
         jMenuBar3 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         MenuMiPerfil = new javax.swing.JMenuItem();
@@ -95,6 +101,9 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
 
         numResultados.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        bienvenida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        bienvenida.setText("BIENVENIDA");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -109,7 +118,9 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
                         .addComponent(numResultados))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(jLabel6)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bienvenida)
+                            .addComponent(jLabel6))))
                 .addContainerGap(1449, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -117,9 +128,11 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(233, 233, 233)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bienvenida)
+                .addGap(229, 229, 229)
                 .addComponent(numResultados)
                 .addContainerGap(593, Short.MAX_VALUE))
         );
@@ -210,6 +223,17 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         vistaMiPerfil.setVisible(true);
         vistaMiPerfil.pack();
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        vistaMiPerfil.nombre.setText(Session.getNombre());
+        vistaMiPerfil.apellidos.setText(Session.getApellidos());
+        vistaMiPerfil.dni.setText(Session.getDni());
+        vistaMiPerfil.email.setText(Session.getEmail());
+        vistaMiPerfil.pass.setText(Session.getPassword());
+
+        if (Session.getSexo().equals("H")) {
+            vistaMiPerfil.sexo.setSelectedIndex(0);
+        } else {
+            vistaMiPerfil.sexo.setSelectedIndex(1);
+        }
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
 
@@ -220,6 +244,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuGestionUsuarios;
     private javax.swing.JMenuItem MenuMiPerfil;
     private javax.swing.JMenuItem MenuSalir;
+    public javax.swing.JLabel bienvenida;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
