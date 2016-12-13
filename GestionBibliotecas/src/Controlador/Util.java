@@ -106,7 +106,43 @@ public class Util {
             return u;
         }
     
+
+    public static Usuario buscarUsuarioEmail(String email){
+        Usuario u = new Usuario();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from usuario where email like ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, email);
+
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               u.setDni(resultado.getString("dni"));
+               u.setNombre(resultado.getString("nombre"));
+               u.setApellidos(resultado.getString("apellido"));
+               u.setSexo(resultado.getString("sexo"));
+               u.setEmail(resultado.getString("email"));
+               u.setPassword(resultado.getString("password"));
+               u.setId_usuario(resultado.getInt("id_usuario"));
+            }
+            con.close();
+            return u;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Usuario.");
+            System.err.println(ex);
+            return u;
+        }
+    
     }
+
     
     public static Biblioteca buscarBiblioteca(int id){
         Biblioteca b = new Biblioteca();

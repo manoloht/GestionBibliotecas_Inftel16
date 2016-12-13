@@ -5,10 +5,8 @@
  */
 package gestionbibliotecas;
 
-import Configuracion.Conexion;
-import Modelo.Usuario;
-import java.util.*;
-
+import Controlador.*;
+import Interfaz.*;
 
 /**
  *
@@ -16,20 +14,9 @@ import java.util.*;
  */
 public class GestionBibliotecas {
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String[] args) {
-//
-//        Conexion c = new Conexion();
-//        c.getConnection();
-//        List<Usuario> u = new ArrayList<>();
-//        u = Usuario.getTodos();
-//        for(Usuario s : u){
-//             System.out.println(s.toString());
-//        }
-//        Usuario x = new Usuario("0099k9");
-//        System.err.println(x.buscar());
-//        
-//    }
+    public static void main(String[] args) {
+        Session sesion = new Session();
+        ViewLogin aplicacion = new ViewLogin();
+        aplicacion.setVisible(true);
+    }
 }

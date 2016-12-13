@@ -5,8 +5,8 @@
  */
 package Interfaz;
 
-import Controlador.CTRPrestamos;
-import Controlador.CTRReservas;
+import Controlador.CTRUsuario;
+import Controlador.Session;
 import Modelo.Prestamo;
 import Modelo.Reservado;
 import java.util.List;
@@ -33,8 +33,11 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         modeloTablaPrestamos = (DefaultTableModel) tablaPrestamos.getModel();
         modeloTablaReservas = (DefaultTableModel) tablaReservas.getModel();
 
+        //Obtenemos el Session para obtener id
+        int id_usuario = Session.getId_usuario();
+        
         //Iniciamos las tablas
-        List<Prestamo> prestamos = CTRPrestamos.getPrestamosEstudiante("dni");
+        List<Prestamo> prestamos = CTRUsuario.prestamosByEstudiante(id_usuario);
         for (Prestamo m : prestamos) {
             Object[] fila = new Object[4];
             fila[0] = m.getId_ejem();
@@ -45,7 +48,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         }
         numPrestamos.setText("Tiene " + prestamos.size() + " libros en posesión.");
 
-        List<Reservado> reservas = CTRReservas.getReservasEstudiante("dni");
+        List<Reservado> reservas = CTRUsuario.reservadosByEstudiante(id_usuario);
         for (Reservado m : reservas) {
             Object[] fila = new Object[3];
             fila[0] = m.getIsbn();
@@ -55,6 +58,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         }
         numReservas.setText("Tiene " + prestamos.size() + " libros reservados.");
 
+        this.bienvenida.setText("NOMBRE: "+Session.getNombre()+" , APELLIDOS: "+Session.getApellidos()+", ROL: ESTUDIANTE");
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setTitle("Inicio Estudiante");
     }
@@ -85,6 +89,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         tablaReservas = new javax.swing.JTable();
         numPrestamos = new javax.swing.JLabel();
         numReservas = new javax.swing.JLabel();
+        bienvenida = new javax.swing.JLabel();
         jMenuBar3 = new javax.swing.JMenuBar();
         Inicio = new javax.swing.JMenu();
         MenuInicio = new javax.swing.JMenuItem();
@@ -204,6 +209,9 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         numReservas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         numReservas.setText("Mensaje");
 
+        bienvenida.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        bienvenida.setText("MENSAJE");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -225,7 +233,8 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                                     .addComponent(jLabel6)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(numPrestamos)
-                                    .addComponent(numReservas))
+                                    .addComponent(numReservas)
+                                    .addComponent(bienvenida))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -240,7 +249,9 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(bienvenida)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(numPrestamos)
@@ -248,13 +259,13 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(numResultados)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addComponent(numReservas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(164, 164, 164))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(numResultados)
+                .addGap(414, 414, 414))
         );
 
         Inicio.setText("Inicio");
@@ -337,6 +348,17 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         vistaMiPerfil.setVisible(true);
         vistaMiPerfil.pack();
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        vistaMiPerfil.nombre.setText(Session.getNombre());
+        vistaMiPerfil.apellidos.setText(Session.getApellidos());
+        vistaMiPerfil.dni.setText(Session.getDni());
+        vistaMiPerfil.email.setText(Session.getEmail());
+        vistaMiPerfil.pass.setText(Session.getPassword());
+
+        if (Session.getSexo().equals("H")) {
+            vistaMiPerfil.sexo.setSelectedIndex(0);
+        } else {
+            vistaMiPerfil.sexo.setSelectedIndex(1);
+        }
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
     private void MenuInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuInicioActionPerformed
@@ -358,39 +380,6 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         vistaVerReserva.fechaReserva.setText(fecha_reserva);
     }//GEN-LAST:event_tablaReservasMouseClicked
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewInicioEstudiante().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inicio;
     private javax.swing.JMenu Libros;
@@ -398,6 +387,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuInicio;
     private javax.swing.JMenuItem MenuMiPerfil;
     private javax.swing.JMenuItem MenuSalir;
+    private javax.swing.JLabel bienvenida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
