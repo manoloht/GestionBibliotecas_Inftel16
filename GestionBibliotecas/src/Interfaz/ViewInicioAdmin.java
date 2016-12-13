@@ -228,6 +228,7 @@ public class ViewInicioAdmin extends javax.swing.JFrame {
         vistaMiPerfil.dni.setText(Session.getDni());
         vistaMiPerfil.email.setText(Session.getEmail());
         vistaMiPerfil.pass.setText(Session.getPassword());
+        vistaMiPerfil.dni.setEnabled(false);
 
         if (Session.getSexo().equals("H")) {
             vistaMiPerfil.sexo.setSelectedIndex(0);

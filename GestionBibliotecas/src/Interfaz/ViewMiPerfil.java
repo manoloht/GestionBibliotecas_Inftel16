@@ -6,6 +6,7 @@
 package Interfaz;
 
 import Controlador.CTRUsuario;
+import Controlador.Session;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 
@@ -237,23 +238,25 @@ public class ViewMiPerfil extends javax.swing.JFrame {
                 nombre.setBorder(BorderFactory.createLineBorder(Color.red));
             } else if (apellidos.getText().equals("")) {
                 apellidos.setBorder(BorderFactory.createLineBorder(Color.red));
-            } else if(email.getText().equals("")){
+            } else if (email.getText().equals("")) {
                 email.setBorder(BorderFactory.createLineBorder(Color.red));
             }
         } else {
-            if (CTRUsuario.comprobarUsuario(dni.getText())) {
-                System.err.println("---->  ERROR: El usuario existe");
-                mensaje.setText("ERROR: El usuario existe");
+
+            System.out.println("---->  Editanto Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
+            if (CTRUsuario.editarUsuario(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())) {
+                System.out.println("---->  Usuario editado con éxito");
+                mensaje.setText("ÉXITO: El usuario se ha editado correctamente");
+                Session.setDni(dni.getText());
+                Session.setNombre(nombre.getText());
+                Session.setApellidos(apellidos.getText());
+                Session.setSexo(sexo.getSelectedItem().toString());
+                Session.setEmail(email.getText());
             } else {
-                System.out.println("---->  Editanto Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
-                if (CTRUsuario.editarUsuario(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())){
-                    System.out.println("---->  Usuario editado con éxito");
-                    mensaje.setText("ÉXITO: El usuario se ha editado correctamente");
-                }else{
-                    System.out.println("---->  Error al editar el usuario");
-                    mensaje.setText("ERROR: No se pudo editar el usuario");
-                }
+                System.out.println("---->  Error al editar el usuario");
+                mensaje.setText("ERROR: No se pudo editar el usuario");
             }
+
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 

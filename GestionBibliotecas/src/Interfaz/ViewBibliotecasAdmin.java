@@ -9,8 +9,10 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Controlador.CTRBiblioteca;
 import Controlador.CTRUsuario;
+import Controlador.Session;
 import Modelo.Biblioteca;
 import Modelo.Usuario;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
@@ -231,8 +233,8 @@ public class ViewBibliotecasAdmin extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(nResultados)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(327, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(429, Short.MAX_VALUE))
         );
 
         Inicio.setText("Inicio");
@@ -307,9 +309,15 @@ public class ViewBibliotecasAdmin extends javax.swing.JFrame {
     private void MenuMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuMiPerfilActionPerformed
         vistaMiPerfil = new ViewMiPerfil();
         vistaMiPerfil.mensaje.setText("");
-        vistaMiPerfil.setVisible(true); 
+        vistaMiPerfil.setVisible(true);
         vistaMiPerfil.pack();
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        vistaMiPerfil.nombre.setText(Session.getNombre());
+        vistaMiPerfil.apellidos.setText(Session.getApellidos());
+        vistaMiPerfil.dni.setText(Session.getDni());
+        vistaMiPerfil.email.setText(Session.getEmail());
+        vistaMiPerfil.pass.setText(Session.getPassword());
+        vistaMiPerfil.dni.setEnabled(false);
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
     private void MenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSalirActionPerformed

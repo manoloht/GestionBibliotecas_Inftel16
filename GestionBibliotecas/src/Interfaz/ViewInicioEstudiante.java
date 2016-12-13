@@ -7,6 +7,7 @@ package Interfaz;
 
 import Controlador.CTRUsuario;
 import Controlador.Session;
+import Controlador.Util;
 import Modelo.Prestamo;
 import Modelo.Reservado;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         List<Prestamo> prestamos = CTRUsuario.prestamosByEstudiante(id_usuario);
         for (Prestamo m : prestamos) {
             Object[] fila = new Object[4];
-            fila[0] = m.getId_ejem();
+            fila[0] = Util.buscarNombreLibro(m.getIsbn());
             fila[1] = m.getIsbn();
             fila[2] = m.getFecha_ini();
             fila[3] = m.getFecha_fin();
@@ -178,7 +179,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Titulo Libro", "ISBN", "Fecha Reserva"
+                "ISBN", "Fecha Inicio", "Fecha Fin"
             }
         ) {
             Class[] types = new Class [] {
@@ -256,14 +257,14 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(numPrestamos)
                 .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel2)
                 .addGap(24, 24, 24)
                 .addComponent(numReservas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(208, 208, 208)
                 .addComponent(numResultados)
                 .addGap(414, 414, 414))
         );
@@ -353,6 +354,7 @@ public class ViewInicioEstudiante extends javax.swing.JFrame {
         vistaMiPerfil.dni.setText(Session.getDni());
         vistaMiPerfil.email.setText(Session.getEmail());
         vistaMiPerfil.pass.setText(Session.getPassword());
+        vistaMiPerfil.dni.setEnabled(false);
 
         if (Session.getSexo().equals("H")) {
             vistaMiPerfil.sexo.setSelectedIndex(0);

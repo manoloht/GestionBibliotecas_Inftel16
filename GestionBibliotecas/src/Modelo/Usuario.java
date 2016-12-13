@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Juan
  */
-public class Usuario implements BaseDatos<Usuario>{
+public class Usuario implements BaseDatos<Usuario> {
 
     private String dni;
     private String nombre;
@@ -172,15 +172,9 @@ public class Usuario implements BaseDatos<Usuario>{
             pstmt.setString(5, u.getEmail());
 //            pstmt.setString(6, u.getPassword());       // no permite actualizar contraseña!!!!!!     
             pstmt.setString(6, this.dni);
-
-            if (comprobarUsuario(this.dni)) {
-                pstmt.executeUpdate();
-                con.close();
-                return true;
-            } else {
-                con.close();
-                return false;
-            }
+            pstmt.executeUpdate();
+            con.close();
+            return true;
 
         } catch (SQLException ex) {
             System.err.println("Excepcion SQL: Error al actualizar el usuario");
@@ -216,6 +210,7 @@ public class Usuario implements BaseDatos<Usuario>{
         }
     }
 //HECHO COMPROBAR
+
     public boolean comprobarUsuario(String dni) {
         boolean comprueba;
         try {
@@ -238,6 +233,7 @@ public class Usuario implements BaseDatos<Usuario>{
         }
     }
 //HECHO
+
     public static List<Usuario> getTodosUsuarios() {
 
         List<Usuario> usuarios = new ArrayList<>();
@@ -267,11 +263,11 @@ public class Usuario implements BaseDatos<Usuario>{
         }
         return usuarios;
     }
-    
+
     //  metodo static buscaId
-     public static int buscarId(String dni){
-          int id=0;
-            try {
+    public static int buscarId(String dni) {
+        int id = 0;
+        try {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
 
@@ -279,12 +275,12 @@ public class Usuario implements BaseDatos<Usuario>{
 
             PreparedStatement pstmt = con.prepareStatement(consulta);
             pstmt.clearParameters();
-            pstmt.setString(1, dni);            
-            
+            pstmt.setString(1, dni);
+
             ResultSet resultado = pstmt.executeQuery();
 
-            while(resultado.next()){
-               id = resultado.getInt("id_usuario");                             
+            while (resultado.next()) {
+                id = resultado.getInt("id_usuario");
             }
             con.close();
             return id;
@@ -293,7 +289,7 @@ public class Usuario implements BaseDatos<Usuario>{
             System.err.println("Excepcion SQL: Error al buscar id usuario.");
             System.err.println(ex);
             return -1;
-        }               
-        
-     }
+        }
+
+    }
 }

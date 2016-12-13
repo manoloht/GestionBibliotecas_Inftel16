@@ -57,17 +57,17 @@ public class CTRLogin {
             Conexion conexion = new Conexion();
             Connection con = conexion.getConnection();
             
-            String consulta = "select * from usuario u where EXISTS (select id_usuario from admin e where u.id_usuario = e.id_usuario) and dni like '" + email + "'";
+            String consulta = "select * from usuario u where EXISTS (select id_usuario from admin e where u.id_usuario = e.id_usuario) and email like '" + email + "'";
             Statement stmt = con.createStatement();
             ResultSet resultado = stmt.executeQuery(consulta);
             comprueba = resultado.next();
             
-            String consulta2 = "select * from usuario u where EXISTS (select id_usuario from bibliotecario e where u.id_usuario = e.id_usuario) and dni like '" + email + "'";
+            String consulta2 = "select * from usuario u where EXISTS (select id_usuario from bibliotecario e where u.id_usuario = e.id_usuario) and email like '" + email + "'";
             Statement stmt2 = con.createStatement();
             ResultSet resultado2 = stmt2.executeQuery(consulta2);
             comprueba2 = resultado2.next();
             
-            String consulta3 = "select * from usuario u where EXISTS (select id_usuario from estudiante e where u.id_usuario = e.id_usuario) and dni like '" + email + "'";
+            String consulta3 = "select * from usuario u where EXISTS (select id_usuario from estudiante e where u.id_usuario = e.id_usuario) and email like '" + email + "'";
             Statement stmt3 = con.createStatement();
             ResultSet resultado3 = stmt3.executeQuery(consulta3);
             comprueba3 = resultado3.next();

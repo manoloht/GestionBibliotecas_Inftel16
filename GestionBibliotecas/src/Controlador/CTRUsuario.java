@@ -282,26 +282,57 @@ public class CTRUsuario {
         }
     }
 
-    // METODO PARA EDITAR UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
+  // METODO PARA EDITAR UN ESTUDIANTE, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
     public static boolean editarEstudiante(String dni, String nombre, String apellido, String sexo, String email, String biblioteca, String numExp) {
-        return true;
-    }
+        boolean exito;
+        Estudiante u1 = new Estudiante(dni);
+        Estudiante u2 = new Estudiante(dni);
+        u2.setNombre(nombre);
+        u2.setApellidos(apellido);
+        u2.setSexo(sexo);
+        u2.setEmail(email);
+        u2.setNombre_biblioteca(biblioteca);
+        u2.setNumExp(numExp);
+        exito = u1.actualizar(u2);
 
+        return exito;
+    }
     // METODO PARA EDITAR UN USUARIO, DEVOLVER TRUE EN CASO DE INSERTAR, FALSE EN CASO DE FALLO DE INSERCIÓN
-    public static boolean editarUsuario(String dni, String nombre, String apellido, String sexo, String email) {
-        return true;
-    }
 
-    public static String obtenerBiblioteca(String dni) {
-        return "Probando";
+    public static boolean editarUsuario(String dni, String nombre, String apellido, String sexo, String email) {
+        boolean exito;
+        Usuario u1 = new Usuario(dni);
+        Usuario u2 = new Usuario(dni);
+        u2.setApellidos(apellido);
+        u2.setNombre(nombre);
+        u2.setEmail(email);
+        u2.setSexo(sexo);
+        exito = u1.actualizar(u2);
+        return exito;
     }
 
     public static boolean editarAdministrador(String dni, String nombre, String apellido, String sexo, String email) {
-        return true;
+        boolean exito;
+        Admin u1 = new Admin(dni);
+        Admin u2 = new Admin(dni);
+        u2.setApellidos(apellido);
+        u2.setNombre(nombre);
+        u2.setEmail(email);
+        u2.setSexo(sexo);
+        exito = u1.actualizar(u2);
+        return exito;
     }
 
     public static boolean editarBibliotecario(String dni, String nombre, String apellido, String sexo, String email, String nombre_bib) {
-        return true;
+        boolean exito;
+        Bibliotecario u1 = new Bibliotecario(dni);
+        Bibliotecario u2 = new Bibliotecario(dni);
+        u2.setApellidos(apellido);
+        u2.setNombre(nombre);
+        u2.setEmail(email);
+        u2.setSexo(sexo);
+        exito = u1.actualizar(u2);
+        return exito;
     }
 
     //////////////////////////////

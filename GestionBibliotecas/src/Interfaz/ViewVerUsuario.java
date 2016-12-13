@@ -248,10 +248,10 @@ public class ViewVerUsuario extends javax.swing.JFrame {
                 email.setBorder(BorderFactory.createLineBorder(Color.red));
             }
         } else {
-            if (CTRUsuario.comprobarUsuario(dni.getText())) {
-                System.err.println("---->  ERROR: El usuario existe");
-                mensaje.setText("ERROR: El usuario existe");
-            } else {
+            //if (CTRUsuario.comprobarUsuario(dni.getText())) {
+                //System.err.println("---->  ERROR: El usuario existe");
+                //mensaje.setText("ERROR: El usuario existe");
+            //} else {
                 System.out.println("---->  Editanto Usuario: " + dni.getText() + " " + nombre.getText() + " " + apellidos.getText() + " " + sexo.getSelectedItem().toString() + " " + email.getText());
                 if (CTRUsuario.editarUsuario(dni.getText(), nombre.getText(), apellidos.getText(), sexo.getSelectedItem().toString(), email.getText())){
                     System.out.println("---->  Usuario editado con éxito");
@@ -260,7 +260,7 @@ public class ViewVerUsuario extends javax.swing.JFrame {
                     System.out.println("---->  Error al editar el usuario");
                     mensaje.setText("ERROR: No se pudo editar el usuario");
                 }
-            }
+            //}
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 

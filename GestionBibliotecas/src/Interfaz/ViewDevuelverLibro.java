@@ -236,7 +236,7 @@ public class ViewDevuelverLibro extends javax.swing.JFrame {
             String isbn = ISBN.getText();
             String categoria = CAT.getSelectedItem().toString();
             String biblioteca = BIBLIO.getSelectedItem().toString();
-            Prestamo p = new Prestamo(isbn, dni, categoria, biblioteca);
+            //Prestamo p = new Prestamo(isbn, dni, categoria, biblioteca);
 
             int id_usuario = Usuario.buscarId(dni);
             int id_biblioteca = Biblioteca.buscarId(biblioteca);

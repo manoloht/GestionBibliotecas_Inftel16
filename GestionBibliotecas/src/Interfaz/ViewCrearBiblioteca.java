@@ -29,7 +29,7 @@ public class ViewCrearBiblioteca extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Crear Biblioteca");
         this.mensaje.setText("");
-        
+
         List<Usuario> listaAdmin = CTRUsuario.buscarUsuariosRol("administrador");
         for (Usuario u : listaAdmin) {
             this.adminSel.addItem(u.getDni());
@@ -179,24 +179,18 @@ public class ViewCrearBiblioteca extends javax.swing.JFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
 
-        
         if (nombre.getText().equals("")) {
             System.err.println("---->  ERROR: Campos Vacios");
             mensaje.setText("ERROR: Faltan campos por rellenar");
             nombre.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
-            if (CTRBiblioteca.comprobarBiblioteca(nombre.getText())) {
-                System.err.println("---->  ERROR: La biblioteca existe");
-                mensaje.setText("ERROR: La biblioteca existe");
+            System.out.println("---->  Editanto Biblioteca: " + nombre.getText() + " " + adminSel.getSelectedItem().toString());
+            if (CTRBiblioteca.crearBiblioteca(nombre.getText(), adminSel.getSelectedItem().toString())) {
+                System.out.println("---->  Biblioteca insertada con éxito");
+                mensaje.setText("ÉXITO: La biblioteca se ha insertado correctamente");
             } else {
-                System.out.println("---->  Editanto Biblioteca: " + nombre.getText() +" "+ adminSel.getSelectedItem().toString());
-                if (CTRBiblioteca.crearBiblioteca(nombre.getText(), adminSel.getSelectedItem().toString())) {
-                    System.out.println("---->  Biblioteca editada con éxito");
-                    mensaje.setText("ÉXITO: La biblioteca se ha editado correctamente");
-                } else {
-                    System.out.println("---->  Error al editar la biblioteca");
-                    mensaje.setText("ERROR: No se pudo editar la biblioteca");
-                }
+                System.out.println("---->  Error al insertar la biblioteca");
+                mensaje.setText("ERROR: No se pudo insertar la biblioteca");
             }
         }
     }//GEN-LAST:event_btnCrearActionPerformed

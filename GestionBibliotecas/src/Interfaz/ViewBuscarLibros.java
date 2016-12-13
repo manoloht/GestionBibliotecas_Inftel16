@@ -7,6 +7,7 @@ package Interfaz;
 
 import Controlador.CTRBiblioteca;
 import Controlador.CTRUsuario;
+import Controlador.Session;
 import Modelo.Biblioteca;
 import Modelo.Libro;
 import java.util.List;
@@ -307,6 +308,12 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         vistaMiPerfil.setVisible(true);
         vistaMiPerfil.pack();
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        vistaMiPerfil.nombre.setText(Session.getNombre());
+        vistaMiPerfil.apellidos.setText(Session.getApellidos());
+        vistaMiPerfil.dni.setText(Session.getDni());
+        vistaMiPerfil.email.setText(Session.getEmail());
+        vistaMiPerfil.pass.setText(Session.getPassword());
+        vistaMiPerfil.dni.setEnabled(false);
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
     private void MenuIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuIniActionPerformed
@@ -318,6 +325,8 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
+        modeloTabla.getDataVector().removeAllElements();
+
         String nombre_biblioteca = bibliotecaSel.getSelectedItem().toString();
         String palabra_clave = palabraClave.getSelectedItem().toString();
         String campo_busqueda = campoBusqueda.getText();
@@ -327,7 +336,7 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         for (Libro l : libros) {
             Object[] fila = new Object[4];
             fila[0] = l.getIsbn();
-            fila[1] = l.getNombre_bib();
+            fila[1] = l.getTitulo();
             fila[2] = l.getNombre_categoria();
             fila[3] = l.getNombre_editorial();
             modeloTabla.addRow(fila);
@@ -347,16 +356,16 @@ public class ViewBuscarLibros extends javax.swing.JFrame {
         String titulo = modeloTabla.getValueAt(index, 1).toString();
         String categoria = modeloTabla.getValueAt(index, 2).toString();
         String editorial = modeloTabla.getValueAt(index, 3).toString();
-        
+
         vistaVerLibro.titulo.setText(titulo);
         vistaVerLibro.titulo.setEnabled(false);
-        
+
         vistaVerLibro.isbn.setText(isbn);
         vistaVerLibro.isbn.setEnabled(false);
-        
+
         vistaVerLibro.categoria.setText(categoria);
         vistaVerLibro.categoria.setEnabled(false);
-        
+
         vistaVerLibro.Editorial.setText(editorial);
         vistaVerLibro.Editorial.setEnabled(false);
     }//GEN-LAST:event_tablaLibrosMouseClicked

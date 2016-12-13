@@ -73,6 +73,40 @@ public class Util {
         }
     
     }
+    
+    
+     public static String buscarBibliotecaByDni(String dni){
+        Biblioteca u = new Biblioteca();
+        
+        try {
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select * from biblioteca where dni like ?";
+
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, dni);
+
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               u.setNombre(resultado.getString("nombre"));
+            }
+            con.close();
+            return u.getNombre();
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Usuario.");
+            System.err.println(ex);
+            return u.getNombre();
+        }
+     }
+    
+    
+    
+    
      public static Usuario buscarUsuario(String email){
         Usuario u = new Usuario();
         
@@ -406,5 +440,35 @@ public class Util {
     
         }
      
-     
+     public static String buscarNombreLibro(String isbn){
+        
+        try {
+            
+            String nombre = "";
+            
+            Conexion conexion = new Conexion();
+            Connection con = conexion.getConnection();
+
+            String consulta = "select titulo from libro where isbn like ?";
+            PreparedStatement pstmt = con.prepareStatement(consulta);
+            pstmt.clearParameters();
+            pstmt.setString(1, isbn);
+
+            
+            ResultSet resultado = pstmt.executeQuery();
+
+            while(resultado.next()){
+               nombre = resultado.getString("titulo");
+               
+            }
+            con.close();
+            return nombre;
+
+        } catch (SQLException ex) {
+            System.err.println("Excepcion SQL: Error al buscar Objeto Usuario.");
+            System.err.println(ex);
+            return "-1";
+        }
+     }
+
 }

@@ -25,7 +25,10 @@ public class CTRBiblioteca {
     }
 
     public static boolean crearBiblioteca(String nombre_bib, String dni_admin) {
-        return true;
+        Biblioteca b = new Biblioteca();
+        b.setNombre(nombre_bib);
+        b.setDni_admin(dni_admin);
+        return b.insertar();
     }
 
     public static boolean comprobarBiblioteca(String nombre_bib) {

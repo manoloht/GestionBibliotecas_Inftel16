@@ -244,6 +244,7 @@ public class ViewLogin extends javax.swing.JFrame {
 
                 // CARGAMOS LOS DATOS EN EL SESSION
                 Usuario u = Util.buscarUsuarioEmail(emailIntroducido.getText());
+                Session.setId_usuario(u.getId_usuario());
                 Session.setNombre(u.getNombre());
                 Session.setApellidos(u.getApellidos());
                 Session.setDni(u.getDni());

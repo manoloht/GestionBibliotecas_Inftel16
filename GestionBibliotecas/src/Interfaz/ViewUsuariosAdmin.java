@@ -9,6 +9,9 @@ import Modelo.Usuario;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Controlador.CTRUsuario;
+import Controlador.Session;
+import Controlador.Util;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
@@ -280,8 +283,8 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addComponent(numResultados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(308, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(525, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Inicio");
@@ -352,8 +355,8 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
     // BOTON PARA BUSCAR USUARIOS
 
     private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
-        rolBusqueda = (String) rolElegido.getSelectedItem();
         modeloTabla.getDataVector().removeAllElements();
+        rolBusqueda = (String) rolElegido.getSelectedItem();
         if (campoBusqueda.getText().equals("")) {
             System.out.println("Buscando Usuarios: ROL:" + rolBusqueda + ", PALABRA_CLAVE: " + palabraBusqueda + ", BUSQUEDA: " + campoBusqueda.getText());
             List<Usuario> usuarios = CTRUsuario.buscarUsuariosRol(rolBusqueda);
@@ -411,6 +414,7 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                 vistaVerUsuario.sexo.setSelectedIndex(1);
             }
             vistaVerUsuario.email.setText(email);
+            vistaVerUsuario.dni.setEnabled(false);
         } else if (rolBusqueda.equals("Administrador")) {
             vistaVerAdmin = new ViewVerAdmin();
             vistaVerAdmin.setVisible(true);
@@ -432,6 +436,7 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                 vistaVerAdmin.sexo.setSelectedIndex(1);
             }
             vistaVerAdmin.email.setText(email);
+            vistaVerAdmin.dni.setEnabled(false);
         } else if (rolBusqueda.equals("Bibliotecario")) {
             vistaVerBibliotecario = new ViewVerBibliotecario();
             vistaVerBibliotecario.setVisible(true);
@@ -453,7 +458,8 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                 vistaVerBibliotecario.sexo.setSelectedIndex(1);
             }
             vistaVerBibliotecario.email.setText(email);
-            vistaVerBibliotecario.biblioteca.addItem(CTRUsuario.obtenerBiblioteca(dni));
+            vistaVerBibliotecario.biblioteca.addItem(Util.buscarBibliotecaByDni(dni));
+            vistaVerBibliotecario.dni.setEnabled(false);
         } else {
             vistaVerEstudiante = new ViewVerEstudiante();
             vistaVerEstudiante.setVisible(true);
@@ -475,7 +481,8 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
                 vistaVerEstudiante.sexo.setSelectedIndex(1);
             }
             vistaVerEstudiante.email.setText(email);
-            vistaVerEstudiante.biblioteca.addItem(CTRUsuario.obtenerBiblioteca(dni));
+            vistaVerEstudiante.biblioteca.addItem(Util.buscarBibliotecaByDni(dni));
+            vistaVerEstudiante.dni.setEnabled(false);
         }
     }//GEN-LAST:event_tablaUsuariosMouseClicked
 
@@ -520,9 +527,15 @@ public class ViewUsuariosAdmin extends javax.swing.JFrame {
     private void MenuMiPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuMiPerfilActionPerformed
         vistaMiPerfil = new ViewMiPerfil();
         vistaMiPerfil.mensaje.setText("");
-        vistaMiPerfil.setVisible(true); 
+        vistaMiPerfil.setVisible(true);
         vistaMiPerfil.pack();
         vistaMiPerfil.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        vistaMiPerfil.nombre.setText(Session.getNombre());
+        vistaMiPerfil.apellidos.setText(Session.getApellidos());
+        vistaMiPerfil.dni.setText(Session.getDni());
+        vistaMiPerfil.email.setText(Session.getEmail());
+        vistaMiPerfil.pass.setText(Session.getPassword());
+        vistaMiPerfil.dni.setEnabled(false);
     }//GEN-LAST:event_MenuMiPerfilActionPerformed
 
     private void MenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSalirActionPerformed

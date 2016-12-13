@@ -170,10 +170,10 @@
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="nResultados" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" pref="349" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="247" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="327" max="32767" attributes="0"/>
+                  <EmptySpace pref="429" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
